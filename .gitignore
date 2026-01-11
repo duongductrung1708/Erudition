@@ -1,0 +1,15 @@
+.vscode
+/.idea/
+node_modules/
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
+/keypair.pem
+
+# Environment files
+.env
+.env.local
+.env.*.local
+*.env
+.envrc
