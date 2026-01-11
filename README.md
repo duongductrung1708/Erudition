@@ -1,239 +1,461 @@
-# Full Stack FastAPI Template
+# Erudition
 
-<a href="https://github.com/fastapi/full-stack-fastapi-template/actions?query=workflow%3ATest" target="_blank"><img src="https://github.com/fastapi/full-stack-fastapi-template/workflows/Test/badge.svg" alt="Test"></a>
-<a href="https://coverage-badge.samuelcolvin.workers.dev/redirect/fastapi/full-stack-fastapi-template" target="_blank"><img src="https://coverage-badge.samuelcolvin.workers.dev/fastapi/full-stack-fastapi-template.svg" alt="Coverage"></a>
+**Erudition** - A fully functional AI chatbot platform designed for businesses, featuring intelligent conversation management powered by RAG (Retrieval-Augmented Generation) technology, enabling seamless customer interactions from chatbot creation to deployment.
 
-## Technology Stack and Features
+## Technology Stack
 
-- ⚡ [**FastAPI**](https://fastapi.tiangolo.com) for the Python backend API.
-    - 🧰 [SQLModel](https://sqlmodel.tiangolo.com) for the Python SQL database interactions (ORM).
-    - 🔍 [Pydantic](https://docs.pydantic.dev), used by FastAPI, for the data validation and settings management.
-    - 💾 [PostgreSQL](https://www.postgresql.org) as the SQL database.
-- 🚀 [React](https://react.dev) for the frontend.
-    - 💃 Using TypeScript, hooks, Vite, and other parts of a modern frontend stack.
-    - 🎨 [Chakra UI](https://chakra-ui.com) for the frontend components.
-    - 🤖 An automatically generated frontend client.
-    - 🧪 [Playwright](https://playwright.dev) for End-to-End testing.
-    - 🦇 Dark mode support.
-- 🐋 [Docker Compose](https://www.docker.com) for development and production.
-- 🔒 Secure password hashing by default.
-- 🔑 JWT (JSON Web Token) authentication.
-- 📫 Email based password recovery.
-- ✅ Tests with [Pytest](https://pytest.org).
-- 📞 [Traefik](https://traefik.io) as a reverse proxy / load balancer.
-- 🚢 Deployment instructions using Docker Compose, including how to set up a frontend Traefik proxy to handle automatic HTTPS certificates.
-- 🏭 CI (continuous integration) and CD (continuous deployment) based on GitHub Actions.
+### Frontend
 
-### Dashboard Login
+- ⚛️ [**React**](https://react.dev) - Modern UI library
+- ⚡ [**Vite**](https://vitejs.dev) - Fast build tool and dev server
+- 🎨 [**Material-UI (MUI)**](https://mui.com) - React component library
+- 🎨 [**Tailwind CSS**](https://tailwindcss.com) - Utility-first CSS framework
+- 🛣️ [**React Router**](https://reactrouter.com) - Client-side routing
+- 🔄 [**TanStack Query**](https://tanstack.com/query) - Data fetching and state management
+- 📊 [**ApexCharts**](https://apexcharts.com) - Data visualization
+- 📝 [**TipTap**](https://tiptap.dev) - Rich text editor
 
-[![API docs](img/login.png)](https://github.com/fastapi/full-stack-fastapi-template)
+### Backend
 
-### Dashboard - Admin
+- ⚡ [**FastAPI**](https://fastapi.tiangolo.com) - Modern Python web framework
+- 🔍 [**Pydantic**](https://docs.pydantic.dev) - Data validation and settings management
+- 💾 [**MongoDB**](https://www.mongodb.com) - NoSQL database with Motor async driver
+- 🤖 [**LightRAG**](https://github.com/HKUDS/LightRAG) - Simple and fast RAG framework
+- 🔗 [**LangChain**](https://www.langchain.com) - LLM application framework
+- 🗄️ [**ChromaDB**](https://www.trychroma.com) - Vector database for embeddings
+- 🕸️ [**Neo4j**](https://neo4j.com) - Graph database for knowledge graphs
+- 📄 [**Docling**](https://github.com/DS4SD/docling) - Document processing
+- 🔐 [**JWT**](https://jwt.io) - Authentication tokens
+- 📧 Email templates with MJML
 
-[![API docs](img/dashboard.png)](https://github.com/fastapi/full-stack-fastapi-template)
+## Tech Stack Details
 
-### Dashboard - Create User
+### Frontend Technologies
 
-[![API docs](img/dashboard-create.png)](https://github.com/fastapi/full-stack-fastapi-template)
+#### ⚛️ React
 
-### Dashboard - Items
+**Vai trò:** Framework JavaScript chính để xây dựng giao diện người dùng  
+**Tác dụng:**
 
-[![API docs](img/dashboard-items.png)](https://github.com/fastapi/full-stack-fastapi-template)
+- Tạo các component có thể tái sử dụng (chat interface, dashboard, forms)
+- Quản lý state của UI với hooks (useState, useEffect, useContext)
+- Xử lý rendering hiệu quả với Virtual DOM
+- Hỗ trợ xây dựng Single Page Application (SPA)
 
-### Dashboard - User Settings
+**Ví dụ sử dụng:** Tất cả các component trong `frontend/src/components/` và `frontend/src/pages/` đều được xây dựng bằng React
 
-[![API docs](img/dashboard-user-settings.png)](https://github.com/fastapi/full-stack-fastapi-template)
+#### ⚡ Vite
 
-### Dashboard - Dark Mode
+**Vai trò:** Build tool và development server cực nhanh  
+**Tác dụng:**
 
-[![API docs](img/dashboard-dark.png)](https://github.com/fastapi/full-stack-fastapi-template)
+- Hot Module Replacement (HMR) - tự động reload khi code thay đổi
+- Build nhanh hơn Webpack nhờ sử dụng ES modules
+- Optimize code cho production với tree-shaking
+- Hỗ trợ TypeScript, JSX out of the box
 
-### Interactive API Documentation
+**Lợi ích:** Giảm thời gian chờ khi development từ vài phút xuống vài giây
 
-[![API docs](img/docs.png)](https://github.com/fastapi/full-stack-fastapi-template)
+#### 🎨 Material-UI (MUI)
 
-## How To Use It
+**Vai trò:** Component library cung cấp UI components có sẵn  
+**Tác dụng:**
 
-You can **just fork or clone** this repository and use it as is.
+- Cung cấp các component đẹp, responsive (Button, Dialog, DataGrid, Charts)
+- Theme system để customize màu sắc, typography
+- Responsive design với breakpoints
+- Accessibility (a11y) built-in
 
-✨ It just works. ✨
+**Ví dụ sử dụng:**
 
-### How to Use a Private Repository
+- `DataGrid` cho bảng quản lý chatbots, users
+- `Dialog` cho popup upload document, FAQ
+- `Charts` cho analytics dashboard
 
-If you want to have a private repository, GitHub won't allow you to simply fork it as it doesn't allow changing the visibility of forks.
+#### 🎨 Tailwind CSS
 
-But you can do the following:
+**Vai trò:** Utility-first CSS framework  
+**Tác dụng:**
 
-- Create a new GitHub repo, for example `my-full-stack`.
-- Clone this repository manually, set the name with the name of the project you want to use, for example `my-full-stack`:
+- Viết CSS nhanh với utility classes (p-4, flex, bg-blue-500)
+- Không cần viết custom CSS cho nhiều trường hợp
+- PurgeCSS tự động loại bỏ CSS không dùng
+- Responsive design với breakpoint prefixes (md:, lg:)
+
+**Ví dụ:** `className="flex items-center justify-between p-4 bg-white rounded-lg shadow-md"`
+
+#### 🛣️ React Router
+
+**Vai trò:** Client-side routing cho SPA  
+**Tác dụng:**
+
+- Điều hướng giữa các trang không cần reload (workspace, chatbot details, admin)
+- Protected routes với authentication check
+- URL parameters để truyền data (chatbotId, conversationId)
+- Nested routes cho layout phức tạp
+
+**Ví dụ:** `/agent-details/:chatbotId` để xem chi tiết chatbot
+
+#### 🔄 TanStack Query (React Query)
+
+**Vai trò:** Quản lý server state và data fetching  
+**Tác dụng:**
+
+- Cache API responses tự động
+- Tự động refetch khi data stale
+- Optimistic updates cho UX tốt hơn
+- Background sync và error retry
+- Giảm boilerplate code cho API calls
+
+**Lưu ý:** Hiện tại đã được setup nhưng chưa được sử dụng nhiều, có thể migrate từ axios trực tiếp sang TanStack Query
+
+#### 📊 ApexCharts
+
+**Vai trò:** Thư viện vẽ biểu đồ  
+**Tác dụng:**
+
+- Vẽ các biểu đồ analytics (line, bar, pie charts)
+- Hiển thị thống kê chatbot performance, token usage
+- Interactive charts với tooltips, zoom
+- Responsive và đẹp mắt
+
+**Ví dụ sử dụng:** Dashboard analytics cho chatbot creators và admins
+
+#### 📝 TipTap
+
+**Vai trò:** Rich text editor  
+**Tác dụng:**
+
+- Soạn thảo văn bản có format (bold, italic, headings)
+- Hỗ trợ markdown
+- Extensible với plugins (tables, images)
+- Sử dụng ProseMirror engine
+
+### Backend Technologies
+
+#### ⚡ FastAPI
+
+**Vai trò:** Web framework Python hiện đại, nhanh  
+**Tác dụng:**
+
+- Tạo REST API endpoints cho frontend
+- Automatic API documentation (Swagger/OpenAPI)
+- Async/await support cho performance tốt
+- Type hints và validation tự động
+- Dependency injection system
+
+**Ví dụ:** API routes trong `backend/app/api/routes/` xử lý requests từ frontend
+
+#### 🔍 Pydantic
+
+**Vai trò:** Data validation và settings management  
+**Tác dụng:**
+
+- Validate dữ liệu đầu vào từ API requests
+- Type checking tự động
+- Settings management từ environment variables
+- Serialization/deserialization JSON
+- Error messages rõ ràng khi validation fail
+
+**Ví dụ:** Models trong `backend/app/models_mongo.py` sử dụng Pydantic để validate
+
+#### 💾 MongoDB
+
+**Vai trò:** NoSQL database lưu trữ dữ liệu chính  
+**Tác dụng:**
+
+- Lưu trữ users, chatbots, conversations, documents
+- Schema linh hoạt, dễ mở rộng
+- Motor driver hỗ trợ async operations
+- Aggregation pipeline cho queries phức tạp
+- Replication và sharding cho scale
+
+**Collections chính:**
+
+- `users` - Thông tin người dùng
+- `chatbots` - Thông tin chatbot
+- `conversations` - Lịch sử hội thoại
+- `documents` - Tài liệu đã upload
+- `favorite_messages` - Tin nhắn yêu thích
+
+#### 🤖 LightRAG
+
+**Vai trò:** Framework RAG (Retrieval-Augmented Generation) chính  
+**Tác dụng:**
+
+- Xử lý documents và tạo knowledge base
+- Trích xuất entities và relationships từ text
+- Xây dựng knowledge graph
+- Query với nhiều modes: local, global, hybrid, naive, mix
+- Tích hợp với vector database và graph database
+
+**Cách hoạt động:**
+
+1. Upload document → Chunk text → Extract entities/relationships
+2. Lưu vào vector DB (ChromaDB) và graph DB (Neo4j/NetworkX)
+3. User query → Retrieve relevant context → Generate response với LLM
+
+**Ví dụ:** Khi user hỏi chatbot, LightRAG tìm context liên quan từ knowledge base và tạo câu trả lời
+
+#### 🔗 LangChain
+
+**Vai trò:** Framework để xây dựng ứng dụng LLM  
+**Tác dụng:**
+
+- Kết nối với các LLM providers (OpenAI, Google)
+- Document loaders để đọc nhiều format file
+- Text splitters để chia nhỏ documents
+- Chains để kết hợp nhiều LLM calls
+- Memory để lưu conversation history
+
+**Ví dụ:** Sử dụng trong `backend/app/helpers/LangchainLoader.py` để load documents
+
+#### 🗄️ ChromaDB
+
+**Vai trò:** Vector database lưu trữ embeddings  
+**Tác dụng:**
+
+- Lưu trữ vector embeddings của text chunks, entities, relationships
+- Semantic search với cosine similarity
+- HNSW index cho tìm kiếm nhanh
+- Persistent storage trên disk
+- Collection-based organization (mỗi chatbot một collection)
+
+**Cách hoạt động:**
+
+1. Text → Embedding model (OpenAI) → Vector
+2. Lưu vector vào ChromaDB với metadata
+3. Query → Embed query → Tìm top-k similar vectors
+4. Trả về text chunks liên quan nhất
+
+**Ví dụ:** Khi user hỏi "giá sản phẩm", ChromaDB tìm các chunks nói về giá cả
+
+#### 🕸️ Neo4j
+
+**Vai trò:** Graph database lưu trữ knowledge graph  
+**Tác dụng:**
+
+- Lưu trữ entities (nodes) và relationships (edges)
+- Traverse graph để tìm connections
+- Cypher query language mạnh mẽ
+- Tìm subgraph liên quan đến query
+- Visualize knowledge graph
+
+**Cách hoạt động:**
+
+1. Extract entities từ documents (Person, Product, Organization)
+2. Extract relationships (Person WORKS_FOR Organization)
+3. Lưu vào Neo4j như graph
+4. Query → Tìm entities liên quan → Traverse relationships → Build context
+
+**Ví dụ:** "Nguyễn Văn A làm việc tại công ty B" → Node: Nguyễn Văn A, Node: Công ty B, Edge: WORKS_FOR
+
+#### 📄 Docling
+
+**Vai trò:** Document processing library  
+**Tác dụng:**
+
+- Parse nhiều format: PDF, DOCX, PPTX, HTML
+- Extract text, tables, images từ documents
+- Giữ nguyên structure (headings, lists, tables)
+- Convert sang markdown format
+- Xử lý documents phức tạp (multi-column, tables)
+
+**Ví dụ:** Upload PDF → Docling parse → Extract text và tables → Lưu vào knowledge base
+
+#### 🔐 JWT (JSON Web Tokens)
+
+**Vai trò:** Authentication mechanism  
+**Tác dụng:**
+
+- Stateless authentication (không cần lưu session trên server)
+- Token chứa user info và permissions
+- Secure với signature verification
+- Expiration time tự động
+- Dễ dàng cho microservices
+
+**Flow:**
+
+1. User login → Server verify credentials → Generate JWT
+2. Client lưu JWT (localStorage/cookie)
+3. Mỗi request gửi kèm JWT trong header
+4. Server verify JWT → Cho phép/deny request
+
+#### 📧 MJML
+
+**Vai trò:** Email template framework  
+**Tác dụng:**
+
+- Viết email HTML responsive dễ dàng
+- Tự động convert sang HTML tương thích nhiều email clients
+- Component-based (mj-section, mj-column, mj-text)
+- Email templates cho password recovery, notifications
+
+**Ví dụ:** Templates trong `backend/app/email-templates/src/` cho password reset emails
+
+## Key Features
+
+- 🤖 **AI Chatbot Creation** - Build custom chatbots trained on your business content
+- 📚 **Document Management** - Upload and process documents (PDF, DOCX, etc.) for knowledge base
+- 💬 **Conversation Management** - Track and manage customer conversations
+- ❓ **FAQ Management** - Create and manage frequently asked questions
+- 📊 **Analytics Dashboard** - Monitor chatbot performance and usage statistics
+- 👥 **Multi-role System** - Support for chatbot creators, users, and administrators
+- ⭐ **Favorite Messages** - Save and manage favorite chatbot responses
+- 💳 **Token-based Billing** - Flexible token bundle system for usage tracking
+- 🔒 **Secure Authentication** - JWT-based authentication with role-based access control
+
+## Getting Started
+
+### Prerequisites
+
+- [Docker](https://www.docker.com/) and Docker Compose
+- [Node.js](https://nodejs.org/) (for frontend development)
+- [uv](https://docs.astral.sh/uv/) (for Python package management)
+
+### Quick Start with Docker Compose
+
+1. Clone the repository:
 
 ```bash
-git clone git@github.com:fastapi/full-stack-fastapi-template.git my-full-stack
+git clone <repository-url>
+cd Erudition
 ```
 
-- Enter into the new directory:
+2. Configure environment variables:
+
+   - Copy `.env.example` files in both `backend/` and `frontend/` directories
+   - Update the configuration values, especially:
+     - `SECRET_KEY` - Generate with: `python -c "import secrets; print(secrets.token_urlsafe(32))"`
+     - `MONGODB_URL` - MongoDB connection string
+     - `OPENAI_API_KEY` - For LLM and embeddings
+     - Other API keys as needed
+
+3. Start the development environment:
 
 ```bash
-cd my-full-stack
+docker compose up -d
 ```
 
-- Set the new origin to your new repository, copy it from the GitHub interface, for example:
+4. Access the application:
+   - Frontend: http://localhost:3000
+   - Backend API: http://localhost:8000
+   - API Documentation: http://localhost:8000/docs
+
+### Development Setup
+
+#### Backend Development
+
+From `./backend/` directory:
+
+1. Install dependencies:
 
 ```bash
-git remote set-url origin git@github.com:octocat/my-full-stack.git
+uv sync
 ```
 
-- Add this repo as another "remote" to allow you to get updates later:
+2. Activate virtual environment:
 
 ```bash
-git remote add upstream git@github.com:fastapi/full-stack-fastapi-template.git
+source .venv/bin/activate
 ```
 
-- Push the code to your new repository:
+3. Run the development server:
 
 ```bash
-git push -u origin master
+fastapi run --reload app/main.py
 ```
 
-### Update From the Original Template
+For more details, see [backend/README.md](./backend/README.md).
 
-After cloning the repository, and after doing changes, you might want to get the latest changes from this original template.
+#### Frontend Development
 
-- Make sure you added the original repository as a remote, you can check it with:
+From `./frontend/` directory:
+
+1. Install dependencies:
 
 ```bash
-git remote -v
-
-origin    git@github.com:octocat/my-full-stack.git (fetch)
-origin    git@github.com:octocat/my-full-stack.git (push)
-upstream    git@github.com:fastapi/full-stack-fastapi-template.git (fetch)
-upstream    git@github.com:fastapi/full-stack-fastapi-template.git (push)
+npm install
 ```
 
-- Pull the latest changes without merging:
+2. Start development server:
 
 ```bash
-git pull --no-commit upstream master
+npm run dev
 ```
 
-This will download the latest changes from this template without committing them, that way you can check everything is right before committing.
+The frontend will be available at http://localhost:5173 (Vite default port).
 
-- If there are conflicts, solve them in your editor.
+## Project Structure
 
-- Once you are done, commit the changes:
+```
+Erudition/
+├── backend/              # FastAPI backend application
+│   ├── app/
+│   │   ├── api/          # API routes
+│   │   ├── core/         # Core configuration
+│   │   ├── models_mongo.py  # MongoDB models
+│   │   ├── services/     # Business logic
+│   │   ├── LightRAG/     # RAG implementation
+│   │   └── helpers/      # Utility functions
+│   └── pyproject.toml    # Python dependencies
+├── frontend/             # React frontend application
+│   ├── src/
+│   │   ├── components/  # React components
+│   │   ├── pages/       # Page components
+│   │   ├── services/    # API services
+│   │   └── styles/      # Styling files
+│   └── package.json      # Node dependencies
+└── docker-compose.yml    # Docker configuration
+```
+
+## Configuration
+
+### Environment Variables
+
+Key environment variables to configure:
+
+**Backend (.env):**
+
+- `SECRET_KEY` - Secret key for JWT tokens
+- `MONGODB_URL` - MongoDB connection string
+- `OPENAI_API_KEY` - OpenAI API key for LLM
+- `FIRST_SUPERUSER_EMAIL` - Admin user email
+- `FIRST_SUPERUSER_PASSWORD` - Admin user password
+
+**Frontend (.env):**
+
+- `VITE_API_URL` - Backend API URL
+- `VITE_WS_API_URL` - WebSocket API URL
+
+## Testing
+
+### Backend Tests
+
+Run backend tests:
 
 ```bash
-git merge --continue
+cd backend
+bash ./scripts/test.sh
 ```
 
-### Configure
+### Frontend Tests
 
-You can then update configs in the `.env` files to customize your configurations.
-
-Before deploying it, make sure you change at least the values for:
-
-- `SECRET_KEY`
-- `FIRST_SUPERUSER_PASSWORD`
-- `POSTGRES_PASSWORD`
-
-You can (and should) pass these as environment variables from secrets.
-
-Read the [deployment.md](./deployment.md) docs for more details.
-
-### Generate Secret Keys
-
-Some environment variables in the `.env` file have a default value of `changethis`.
-
-You have to change them with a secret key, to generate secret keys you can run the following command:
+Run frontend tests:
 
 ```bash
-python -c "import secrets; print(secrets.token_urlsafe(32))"
+cd frontend
+npm test
 ```
-
-Copy the content and use that as password / secret key. And run that again to generate another secure key.
-
-## How To Use It - Alternative With Copier
-
-This repository also supports generating a new project using [Copier](https://copier.readthedocs.io).
-
-It will copy all the files, ask you configuration questions, and update the `.env` files with your answers.
-
-### Install Copier
-
-You can install Copier with:
-
-```bash
-pip install copier
-```
-
-Or better, if you have [`pipx`](https://pipx.pypa.io/), you can run it with:
-
-```bash
-pipx install copier
-```
-
-**Note**: If you have `pipx`, installing copier is optional, you could run it directly.
-
-### Generate a Project With Copier
-
-Decide a name for your new project's directory, you will use it below. For example, `my-awesome-project`.
-
-Go to the directory that will be the parent of your project, and run the command with your project's name:
-
-```bash
-copier copy https://github.com/fastapi/full-stack-fastapi-template my-awesome-project --trust
-```
-
-If you have `pipx` and you didn't install `copier`, you can run it directly:
-
-```bash
-pipx run copier copy https://github.com/fastapi/full-stack-fastapi-template my-awesome-project --trust
-```
-
-**Note** the `--trust` option is necessary to be able to execute a [post-creation script](https://github.com/fastapi/full-stack-fastapi-template/blob/master/.copier/update_dotenv.py) that updates your `.env` files.
-
-### Input Variables
-
-Copier will ask you for some data, you might want to have at hand before generating the project.
-
-But don't worry, you can just update any of that in the `.env` files afterwards.
-
-The input variables, with their default values (some auto generated) are:
-
-- `project_name`: (default: `"FastAPI Project"`) The name of the project, shown to API users (in .env).
-- `stack_name`: (default: `"fastapi-project"`) The name of the stack used for Docker Compose labels and project name (no spaces, no periods) (in .env).
-- `secret_key`: (default: `"changethis"`) The secret key for the project, used for security, stored in .env, you can generate one with the method above.
-- `first_superuser`: (default: `"admin@example.com"`) The email of the first superuser (in .env).
-- `first_superuser_password`: (default: `"changethis"`) The password of the first superuser (in .env).
-- `smtp_host`: (default: "") The SMTP server host to send emails, you can set it later in .env.
-- `smtp_user`: (default: "") The SMTP server user to send emails, you can set it later in .env.
-- `smtp_password`: (default: "") The SMTP server password to send emails, you can set it later in .env.
-- `emails_from_email`: (default: `"info@example.com"`) The email account to send emails from, you can set it later in .env.
-- `postgres_password`: (default: `"changethis"`) The password for the PostgreSQL database, stored in .env, you can generate one with the method above.
-- `sentry_dsn`: (default: "") The DSN for Sentry, if you are using it, you can set it later in .env.
-
-## Backend Development
-
-Backend docs: [backend/README.md](./backend/README.md).
-
-## Frontend Development
-
-Frontend docs: [frontend/README.md](./frontend/README.md).
 
 ## Deployment
 
-Deployment docs: [deployment.md](./deployment.md).
+For production deployment instructions, see [deployment.md](./deployment.md).
 
 ## Development
 
-General development docs: [development.md](./development.md).
-
-This includes using Docker Compose, custom local domains, `.env` configurations, etc.
-
-## Release Notes
-
-Check the file [release-notes.md](./release-notes.md).
+For detailed development guidelines, see [development.md](./development.md).
 
 ## License
 
-The Full Stack FastAPI Template is licensed under the terms of the MIT license.
+This project is licensed under the MIT license.
