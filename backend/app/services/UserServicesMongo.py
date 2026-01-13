@@ -38,8 +38,11 @@ async def create_user_google(email: str, full_name: str) -> User:
     random_password = secrets.token_urlsafe(32)
     hashed_password = get_password_hash(random_password)
     
+    # Generate UUID before insert to ensure id is always set
+    user_id = str(uuid.uuid4())
+    
     user_dict = {
-        "id": None,  # Will be set after insert
+        "id": user_id,
         "email": email,
         "full_name": full_name,
         "is_active": True,
@@ -53,8 +56,7 @@ async def create_user_google(email: str, full_name: str) -> User:
         "invited_chatbot_ids": []
     }
     
-    result = await mongo_context.users.insert_one(user_dict)
-    user_dict["id"] = str(result.inserted_id)
+    await mongo_context.users.insert_one(user_dict)
     
     return User(**user_dict)
 
@@ -87,8 +89,20 @@ async def get_user_by_email(*, email: str) -> User | None:
         return None
     
     # Convert MongoDB _id to id if needed
-    if "_id" in user_doc and "id" not in user_doc:
-        user_doc["id"] = str(user_doc["_id"])
+    # Handle case where id is None or missing
+    if "id" not in user_doc or user_doc.get("id") is None:
+        if "_id" in user_doc:
+            user_doc["id"] = str(user_doc["_id"])
+        else:
+            # Generate new UUID if neither id nor _id exists
+            user_doc["id"] = str(uuid.uuid4())
+            # Update document in DB to fix missing id
+            await mongo_context.users.update_one(
+                {"email": email},
+                {"$set": {"id": user_doc["id"]}}
+            )
+    
+    # Remove _id to avoid conflicts
     if "_id" in user_doc:
         del user_doc["_id"]
     
@@ -104,13 +118,33 @@ async def get_user_by_id(*, user_id: str) -> User | None:
             from bson import ObjectId
             user_doc = await mongo_context.users.find_one({"_id": ObjectId(user_id)})
             if user_doc:
-                user_doc["id"] = str(user_doc["_id"])
+                # Ensure id field exists and is valid
+                if "id" not in user_doc or user_doc.get("id") is None:
+                    user_doc["id"] = str(user_doc["_id"])
+                    # Update document to fix missing id
+                    await mongo_context.users.update_one(
+                        {"_id": ObjectId(user_id)},
+                        {"$set": {"id": user_doc["id"]}}
+                    )
         except:
             pass
     
     if not user_doc:
         return None
     
+    # Ensure id is valid (not None)
+    if "id" not in user_doc or user_doc.get("id") is None:
+        if "_id" in user_doc:
+            user_doc["id"] = str(user_doc["_id"])
+            # Update document to fix missing id
+            await mongo_context.users.update_one(
+                {"_id": user_doc["_id"]},
+                {"$set": {"id": user_doc["id"]}}
+            )
+        else:
+            return None
+    
+    # Remove _id to avoid conflicts
     if "_id" in user_doc:
         del user_doc["_id"]
     
@@ -132,9 +166,23 @@ async def get_users(skip: int = 0, limit: int = 100) -> list[User]:
     cursor = mongo_context.users.find().skip(skip).limit(limit)
     users = []
     async for user_doc in cursor:
+        # Ensure id field exists and is valid
+        if "id" not in user_doc or user_doc.get("id") is None:
+            if "_id" in user_doc:
+                user_doc["id"] = str(user_doc["_id"])
+                # Update document to fix missing id
+                await mongo_context.users.update_one(
+                    {"_id": user_doc["_id"]},
+                    {"$set": {"id": user_doc["id"]}}
+                )
+            else:
+                # Skip documents without valid id
+                continue
+        
+        # Remove _id to avoid conflicts
         if "_id" in user_doc:
-            user_doc["id"] = str(user_doc["_id"])
             del user_doc["_id"]
+        
         users.append(User(**user_doc))
     return users
 

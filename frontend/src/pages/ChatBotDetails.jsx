@@ -261,13 +261,23 @@ const ChatBotDetails = () => {
   };
 
   useEffect(() => {
-    if (!agentDetails) {
+    // Reset state when chatbotId changes
+    if (agentDetails && agentDetails.id !== chatbotId) {
+      setAgentDetails(null);
+      setChatHistory([]);
+      setRateReport(null);
+      setUsageToken([]);
+    }
+    
+    if (!agentDetails || agentDetails.id !== chatbotId) {
       fetchChatbotDetails(true);
     }
-    fetchChatHistory();
-    fetchRateReport();
-    fetchUsageTokenByChatbot();
-  }, [dateRange]);
+    if (chatbotId) {
+      fetchChatHistory();
+      fetchRateReport();
+      fetchUsageTokenByChatbot();
+    }
+  }, [dateRange, chatbotId]);
 
   const reportTabs = [
     { label: "User statistics", value: "report1" },

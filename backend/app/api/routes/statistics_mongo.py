@@ -7,7 +7,7 @@ from collections import Counter, defaultdict
 from datetime import datetime
 from typing import List
 
-from fastapi import APIRouter, Depends, HTTPException, Body
+from fastapi import APIRouter, Depends, HTTPException, Body, Query
 
 from app.api.deps_mongo import (
     CurrentUser,
@@ -67,13 +67,12 @@ async def get_chatbots_usage_tokens(from_date: datetime, to_date: datetime):
 )
 async def get_usage_token_by_chatbot(
     current_user: CurrentUser,
-    filter_params: FilterReport = Depends()
+    chatbot_id: str = Query(..., description="Chatbot ID"),
+    from_date: datetime | None = Query(None, description="Filter from date"),
+    to_date: datetime | None = Query(None, description="Filter to date")
 ) -> List[UsageTokenByChatbotResponse]:
     """Get usage tokens by chatbot"""
-    chatbot_id = filter_params.chatbot_id
-    from_date = getattr(filter_params, "from_date", None)
-    to_date = getattr(filter_params, "to_date", None)
-    
+    print(f"[DEBUG] get_usage_token_by_chatbot called with chatbot_id: {chatbot_id}")
     chatbot = await ChatbotServicesMongo.get_chatbot_by_id(chatbot_id=chatbot_id)
     if not chatbot:
         raise HTTPException(status_code=404, detail="Chatbot does not exist")
@@ -170,6 +169,7 @@ async def filter_chat_history_by_chatbot(
     filter_params: FilterWithPaginateRequest = Body(...)
 ):
     """Get chat history by chatbot with filters"""
+    print(f"[DEBUG] filter_chat_history_by_chatbot called")
     try:
         chatbot_id = filter_params.chatbot_id
         chatbot = await ChatbotServicesMongo.get_chatbot_by_id(chatbot_id=chatbot_id)
@@ -208,10 +208,12 @@ async def filter_chat_history_by_chatbot(
 @router.get("/rate_of_response_report")
 async def get_rate_report(
     current_user: CurrentUser,
-    filter_params: FilterReport = Depends()
+    chatbot_id: str = Query(..., description="Chatbot ID"),
+    from_date: datetime | None = Query(None, description="Filter from date"),
+    to_date: datetime | None = Query(None, description="Filter to date")
 ):
     """Get rate of response report"""
-    chatbot_id = filter_params.chatbot_id
+    print(f"[DEBUG] get_rate_report called with chatbot_id: {chatbot_id}")
     chatbot = await ChatbotServicesMongo.get_chatbot_by_id(chatbot_id=chatbot_id)
     
     if not chatbot:
@@ -224,8 +226,8 @@ async def get_rate_report(
     conversations = await ConversationServicesMongo.get_conversations_by_chatbot_id(chatbot_id=chatbot_id)
     chat_histories = await mongo_db_context.get_chat_history_paginated(
         conversations=conversations,
-        from_date=filter_params.from_date,
-        to_date=filter_params.to_date,
+        from_date=from_date,
+        to_date=to_date,
     )
     
     def calculate_report_ratio(chs):

@@ -17,7 +17,8 @@ class ChatbotServicesMongo:
     async def create_chatbot(new_chatbot: Chatbot) -> Chatbot:
         """Create a new chatbot"""
         chatbot_dict = new_chatbot.model_dump()
-        chatbot_dict["id"] = str(uuid.uuid4())
+        chatbot_id = str(uuid.uuid4())
+        chatbot_dict["id"] = chatbot_id
         chatbot_dict["created_at"] = datetime.now(ZoneInfo("Asia/Ho_Chi_Minh"))
         chatbot_dict["updated_at"] = datetime.now(ZoneInfo("Asia/Ho_Chi_Minh"))
         chatbot_dict["document_ids"] = []
@@ -30,10 +31,12 @@ class ChatbotServicesMongo:
         # Update user's owned_chatbot_ids
         await mongo_context.users.update_one(
             {"id": new_chatbot.owner_id},
-            {"$push": {"owned_chatbot_ids": chatbot_dict["id"]}}
+            {"$push": {"owned_chatbot_ids": chatbot_id}}
         )
         
-        return Chatbot(**chatbot_dict)
+        # Fetch the created chatbot to ensure we return the correct format
+        # This ensures _id is removed and only id (UUID) is returned
+        return await ChatbotServicesMongo.get_chatbot_by_id(chatbot_id=chatbot_id)
 
     @staticmethod
     async def update_chatbot(chatbot_id: str, chatbot_data: ChatbotDTO) -> Chatbot:
@@ -57,8 +60,14 @@ class ChatbotServicesMongo:
         })
         chatbots = []
         async for chatbot_doc in cursor:
+            # Only convert _id to id if id doesn't exist
+            # Don't overwrite existing id (UUID) with _id (ObjectId)
+            if "id" not in chatbot_doc or chatbot_doc.get("id") is None:
+                if "_id" in chatbot_doc:
+                    chatbot_doc["id"] = str(chatbot_doc["_id"])
+            
+            # Remove _id to avoid conflicts
             if "_id" in chatbot_doc:
-                chatbot_doc["id"] = str(chatbot_doc["_id"])
                 del chatbot_doc["_id"]
             chatbots.append(Chatbot(**chatbot_doc))
         return chatbots
@@ -82,8 +91,14 @@ class ChatbotServicesMongo:
         })
         chatbots = []
         async for chatbot_doc in cursor:
+            # Only convert _id to id if id doesn't exist
+            # Don't overwrite existing id (UUID) with _id (ObjectId)
+            if "id" not in chatbot_doc or chatbot_doc.get("id") is None:
+                if "_id" in chatbot_doc:
+                    chatbot_doc["id"] = str(chatbot_doc["_id"])
+            
+            # Remove _id to avoid conflicts
             if "_id" in chatbot_doc:
-                chatbot_doc["id"] = str(chatbot_doc["_id"])
                 del chatbot_doc["_id"]
             chatbots.append(Chatbot(**chatbot_doc))
         return chatbots
@@ -95,8 +110,14 @@ class ChatbotServicesMongo:
         if not chatbot_doc:
             return None
         
+        # Only convert _id to id if id doesn't exist
+        # Don't overwrite existing id (UUID) with _id (ObjectId)
+        if "id" not in chatbot_doc or chatbot_doc.get("id") is None:
+            if "_id" in chatbot_doc:
+                chatbot_doc["id"] = str(chatbot_doc["_id"])
+        
+        # Remove _id to avoid conflicts
         if "_id" in chatbot_doc:
-            chatbot_doc["id"] = str(chatbot_doc["_id"])
             del chatbot_doc["_id"]
         
         return Chatbot(**chatbot_doc)

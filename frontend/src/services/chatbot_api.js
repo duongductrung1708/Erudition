@@ -152,7 +152,7 @@ export const getChatbotById = async (chatbotId, token) => {
       Authorization: `Bearer ${token}`,
       "Content-Type": "application/json",
     };
-    const response = await chatbot_api.get(`/${chatbotId}/get`, { headers });
+    const response = await chatbot_api.get(`/details/${chatbotId}`, { headers });
 
     return response.data;
   } catch (error) {

@@ -82,7 +82,14 @@ class MongoDbContext:
     """MongoDB Context for conversation history management"""
     
     def __init__(self):
-        self.collection = settings.mongo_collection["conversations"]
+        self._collection = None
+    
+    @property
+    def collection(self):
+        """Lazy load MongoDB collection - only connects when actually needed"""
+        if self._collection is None:
+            self._collection = settings.mongo_collection["conversations"]
+        return self._collection
 
     async def insert_to_history(
             self,

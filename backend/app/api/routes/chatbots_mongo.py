@@ -22,80 +22,113 @@ from app.services.FAQServicesMongo import get_faqs_by_chatbot_id
 
 router = APIRouter(prefix="/chatbot", tags=["Chatbot"])
 
+# IMPORTANT: Put specific routes with /{chatbot_id}/... BEFORE generic /{chatbot_id} routes
+# FastAPI matches routes in order, so more specific routes must come first
 
-@router.get("/get_chatbots_by_owner", dependencies=[Depends(get_current_active_chatbot_creator)])
-async def get_list_chatbot_by_chatbot_owner(current_user: CurrentUser):
-    """Get chatbots owned by current user"""
-    chatbots = await ChatbotServicesMongo.get_chatbots_by_owner_id(owner_id=current_user.id)
-    return chatbots
-
-
-@router.get("/get_chatbots_by_chatbot_user")
-async def get_list_chatbot_by_chatbot_user(current_user: CurrentUser):
-    """Get chatbots where user is invited"""
-    chatbots = await ChatbotServicesMongo.get_chatbots_by_chatbot_user_id(current_user_id=current_user.id)
-    return chatbots
-
-
-@router.post("/", dependencies=[Depends(get_current_active_chatbot_creator)])
-async def create_new_chatbot(chatbot_create: ChatbotDTO, current_user: CurrentUser):
-    """Create a new chatbot"""
-    # Check if chatbot with same name and organization exists
-    existing_chatbots = await ChatbotServicesMongo.get_chatbots_by_owner_id(owner_id=current_user.id)
-    for chatbot in existing_chatbots:
-        if chatbot.name == chatbot_create.name and chatbot.organization == chatbot_create.organization:
-            raise HTTPException(
-                status_code=409,
-                detail=f"Chatbot with name {chatbot_create.name} and organization {chatbot_create.organization} already exists"
-            )
+@router.get("/conversations/{conversation_id}")
+async def get_chat_history_by_conversation(
+    conversation_id: str,
+    current_user: CurrentUser
+):
+    """Get chat history for a specific conversation"""
+    from app.db_context.MongoDbContext import mongo_db_context
+    import uuid as uuid_lib
     
-    new_chatbot = Chatbot(
-        owner_id=current_user.id,
-        **chatbot_create.model_dump()
-    )
-    return await ChatbotServicesMongo.create_chatbot(new_chatbot=new_chatbot)
+    # Get conversation to check authorization
+    conversation = await ConversationServicesMongo.get_conversation_by_id(conversation_id=conversation_id)
+    if conversation is None:
+        raise HTTPException(status_code=404, detail="Conversation not found")
+    
+    # Get chatbot to check authorization
+    chatbot = await ChatbotServicesMongo.get_chatbot_by_id(chatbot_id=conversation.chatbot_id)
+    if chatbot is None:
+        raise HTTPException(status_code=404, detail="Chatbot not found")
+    
+    if not current_user.is_admin:
+        if chatbot.is_deleted:
+            raise HTTPException(status_code=404, detail="Chatbot not found")
+        # Check if user owns the conversation or has access to the chatbot
+        if conversation.user_id != current_user.id and chatbot.owner_id != current_user.id and current_user.id not in chatbot.invited_user_ids:
+            raise HTTPException(status_code=403, detail="You are not authorized to view this conversation")
+    
+    # Get chat history
+    try:
+        conversation_uuid = uuid_lib.UUID(conversation_id)
+        history = await ConversationServicesMongo.get_chat_history_by_conversion_id(
+            conversation_id=conversation_id,
+            limit=0  # 0 means get all messages
+        )
+        return history or []
+    except ValueError:
+        raise HTTPException(status_code=400, detail="Invalid conversation ID format")
 
 
-@router.put("/{chatbot_id}")
-async def update_chatbot(chatbot_id: str, chatbot_data: ChatbotDTO, current_user: CurrentUser):
-    """Update chatbot"""
+@router.get("/{chatbot_id}/conversations")
+async def get_conversations_by_chatbot(
+    chatbot_id: str,
+    current_user: CurrentUser
+):
+    """Get all conversations for a chatbot"""
     chatbot = await ChatbotServicesMongo.get_chatbot_by_id(chatbot_id=chatbot_id)
     if chatbot is None:
         raise HTTPException(status_code=404, detail="Chatbot not found")
-    if chatbot.owner_id != current_user.id:
-        raise HTTPException(status_code=403, detail="You are not the owner of the chatbot")
     
-    # Check if name/organization changed and conflicts with existing
-    if chatbot.name != chatbot_data.name or chatbot.organization != chatbot_data.organization:
-        existing_chatbots = await ChatbotServicesMongo.get_chatbots_by_owner_id(owner_id=current_user.id)
-        for existing in existing_chatbots:
-            if existing.id != chatbot_id and existing.name == chatbot_data.name and existing.organization == chatbot_data.organization:
-                raise HTTPException(
-                    status_code=409,
-                    detail=f"Chatbot with name {chatbot_data.name} and organization {chatbot_data.organization} already exists"
-                )
+    if not current_user.is_admin:
+        if chatbot.is_deleted:
+            raise HTTPException(status_code=404, detail="Chatbot not found")
+        if chatbot.owner_id != current_user.id and current_user.id not in chatbot.invited_user_ids:
+            raise HTTPException(status_code=403, detail="You are not authorized to view this chatbot")
     
-    return await ChatbotServicesMongo.update_chatbot(chatbot_id=chatbot_id, chatbot_data=chatbot_data)
+    conversations = await ConversationServicesMongo.get_conversations_by_chatbot_id(chatbot_id=chatbot_id)
+    # Filter out deleted conversations for non-admin users
+    if not current_user.is_admin:
+        conversations = [conv for conv in conversations if not conv.is_deleted]
+    
+    return [conv.model_dump() for conv in conversations]
 
 
-@router.delete("/{chatbot_id}")
-async def delete_chatbot(current_user: CurrentUser, chatbot_id: str):
-    """Delete chatbot (soft delete)"""
-    chatbot = await ChatbotServicesMongo.get_chatbot_by_id(chatbot_id=chatbot_id)
-    if chatbot is None or chatbot.is_deleted:
+@router.get("/conversations/{conversation_id}")
+async def get_chat_history_by_conversation(
+    conversation_id: str,
+    current_user: CurrentUser
+):
+    """Get chat history for a specific conversation"""
+    from app.db_context.MongoDbContext import mongo_db_context
+    import uuid as uuid_lib
+    
+    # Get conversation to check authorization
+    conversation = await ConversationServicesMongo.get_conversation_by_id(conversation_id=conversation_id)
+    if conversation is None:
+        raise HTTPException(status_code=404, detail="Conversation not found")
+    
+    # Get chatbot to check authorization
+    chatbot = await ChatbotServicesMongo.get_chatbot_by_id(chatbot_id=conversation.chatbot_id)
+    if chatbot is None:
         raise HTTPException(status_code=404, detail="Chatbot not found")
-    if not chatbot.is_active:
-        raise HTTPException(status_code=403, detail="Chatbot is not active")
-    if chatbot.owner_id != current_user.id:
-        raise HTTPException(status_code=403, detail="You are not the owner of the chatbot")
     
-    await ChatbotServicesMongo.delete_chatbot_by_id(chatbot_id=chatbot_id)
-    return {"detail": "Chatbot deleted successfully"}
+    if not current_user.is_admin:
+        if chatbot.is_deleted:
+            raise HTTPException(status_code=404, detail="Chatbot not found")
+        # Check if user owns the conversation or has access to the chatbot
+        if conversation.user_id != current_user.id and chatbot.owner_id != current_user.id and current_user.id not in chatbot.invited_user_ids:
+            raise HTTPException(status_code=403, detail="You are not authorized to view this conversation")
+    
+    # Get chat history
+    try:
+        conversation_uuid = uuid_lib.UUID(conversation_id)
+        history = await ConversationServicesMongo.get_chat_history_by_conversion_id(
+            conversation_id=conversation_id,
+            limit=0  # 0 means get all messages
+        )
+        return history or []
+    except ValueError:
+        raise HTTPException(status_code=400, detail="Invalid conversation ID format")
 
 
-@router.get("/{chatbot_id}/get")
+@router.get("/details/{chatbot_id}")
 async def get_chatbot_detail_by_id(current_user: CurrentUser, chatbot_id: str):
     """Get chatbot details"""
+    print(f"[DEBUG] get_chatbot_detail_by_id called with chatbot_id: {chatbot_id}")
     chatbot = await ChatbotServicesMongo.get_chatbot_by_id(chatbot_id=chatbot_id)
     if chatbot is None:
         raise HTTPException(status_code=404, detail="Chatbot not found")
@@ -141,6 +174,39 @@ async def get_chatbot_detail_by_id(current_user: CurrentUser, chatbot_id: str):
         "chatbot_users": invited_users
     }
     return response
+
+
+@router.get("/get_chatbots_by_owner", dependencies=[Depends(get_current_active_chatbot_creator)])
+async def get_list_chatbot_by_chatbot_owner(current_user: CurrentUser):
+    """Get chatbots owned by current user"""
+    chatbots = await ChatbotServicesMongo.get_chatbots_by_owner_id(owner_id=current_user.id)
+    return chatbots
+
+
+@router.get("/get_chatbots_by_chatbot_user")
+async def get_list_chatbot_by_chatbot_user(current_user: CurrentUser):
+    """Get chatbots where user is invited"""
+    chatbots = await ChatbotServicesMongo.get_chatbots_by_chatbot_user_id(current_user_id=current_user.id)
+    return chatbots
+
+
+@router.post("/", dependencies=[Depends(get_current_active_chatbot_creator)])
+async def create_new_chatbot(chatbot_create: ChatbotDTO, current_user: CurrentUser):
+    """Create a new chatbot"""
+    # Check if chatbot with same name and organization exists
+    existing_chatbots = await ChatbotServicesMongo.get_chatbots_by_owner_id(owner_id=current_user.id)
+    for chatbot in existing_chatbots:
+        if chatbot.name == chatbot_create.name and chatbot.organization == chatbot_create.organization:
+            raise HTTPException(
+                status_code=409,
+                detail=f"Chatbot with name {chatbot_create.name} and organization {chatbot_create.organization} already exists"
+            )
+    
+    new_chatbot = Chatbot(
+        owner_id=current_user.id,
+        **chatbot_create.model_dump()
+    )
+    return await ChatbotServicesMongo.create_chatbot(new_chatbot=new_chatbot)
 
 
 @router.post("/{chatbot_id}/lightrag_query")
@@ -204,4 +270,41 @@ async def remove_user_from_chatbot(
         chatbot_id=chatbot_id
     )
     return {"detail": "User removed successfully"}
+
+
+@router.put("/{chatbot_id}")
+async def update_chatbot(chatbot_id: str, chatbot_data: ChatbotDTO, current_user: CurrentUser):
+    """Update chatbot"""
+    chatbot = await ChatbotServicesMongo.get_chatbot_by_id(chatbot_id=chatbot_id)
+    if chatbot is None:
+        raise HTTPException(status_code=404, detail="Chatbot not found")
+    if chatbot.owner_id != current_user.id:
+        raise HTTPException(status_code=403, detail="You are not the owner of the chatbot")
+    
+    # Check if name/organization changed and conflicts with existing
+    if chatbot.name != chatbot_data.name or chatbot.organization != chatbot_data.organization:
+        existing_chatbots = await ChatbotServicesMongo.get_chatbots_by_owner_id(owner_id=current_user.id)
+        for existing in existing_chatbots:
+            if existing.id != chatbot_id and existing.name == chatbot_data.name and existing.organization == chatbot_data.organization:
+                raise HTTPException(
+                    status_code=409,
+                    detail=f"Chatbot with name {chatbot_data.name} and organization {chatbot_data.organization} already exists"
+                )
+    
+    return await ChatbotServicesMongo.update_chatbot(chatbot_id=chatbot_id, chatbot_data=chatbot_data)
+
+
+@router.delete("/{chatbot_id}")
+async def delete_chatbot(current_user: CurrentUser, chatbot_id: str):
+    """Delete chatbot (soft delete)"""
+    chatbot = await ChatbotServicesMongo.get_chatbot_by_id(chatbot_id=chatbot_id)
+    if chatbot is None or chatbot.is_deleted:
+        raise HTTPException(status_code=404, detail="Chatbot not found")
+    if not chatbot.is_active:
+        raise HTTPException(status_code=403, detail="Chatbot is not active")
+    if chatbot.owner_id != current_user.id:
+        raise HTTPException(status_code=403, detail="You are not the owner of the chatbot")
+    
+    await ChatbotServicesMongo.delete_chatbot_by_id(chatbot_id=chatbot_id)
+    return {"detail": "Chatbot deleted successfully"}
 

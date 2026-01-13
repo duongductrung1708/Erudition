@@ -19,8 +19,9 @@ class MongoDBProxy:
 
 mongo_db = MongoDBProxy()
 
-# Neo4j (if still needed)
-neo4j_db = settings.neo4j_driver
+# Neo4j (if still needed) - lazy loaded via settings.neo4j_driver
+# Use settings.neo4j_driver directly when needed instead of neo4j_db
+# This prevents Neo4j connection from being established at import time
 
 
 async def init_db() -> None:

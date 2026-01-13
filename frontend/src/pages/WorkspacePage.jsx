@@ -354,11 +354,18 @@ export default function Dashboard() {
                             ? theme.palette.text.disabled
                             : "inherit",
                         }}
-                        onClick={() =>
-                          agent.is_active &&
-                          !isDeleting &&
-                          handleAgentDetails(agent.id)
-                        }
+                        onClick={() => {
+                          // Ensure we use id (UUID), not _id (ObjectId)
+                          const chatbotId = agent.id || agent._id;
+                          if (!chatbotId) {
+                            console.error("Chatbot ID not found:", agent);
+                            return;
+                          }
+                          if (agent.is_active && !isDeleting) {
+                            console.log("Navigating to chatbot details with ID:", chatbotId);
+                            handleAgentDetails(chatbotId);
+                          }
+                        }}
                       >
                         <TableCell>{page * rowsPerPage + index + 1}</TableCell>
                         <TableCell sx={{ maxWidth: "200px" }}>

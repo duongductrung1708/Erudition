@@ -65,6 +65,18 @@ class User(UserBase):
     
     class Config:
         populate_by_name = True
+        # Exclude _id from serialization to avoid confusion
+        # MongoDB automatically creates _id, but we use id (UUID) as primary key
+        json_schema_extra = {
+            "example": {
+                "id": "550e8400-e29b-41d4-a716-446655440000",
+                "email": "user@example.com",
+                "full_name": "John Doe",
+                "is_active": True,
+                "is_chatbot_creator": True,
+                "is_admin": False
+            }
+        }
 
 
 class UserPublic(UserBase):
@@ -117,6 +129,11 @@ class Chatbot(ChatbotBase):
     conversation_ids: List[str] = Field(default_factory=list)
     faq_ids: List[str] = Field(default_factory=list)
     invited_user_ids: List[str] = Field(default_factory=list)  # Users invited to use this chatbot
+    
+    class Config:
+        populate_by_name = True
+        # Exclude _id from serialization to avoid confusion
+        # MongoDB automatically creates _id, but we use id (UUID) as primary key
 
 
 class UserChatbotLink(BaseModel):

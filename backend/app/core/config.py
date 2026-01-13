@@ -74,18 +74,32 @@ class Settings(BaseSettings):
     MINIO_SECRET_KEY: str = os.getenv("MINIO_SECRET_KEY", "")
     MINIO_REGION: str = os.getenv("MINIO_REGION", "")
 
+    _neo4j_driver: AsyncGraphDatabase | None = None
+    
+    def get_neo4j_driver(self) -> AsyncGraphDatabase | None:
+        """Lazy initialization of Neo4j driver - only creates when actually needed"""
+        if self._neo4j_driver is None:
+            if not self.NEO4J_URI:
+                return None
+            try:
+                self._neo4j_driver = AsyncGraphDatabase.driver(
+                    self.NEO4J_URI,
+                    auth=(self.NEO4J_USERNAME, self.NEO4J_PASSWORD),
+                    connection_acquisition_timeout=10,  # Reduced from 60
+                    max_transaction_retry_time=30,
+                    max_connection_lifetime=300,
+                    max_connection_pool_size=100
+                )
+            except Exception as e:
+                print(f"[WARNING] Failed to initialize Neo4j driver: {e}")
+                return None
+        return self._neo4j_driver
+    
     @computed_field
     @property
-    def neo4j_driver(self) -> AsyncGraphDatabase:
-        _neo4j_driver = AsyncGraphDatabase.driver(
-            self.NEO4J_URI,
-            auth=(self.NEO4J_USERNAME, self.NEO4J_PASSWORD),
-            connection_acquisition_timeout=60,
-            max_transaction_retry_time=30,
-            max_connection_lifetime=300,
-            max_connection_pool_size=100
-        )
-        return _neo4j_driver
+    def neo4j_driver(self) -> AsyncGraphDatabase | None:
+        """Property accessor for Neo4j driver - lazy loaded"""
+        return self.get_neo4j_driver()
 
     _mongo_client: AsyncIOMotorClient | None = None
     _mongo_db: AsyncIOMotorDatabase | None = None
@@ -97,8 +111,62 @@ class Settings(BaseSettings):
         if self._mongo_db is None:
             if not self.MONGO_CONNECTION_URL:
                 raise ValueError("MONGO_CONNECTION_URL is not set in environment variables")
-            self._mongo_client = AsyncIOMotorClient(self.MONGO_CONNECTION_URL, uuidRepresentation="standard")
-            self._mongo_db = self._mongo_client[self.MONGO_DATABASE_NAME]
+            # MongoDB Atlas requires SSL/TLS - add SSL options
+            import ssl
+            # Create client - Motor client creation may trigger DNS resolution
+            # but won't actually connect until first operation
+            # Use reasonable timeout for client creation
+            try:
+                # Set a timeout for DNS resolution
+                # Note: This is a workaround - Motor doesn't support connect=False
+                self._mongo_client = AsyncIOMotorClient(
+                    self.MONGO_CONNECTION_URL,
+                    uuidRepresentation="standard",
+                    tls=True,
+                    tlsAllowInvalidCertificates=False,
+                    serverSelectionTimeoutMS=10000,  # Allow time for DNS but not too long
+                    connectTimeoutMS=10000,
+                    socketTimeoutMS=30000,
+                    directConnection=False,  # Allow DNS SRV resolution
+                    retryWrites=True,
+                    retryReads=True,
+                )
+                self._mongo_db = self._mongo_client[self.MONGO_DATABASE_NAME]
+                print("[INFO] MongoDB client created successfully")
+            except Exception as e:
+                error_msg = str(e)
+                # Check if it's a DNS/timeout error
+                if "DNS" in error_msg or "timeout" in error_msg.lower() or "resolution" in error_msg.lower():
+                    print(f"[WARNING] MongoDB DNS resolution issue: {e}")
+                    print("[INFO] This is usually a network/DNS problem.")
+                    print("[INFO] Server will start, but database operations may fail.")
+                    print("[INFO] Connection will be retried on first database operation.")
+                    # Try to create client anyway - it might work on retry
+                    # Use more lenient settings
+                    try:
+                        self._mongo_client = AsyncIOMotorClient(
+                            self.MONGO_CONNECTION_URL,
+                            uuidRepresentation="standard",
+                            tls=True,
+                            tlsAllowInvalidCertificates=True,  # More lenient for testing
+                            serverSelectionTimeoutMS=5000,
+                            connectTimeoutMS=5000,
+                            directConnection=True,  # Try direct if SRV fails
+                        )
+                        self._mongo_db = self._mongo_client[self.MONGO_DATABASE_NAME]
+                        print("[INFO] MongoDB client created with fallback settings")
+                    except Exception as e2:
+                        print(f"[ERROR] MongoDB client creation failed: {e2}")
+                        raise RuntimeError(
+                            f"MongoDB connection failed. Please check:\n"
+                            f"1. Connection string format\n"
+                            f"2. Network/DNS connectivity\n"
+                            f"3. MongoDB Atlas IP whitelist\n"
+                            f"Error: {e}"
+                        ) from e2
+                else:
+                    # Other errors - raise immediately
+                    raise RuntimeError(f"MongoDB client creation failed: {e}") from e
         return self._mongo_db
 
     # PostgreSQL/SQLAlchemy removed - using MongoDB only

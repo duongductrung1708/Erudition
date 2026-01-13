@@ -43,13 +43,24 @@ app.include_router(api_router, prefix=settings.API_V1_STR)
 
 @app.on_event("startup")
 async def startup_event():
-    """Initialize MongoDB on startup"""
-    try:
-        await init_db()
-        print("[INFO] MongoDB initialized successfully")
-    except Exception as e:
-        print(f"[WARNING] MongoDB initialization failed: {e}")
-        print("[INFO] Continuing anyway - first superuser will be created on first request")
+    """Initialize MongoDB on startup - non-blocking"""
+    import asyncio
+    
+    async def init_db_async():
+        """Initialize database asynchronously with timeout"""
+        try:
+            # Set a timeout for init_db to prevent hanging
+            await asyncio.wait_for(init_db(), timeout=10.0)
+            print("[INFO] MongoDB initialized successfully")
+        except asyncio.TimeoutError:
+            print("[WARNING] MongoDB initialization timed out after 10 seconds")
+            print("[INFO] Continuing anyway - connection will be established on first request")
+        except Exception as e:
+            print(f"[WARNING] MongoDB initialization failed: {e}")
+            print("[INFO] Continuing anyway - first superuser will be created on first request")
+    
+    # Run init_db in background to not block server startup
+    asyncio.create_task(init_db_async())
 
 
 if __name__ == "__main__":

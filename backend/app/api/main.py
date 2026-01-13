@@ -14,8 +14,11 @@ except ImportError:
 
 api_router = APIRouter()
 # Use MongoDB routes
+# IMPORTANT: Include routers in order - more specific routes should be included first
+# This ensures FastAPI matches routes correctly
 api_router.include_router(login_mongo.router)
 api_router.include_router(users_mongo.router)
+# Include chatbots_mongo before other routers that might have conflicting patterns
 api_router.include_router(chatbots_mongo.router)
 api_router.include_router(faqs_mongo.router)
 api_router.include_router(fav_mongo.router)
