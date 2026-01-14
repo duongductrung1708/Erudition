@@ -1,10 +1,72 @@
 from fastapi import APIRouter
+import sys
 
-from app.api.routes import (
-    login_mongo, users_mongo, chatbots_mongo, faqs_mongo, fav_mongo,
-    utils_mongo, documents_mongo, admin_mongo, statistics_mongo, websocket
-)
+print("[API_MAIN] Starting router imports...")
+sys.stdout.flush()
+
 from app.core.config import settings
+print("[API_MAIN] Settings imported")
+sys.stdout.flush()
+
+print("[API_MAIN] Importing login_mongo...")
+sys.stdout.flush()
+from app.api.routes import login_mongo
+print("[API_MAIN] login_mongo imported")
+sys.stdout.flush()
+
+print("[API_MAIN] Importing users_mongo...")
+sys.stdout.flush()
+from app.api.routes import users_mongo
+print("[API_MAIN] users_mongo imported")
+sys.stdout.flush()
+
+print("[API_MAIN] Importing chatbots_mongo...")
+sys.stdout.flush()
+from app.api.routes import chatbots_mongo
+print("[API_MAIN] chatbots_mongo imported")
+sys.stdout.flush()
+
+print("[API_MAIN] Importing faqs_mongo...")
+sys.stdout.flush()
+from app.api.routes import faqs_mongo
+print("[API_MAIN] faqs_mongo imported")
+sys.stdout.flush()
+
+print("[API_MAIN] Importing fav_mongo...")
+sys.stdout.flush()
+from app.api.routes import fav_mongo
+print("[API_MAIN] fav_mongo imported")
+sys.stdout.flush()
+
+print("[API_MAIN] Importing utils_mongo...")
+sys.stdout.flush()
+from app.api.routes import utils_mongo
+print("[API_MAIN] utils_mongo imported")
+sys.stdout.flush()
+
+print("[API_MAIN] Importing documents_mongo...")
+sys.stdout.flush()
+from app.api.routes import documents_mongo
+print("[API_MAIN] documents_mongo imported")
+sys.stdout.flush()
+
+print("[API_MAIN] Importing admin_mongo...")
+sys.stdout.flush()
+from app.api.routes import admin_mongo
+print("[API_MAIN] admin_mongo imported")
+sys.stdout.flush()
+
+print("[API_MAIN] Importing statistics_mongo...")
+sys.stdout.flush()
+from app.api.routes import statistics_mongo
+print("[API_MAIN] statistics_mongo imported")
+sys.stdout.flush()
+
+print("[API_MAIN] Importing websocket...")
+sys.stdout.flush()
+from app.api.routes import websocket
+print("[API_MAIN] websocket imported")
+sys.stdout.flush()
 
 # Import old routes for backward compatibility (will be removed later)
 try:
