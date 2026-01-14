@@ -5,23 +5,31 @@ from fastapi import FastAPI
 from fastapi.routing import APIRoute
 from starlette.middleware.cors import CORSMiddleware
 
-from app.api.main import api_router
+print("[MAIN] Starting imports...")
 from app.core.config import settings
+print("[MAIN] Settings imported")
 from app.core.db_mongo import init_db
+print("[MAIN] db_mongo imported")
+from app.api.main import api_router
+print("[MAIN] api_router imported")
 
 
 def custom_generate_unique_id(route: APIRoute) -> str:
     return f"{route.tags[0]}-{route.name}"
 
 
+print("[MAIN] Creating FastAPI app...")
 if settings.SENTRY_DSN and settings.ENVIRONMENT != "local":
+    print("[MAIN] Initializing Sentry...")
     sentry_sdk.init(dsn=str(settings.SENTRY_DSN), enable_tracing=True)
+    print("[MAIN] Sentry initialized")
 
 app = FastAPI(
     title=settings.PROJECT_NAME,
     openapi_url=f"{settings.API_V1_STR}/openapi.json",
     generate_unique_id_function=custom_generate_unique_id,
 )
+print("[MAIN] FastAPI app created")
 
 # Thêm SessionMiddleware
 app.add_middleware(SessionMiddleware, secret_key=settings.SECRET_KEY)
@@ -39,6 +47,8 @@ app.add_middleware(
 )
 
 app.include_router(api_router, prefix=settings.API_V1_STR)
+print("[MAIN] Routers included")
+print("[MAIN] Module initialization complete")
 
 
 @app.on_event("startup")

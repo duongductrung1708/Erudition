@@ -24,11 +24,9 @@ def main() -> None:
         print(f"[INFO] PORT environment variable: {os.getenv('PORT', 'NOT SET')}")
         sys.stdout.flush()
         
-        # Test import before running uvicorn
-        print("[INFO] Testing app import...")
-        sys.stdout.flush()
-        from app.main import app
-        print("[INFO] App imported successfully")
+        # Don't test import - let uvicorn handle it
+        # This avoids potential blocking during import
+        print("[INFO] Starting Uvicorn server...")
         sys.stdout.flush()
         
         uvicorn.run(
@@ -36,8 +34,12 @@ def main() -> None:
             host=host,
             port=port,
             workers=workers,
-            log_level="info"
+            log_level="info",
+            access_log=True
         )
+    except KeyboardInterrupt:
+        print("[INFO] Server stopped by user")
+        sys.exit(0)
     except Exception as e:
         print(f"[ERROR] Failed to start server: {e}", file=sys.stderr)
         import traceback
