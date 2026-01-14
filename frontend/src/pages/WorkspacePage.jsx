@@ -34,12 +34,13 @@ import { useNavigate } from "react-router-dom";
 import { deleteChatbot } from "../services/chatbot_api";
 import { useAuth } from "../hooks/AuthProvider";
 import { toast } from "react-toastify";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 export default function Dashboard() {
   const navigate = useNavigate();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
-  const { chatbots, isLoading, setChatbots } = useOutletContext();
+  const { chatbots, isLoading } = useOutletContext();
   const [searchTerm, setSearchTerm] = useState("");
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
@@ -51,6 +52,17 @@ export default function Dashboard() {
   const [isDeleting, setIsDeleting] = useState(false);
   const [openConfirmDialog, setOpenConfirmDialog] = useState(false);
   const [chatbotToDelete, setChatbotToDelete] = useState(null);
+  const queryClient = useQueryClient();
+
+  const deleteMutation = useMutation({
+    mutationFn: async ({ chatbotId, token }) => {
+      await deleteChatbot(chatbotId, token);
+    },
+    onSuccess: () => {
+      // Refetch owner chatbots list after successful deletion
+      queryClient.invalidateQueries({ queryKey: ["ownerChatbots"] });
+    },
+  });
 
   const handleSort = (property) => () => {
     const isDesc = sortField === property && sortDirection === "desc";
@@ -108,11 +120,10 @@ export default function Dashboard() {
     setDeleteError("");
 
     try {
-      await deleteChatbot(chatbotToDelete, user.accessToken);
-      const updatedChatbots = chatbots.filter(
-        (agent) => agent.id !== chatbotToDelete
-      );
-      setChatbots(updatedChatbots);
+      await deleteMutation.mutateAsync({
+        chatbotId: chatbotToDelete,
+        token: user.accessToken,
+      });
       toast.success(`Chatbot deleted successfully`);
     } catch (error) {
       toast.error("Error deleting chatbot:", error);

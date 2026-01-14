@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Outlet } from "react-router-dom";
 import NavbarDash from "../../components/sections/NavbarDash";
 import Sidebar from "../../components/sections/Sidebar";
@@ -6,35 +6,36 @@ import { Box } from "@mui/material";
 import { getAllChatbots, getUserMe } from "../../services/api";
 import { toast } from "react-toastify";
 import { useAuth } from "../../hooks/AuthProvider";
+import { useQuery } from "@tanstack/react-query";
 
 const DashboardLayout = () => {
   const { user } = useAuth();
   const [userData, setUserData] = useState(null);
-  const [chatbots, setChatbots] = useState([]);
-  const [accessToken, setAccessToken] = useState(null);
   const [isSidebarOpen, setSidebarOpen] = useState(true);
-  const [isLoading, setIsLoading] = useState(false);
 
   const toggleSidebar = () => {
     setSidebarOpen(!isSidebarOpen);
   };
 
-  const refreshChatbots = async () => {
-    try {
-      setIsLoading(true);
-      const userToken = user.accessToken;
-      if (!userToken) {
-        console.error("No access token found.");
-        return;
+  const {
+    data: chatbots = [],
+    isLoading,
+    refetch: refreshChatbots,
+  } = useQuery({
+    queryKey: ["ownerChatbots", user?.accessToken],
+    queryFn: async () => {
+      const token = user?.accessToken;
+      if (!token) {
+        throw new Error("No access token found.");
       }
-      const response = await getAllChatbots(userToken);
-      setChatbots(response);
-      setIsLoading(false);
-    } catch (err) {
-      console.error("Failed to load chatbots.");
-      setIsLoading(false);
-    }
-  };
+      return await getAllChatbots(token);
+    },
+    enabled: !!user?.accessToken,
+    onError: (error) => {
+      console.error("Failed to load chatbots:", error);
+      toast.error("Failed to load chatbots");
+    },
+  });
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -43,7 +44,6 @@ const DashboardLayout = () => {
         const token = storedUser?.accessToken;
         if (!token) throw new Error("No access token found");
 
-        setAccessToken(token);
         const userData = await getUserMe(token);
         setUserData(userData);
       } catch (error) {
@@ -54,10 +54,6 @@ const DashboardLayout = () => {
 
     fetchUser();
   }, []);
-
-  useEffect(() => {
-    refreshChatbots();
-  }, [user]);
 
   return (
     <Box sx={{ display: "flex", height: "100vh" }}>
@@ -92,7 +88,7 @@ const DashboardLayout = () => {
 
         {/* Content (Outlet) with Scrollable Area */}
         <Box sx={{ flex: 1, overflow: "auto" }}>
-          <Outlet context={{setChatbots, chatbots, isLoading, refreshChatbots }} />
+          <Outlet context={{ chatbots, isLoading, refreshChatbots }} />
         </Box>
       </Box>
     </Box>

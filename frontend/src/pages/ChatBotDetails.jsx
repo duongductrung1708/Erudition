@@ -40,6 +40,7 @@ import {
   getUsageTokenByChatbot,
 } from "../services/statistics_api";
 import { getChatbotById } from "../services/chatbot_api";
+import { useQuery } from "@tanstack/react-query";
 
 const ReportTab1 = ({ chatHistory, usageToken }) => (
   <UserStatistic chatHistory={chatHistory} usageToken={usageToken} />
@@ -125,13 +126,11 @@ const ChatBotDetails = () => {
   const { user } = useAuth();
   const [activeComponent, setActiveComponent] = useState("agentInfo");
   const [activeReportTab, setActiveReportTab] = useState("report1");
-  const [agentDetails, setAgentDetails] = useState(null);
   const [reportLoading, setReportLoading] = useState(false);
   const [chatHistory, setChatHistory] = useState([]);
   const [rateReport, setRateReport] = useState(null);
   const [usageToken, setUsageToken] = useState([]);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const [loading, setLoading] = useState(false);
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
   const navigate = useNavigate();
@@ -140,24 +139,25 @@ const ChatBotDetails = () => {
     endDate: new Date(),
   });
 
-  const fetchChatbotDetails = async (needLoading) => {
-    try {
-      if (needLoading) setLoading(true);
-      const token = user.accessToken;
+  const {
+    data: agentDetails,
+    isLoading: loading,
+    refetch: refetchAgentDetails,
+  } = useQuery({
+    queryKey: ["chatbotDetails", chatbotId, user?.accessToken],
+    queryFn: async () => {
+      const token = user?.accessToken;
       if (!token) {
-        console.error("Access token is missing");
-        toast.error("Authentication error");
-        return;
+        throw new Error("Access token is missing");
       }
-      const details = await getChatbotById(chatbotId, token);
-      setAgentDetails(details);
-    } catch (error) {
+      return await getChatbotById(chatbotId, token);
+    },
+    enabled: !!chatbotId && !!user?.accessToken,
+    onError: (error) => {
       console.error("Failed to fetch chatbot details:", error);
       toast.error("Failed to load chatbot details");
-    } finally {
-      if (needLoading) setLoading(false);
-    }
-  };
+    },
+  });
 
   const fetchChatHistory = async () => {
     try {
@@ -261,17 +261,11 @@ const ChatBotDetails = () => {
   };
 
   useEffect(() => {
-    // Reset state when chatbotId changes
-    if (agentDetails && agentDetails.id !== chatbotId) {
-      setAgentDetails(null);
-      setChatHistory([]);
-      setRateReport(null);
-      setUsageToken([]);
-    }
-    
-    if (!agentDetails || agentDetails.id !== chatbotId) {
-      fetchChatbotDetails(true);
-    }
+    // Reset state when chatbotId or date range changes
+    setChatHistory([]);
+    setRateReport(null);
+    setUsageToken([]);
+
     if (chatbotId) {
       fetchChatHistory();
       fetchRateReport();
@@ -596,8 +590,8 @@ const ChatBotDetails = () => {
         {activeComponent === "agentInfo" && (
           <AgentInfo
             agentDetails={agentDetails}
-            onRefresh={fetchChatbotDetails}
-            setAgentDetails={setAgentDetails}
+            onRefresh={refetchAgentDetails}
+            setAgentDetails={() => {}}
           />
         )}
         {activeComponent === "agentMember" && (
@@ -606,8 +600,8 @@ const ChatBotDetails = () => {
         {activeComponent === "agentAnalysis" && renderReportContent()}
         {activeComponent === "agentEdit" && (
           <AgentEdit
-            setLoading={setLoading}
-            onRefresh={fetchChatbotDetails}
+            setLoading={() => {}}
+            onRefresh={refetchAgentDetails}
             agentDetails={agentDetails} // Truyền agentDetails
           />
         )}
