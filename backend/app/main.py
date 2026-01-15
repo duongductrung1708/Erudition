@@ -63,6 +63,14 @@ app.add_middleware(
 
 app.include_router(api_router, prefix=settings.API_V1_STR)
 print("[MAIN] Routers included")
+
+
+@app.get("/health-check")
+async def health_check():
+    """Health check endpoint for monitoring/load balancer"""
+    return {"status": "healthy", "service": settings.PROJECT_NAME}
+
+
 print("[MAIN] Module initialization complete")
 
 

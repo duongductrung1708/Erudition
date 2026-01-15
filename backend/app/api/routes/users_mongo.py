@@ -223,8 +223,16 @@ async def create_checkout_session(
     # Note: VNPay requires website registration and approval before use
     # For testing: Use sandbox with test credentials from VNPay
     # For production: Register website at https://www.vnpayment.vn and get approved
+    # IMPORTANT: If you see "temporarily down" error, it usually means:
+    # 1. Website not approved by VNPay yet - use sandbox URL instead
+    # 2. VNPay service is down - check VNPay status page
+    # 3. Missing required parameters - check VNPay documentation
+    
+    # Use sandbox by default unless explicitly in production AND website is approved
     vnpay_payment_url = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html"  # Sandbox URL
     if settings.ENVIRONMENT == "production":
+        # Only use production URL if website is approved by VNPay
+        # If you get "temporarily down" error, switch back to sandbox
         vnpay_payment_url = "https://www.vnpayment.vn/paymentv2/vpcpay.html"  # Production URL
     
     try:
