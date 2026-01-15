@@ -179,11 +179,16 @@ const PaymentReturn = () => {
     return (
       <Box
         sx={{
+          position: "fixed",
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
           display: "flex",
           flexDirection: "column",
           justifyContent: "center",
           alignItems: "center",
-          minHeight: "100vh",
+          bgcolor: "#F9FAFB",
           p: 2,
         }}
       >
@@ -202,15 +207,26 @@ const PaymentReturn = () => {
     return (
       <Box
         sx={{
-          maxWidth: 600,
-          mx: "auto",
-          mt: { xs: 2, sm: 4 },
-          p: { xs: 1, sm: 2 },
-          minHeight: "100vh",
+          position: "fixed",
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          overflowY: "auto",
+          overflowX: "hidden",
+          bgcolor: "#F9FAFB",
           display: "flex",
           alignItems: "center",
+          justifyContent: "center",
+          p: 2,
         }}
       >
+        <Box
+          sx={{
+            maxWidth: 600,
+            width: "100%",
+          }}
+        >
         <StyledCard>
           <CardContent sx={{ p: { xs: 2, sm: 3 } }}>
             <Typography
@@ -237,6 +253,7 @@ const PaymentReturn = () => {
             </Box>
           </CardContent>
         </StyledCard>
+        </Box>
       </Box>
     );
   }
@@ -244,13 +261,26 @@ const PaymentReturn = () => {
   return (
     <Box
       sx={{
-        maxWidth: 800,
-        mx: "auto",
-        mt: { xs: 8, sm: 10 },
-        p: { xs: 1, sm: 2 },
-        minHeight: "100vh",
+        position: "fixed",
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        overflowY: "auto",
+        overflowX: "hidden",
+        bgcolor: "#F9FAFB",
       }}
     >
+      <Box
+        sx={{
+          maxWidth: 800,
+          mx: "auto",
+          mt: { xs: 8, sm: 10 },
+          mb: { xs: 4, sm: 6 },
+          p: { xs: 1, sm: 2 },
+          minHeight: "auto",
+        }}
+      >
       <StyledCard>
         <CardContent sx={{ p: { xs: 2, sm: 4 } }}>
           <Box
@@ -429,6 +459,7 @@ const PaymentReturn = () => {
           </Box>
         </CardContent>
       </StyledCard>
+      </Box>
     </Box>
   );
 };
