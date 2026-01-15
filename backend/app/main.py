@@ -30,7 +30,10 @@ print("[MAIN] api_router imported")
 
 
 def custom_generate_unique_id(route: APIRoute) -> str:
-    return f"{route.tags[0]}-{route.name}"
+    """Generate unique ID for OpenAPI operation"""
+    if route.tags and len(route.tags) > 0:
+        return f"{route.tags[0]}-{route.name}"
+    return route.name
 
 
 print("[MAIN] Creating FastAPI app...")
@@ -65,7 +68,7 @@ app.include_router(api_router, prefix=settings.API_V1_STR)
 print("[MAIN] Routers included")
 
 
-@app.get("/health-check")
+@app.get("/health-check", tags=["health"])
 async def health_check():
     """Health check endpoint for monitoring/load balancer"""
     return {"status": "healthy", "service": settings.PROJECT_NAME}
