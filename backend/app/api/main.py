@@ -1,5 +1,10 @@
-from fastapi import APIRouter
 import sys
+print("[API_MAIN] File started executing")
+sys.stdout.flush()
+
+from fastapi import APIRouter
+print("[API_MAIN] FastAPI imported")
+sys.stdout.flush()
 
 print("[API_MAIN] Starting router imports...")
 sys.stdout.flush()
