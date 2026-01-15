@@ -47,6 +47,8 @@ function App() {
           <Route path="/pricing" element={<Pricing />} />
           <Route path="/terms-of-service" element={<TermsOfService />} />
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+          {/* Payment return - public route so VNPay can redirect here */}
+          <Route path="/payment-return" element={<PaymentReturn />} />
 
           {/* Auth Routes */}
           <Route path="/" element={<PublicRoute element={<AuthLayout />} />}>
@@ -87,6 +89,7 @@ function App() {
               path="agent-chat-history-detail/:chatbotId"
               element={<ChatHistoryForOwner />}
             />
+            {/* Keep old route for backward compatibility */}
             <Route path="payment_return" element={<PaymentReturn />} />
           </Route>
 

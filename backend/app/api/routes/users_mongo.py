@@ -255,3 +255,118 @@ async def create_checkout_session(
         "topup_id": topup_id
     }
 
+
+@router.get("/payment_return")
+async def payment_return(
+    request: Request,
+) -> Any:
+    """
+    Handle VNPay payment return callback.
+    VNPay redirects user here after payment with query params.
+    This endpoint validates the payment, updates top-up history, and adds tokens to chatbot.
+    """
+    from datetime import datetime
+    from zoneinfo import ZoneInfo
+    from app.utils_package.DataUtils import money_to_tokens
+    
+    # Get all query params from VNPay callback
+    query_params = dict(request.query_params)
+    
+    # Validate VNPay configuration
+    if not settings.vnp_TmnCode or not settings.VNPAY_HASH_SECRET_KEY:
+        raise HTTPException(
+            status_code=500,
+            detail="VNPay configuration is missing. Please contact administrator."
+        )
+    
+    # Validate secure hash
+    vnp = vnpay()
+    vnp.responseData = query_params.copy()
+    
+    if not vnp.validate_response(settings.VNPAY_HASH_SECRET_KEY):
+        raise HTTPException(
+            status_code=400,
+            detail="Invalid payment signature. Payment may be fraudulent."
+        )
+    
+    # Extract payment info from VNPay params
+    vnp_TxnRef = query_params.get("vnp_TxnRef")  # This is topup_id
+    vnp_ResponseCode = query_params.get("vnp_ResponseCode", "")
+    vnp_TransactionStatus = query_params.get("vnp_TransactionStatus", "")
+    vnp_Amount = int(query_params.get("vnp_Amount", 0))  # Amount in cents
+    vnp_BankCode = query_params.get("vnp_BankCode", "")
+    vnp_BankTranNo = query_params.get("vnp_BankTranNo", "")
+    vnp_CardType = query_params.get("vnp_CardType", "")
+    vnp_TransactionNo = query_params.get("vnp_TransactionNo", "")
+    vnp_PayDate = query_params.get("vnp_PayDate", "")
+    
+    if not vnp_TxnRef:
+        raise HTTPException(status_code=400, detail="Missing transaction reference")
+    
+    # Find top-up history record
+    topup_doc = await mongo_context.top_up_histories.find_one({"id": vnp_TxnRef})
+    if not topup_doc:
+        raise HTTPException(status_code=404, detail="Payment record not found")
+    
+    # Determine payment status
+    # vnp_ResponseCode = "00" means success
+    # vnp_TransactionStatus = "00" means success
+    is_success = vnp_ResponseCode == "00" and vnp_TransactionStatus == "00"
+    
+    # Parse pay date from VNPay format (YYYYMMDDHHmmss)
+    pay_date = None
+    if vnp_PayDate and len(vnp_PayDate) == 14:
+        try:
+            pay_date = datetime.strptime(vnp_PayDate, "%Y%m%d%H%M%S")
+            pay_date = pay_date.replace(tzinfo=ZoneInfo("Asia/Ho_Chi_Minh"))
+        except Exception:
+            pay_date = datetime.now(ZoneInfo("Asia/Ho_Chi_Minh"))
+    else:
+        pay_date = datetime.now(ZoneInfo("Asia/Ho_Chi_Minh"))
+    
+    # Calculate tokens received (amount in VND = vnp_Amount / 100)
+    amount_vnd = vnp_Amount // 100
+    tokens_received = money_to_tokens(amount_vnd) if is_success else 0
+    
+    # Update top-up history
+    update_data = {
+        "status": "success" if is_success else "failed",
+        "pay_date": pay_date,
+        "transaction_id": vnp_TransactionNo,
+        "bank_id": vnp_BankCode,
+        "payment_method": vnp_CardType or "VNPay",
+        "tokens_received": tokens_received,
+        "updated_at": datetime.now(ZoneInfo("Asia/Ho_Chi_Minh")),
+    }
+    
+    await mongo_context.top_up_histories.update_one(
+        {"id": vnp_TxnRef},
+        {"$set": update_data}
+    )
+    
+    # If payment successful, add tokens to chatbot
+    if is_success:
+        chatbot_id = topup_doc["chatbot_id"]
+        await mongo_context.chatbots.update_one(
+            {"id": chatbot_id},
+            {"$inc": {"remaining_tokens": tokens_received}}
+        )
+    
+    # Return payment info for frontend
+    return {
+        "id": topup_doc["id"],
+        "user_id": topup_doc["user_id"],
+        "chatbot_id": topup_doc["chatbot_id"],
+        "amount": amount_vnd,
+        "tokens_received": tokens_received,
+        "status": update_data["status"],
+        "pay_date": pay_date.isoformat() if pay_date else None,
+        "transaction_id": vnp_TransactionNo,
+        "bank_id": vnp_BankCode,
+        "payment_method": update_data["payment_method"],
+        "vnp_ResponseCode": vnp_ResponseCode,
+        "vnp_TransactionStatus": vnp_TransactionStatus,
+        "vnp_BankTranNo": vnp_BankTranNo,
+        "vnp_CardType": vnp_CardType,
+    }
+
