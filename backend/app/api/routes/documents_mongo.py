@@ -2,20 +2,43 @@
 Document routes for MongoDB
 Replaces documents.py (PostgreSQL version)
 """
+import sys
 import uuid
 from datetime import datetime
 
+print("[DOCUMENTS_MONGO] Starting imports...")
+sys.stdout.flush()
+
 from fastapi import APIRouter, UploadFile, File, HTTPException, Form, BackgroundTasks, Request
+print("[DOCUMENTS_MONGO] FastAPI imported")
+sys.stdout.flush()
+
 from langchain_core.documents import Document
+print("[DOCUMENTS_MONGO] langchain_core imported")
+sys.stdout.flush()
 
 from app.api.deps_mongo import CurrentUser
+print("[DOCUMENTS_MONGO] deps_mongo imported")
+sys.stdout.flush()
+
 from app.models_mongo import DocumentStatus
+print("[DOCUMENTS_MONGO] models_mongo imported")
+sys.stdout.flush()
+
 from app.services.ChatbotServicesMongo import ChatbotServicesMongo
+print("[DOCUMENTS_MONGO] ChatbotServicesMongo imported")
+sys.stdout.flush()
+
 from app.services.DocumentServicesMongo import DocumentServicesMongo
+print("[DOCUMENTS_MONGO] DocumentServicesMongo imported")
+sys.stdout.flush()
+
 # Lazy import DocumentServices to avoid blocking on import
 # from app.services.DocumentServices import DocumentServices  # Keep for file processing logic
 
 router = APIRouter(prefix="/document", tags=["Document"])
+print("[DOCUMENTS_MONGO] Module initialization complete")
+sys.stdout.flush()
 
 
 @router.get("/get_aqs_data")
