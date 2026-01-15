@@ -12,7 +12,8 @@ from app.api.deps_mongo import CurrentUser
 from app.models_mongo import DocumentStatus
 from app.services.ChatbotServicesMongo import ChatbotServicesMongo
 from app.services.DocumentServicesMongo import DocumentServicesMongo
-from app.services.DocumentServices import DocumentServices  # Keep for file processing logic
+# Lazy import DocumentServices to avoid blocking on import
+# from app.services.DocumentServices import DocumentServices  # Keep for file processing logic
 
 router = APIRouter(prefix="/document", tags=["Document"])
 
@@ -105,7 +106,8 @@ async def upload_document(
     
     file_content = await file.read()
     # Add background task to process file
-    # TODO: Update DocumentServices.load_and_convert_to_markdown_text to use MongoDB document
+    # Lazy import to avoid blocking on module import
+    from app.services.DocumentServices import DocumentServices
     background_tasks.add_task(
         DocumentServices.load_and_convert_to_markdown_text,
         db_document,
@@ -125,7 +127,8 @@ async def get_original_content(
     document_id: str
 ):
     """Get original content of a document"""
-    # TODO: Update DocumentServices.get_document_origin_content to accept string ID
+    # Lazy import to avoid blocking on module import
+    from app.services.DocumentServices import DocumentServices
     try:
         doc_uuid = uuid.UUID(document_id)
         return await DocumentServices.get_document_origin_content(doc_uuid)
@@ -140,7 +143,8 @@ async def reconstruct_tables(
     instruction: str | None = ""
 ):
     """AI reconstruct tables in a document"""
-    # TODO: Update DocumentServices.ai_reformat_table to accept string ID
+    # Lazy import to avoid blocking on module import
+    from app.services.DocumentServices import DocumentServices
     try:
         doc_uuid = uuid.UUID(document_id)
         res = await DocumentServices.ai_reformat_table(doc_uuid, instruction)
@@ -161,7 +165,8 @@ async def update_original_content(
     data = items.get("data", "")
     if not data:
         raise HTTPException(status_code=400, detail="No markdown data provided")
-    # TODO: Update DocumentServices.update_origin_content to accept string ID
+    # Lazy import to avoid blocking on module import
+    from app.services.DocumentServices import DocumentServices
     try:
         doc_uuid = uuid.UUID(document_id)
         return await DocumentServices.update_origin_content(doc_uuid, str(data))
