@@ -4,6 +4,21 @@ from starlette.middleware.sessions import SessionMiddleware
 from fastapi import FastAPI
 from fastapi.routing import APIRoute
 from starlette.middleware.cors import CORSMiddleware
+from dotenv import load_dotenv
+from pathlib import Path
+
+# Load .env file from multiple possible locations
+env_paths = [
+    Path(__file__).parent.parent / ".env",  # backend/.env
+    Path(__file__).parent.parent.parent / ".env",  # root/.env
+]
+for env_path in env_paths:
+    if env_path.exists():
+        load_dotenv(env_path, override=True)
+        print(f"[MAIN] Loaded .env from: {env_path}")
+        break
+else:
+    print("[MAIN] No .env file found, using environment variables only")
 
 print("[MAIN] Starting imports...")
 from app.core.config import settings

@@ -20105,3 +20105,69 @@ You are a helpful assistant tas...
 2025-04-22 22:32:07,954 - lightrag - INFO - Chunk generator closed.
 2025-04-22 22:32:07,974 - lightrag - INFO - Chunk generator closed.
 2025-04-22 22:32:07,977 - lightrag - INFO - Chunk generator closed.
+2026-01-15 14:36:33,206 - lightrag - INFO - Creating working directory E:\WED\Erudition\backend\app\rag_database\03edc83f-9789-4fd6-840b-c17500c80289
+2026-01-15 14:37:30,195 - lightrag - INFO - Created new empty graph
+2026-01-15 14:37:32,277 - lightrag - INFO - Process 4276 KV load full_docs with 0 records
+2026-01-15 14:37:32,287 - lightrag - INFO - Process 4276 KV load text_chunks with 0 records
+2026-01-15 14:37:32,304 - lightrag - INFO - Process 4276 KV load llm_response_cache with 0 records
+2026-01-15 14:37:32,314 - lightrag - INFO - Process 4276 doc status load doc_status with 0 records
+2026-01-15 14:37:48,412 - lightrag - INFO - Storage Initialization completed!
+2026-01-15 14:37:50,167 - lightrag - INFO - Inserting 1 records to llm_response_cache
+2026-01-15 14:37:50,174 - lightrag - INFO - Process 4276 building query context...
+2026-01-15 14:37:50,174 - lightrag - INFO - Query nodes: Hi, top_k: 60, cosine: 0.2
+2026-01-15 14:37:50,188 - lightrag - INFO - Query edges: Greeting, top_k: 60, cosine: 0.2
+2026-01-15 14:37:51,672 - lightrag - INFO - Process 4276 KV writting 1 records to llm_response_cache
+2026-01-15 14:39:28,633 - lightrag - INFO - Creating a new event loop in main thread.
+2026-01-15 14:40:16,606 - lightrag - INFO - Created new empty graph
+2026-01-15 14:40:17,304 - lightrag - INFO - Process 21248 KV load full_docs with 0 records
+2026-01-15 14:40:17,325 - lightrag - INFO - Process 21248 KV load text_chunks with 0 records
+2026-01-15 14:40:17,352 - lightrag - INFO - Process 21248 KV load llm_response_cache with 1 records
+2026-01-15 14:40:17,367 - lightrag - INFO - Process 21248 doc status load doc_status with 0 records
+2026-01-15 14:40:17,431 - lightrag - INFO - Process 21248 building query context...
+2026-01-15 14:40:17,432 - lightrag - INFO - Storage Initialization completed!
+2026-01-15 14:40:17,433 - lightrag - INFO - Query nodes: Hi, top_k: 60, cosine: 0.2
+2026-01-15 14:40:17,450 - lightrag - INFO - Query edges: Greeting, top_k: 60, cosine: 0.2
+2026-01-15 14:41:37,755 - lightrag - INFO - Creating a new event loop in main thread.
+2026-01-15 14:42:37,799 - lightrag - INFO - Created new empty graph
+2026-01-15 14:42:38,502 - lightrag - INFO - Process 40752 KV load full_docs with 0 records
+2026-01-15 14:42:38,518 - lightrag - INFO - Process 40752 KV load text_chunks with 0 records
+2026-01-15 14:42:38,540 - lightrag - INFO - Process 40752 KV load llm_response_cache with 1 records
+2026-01-15 14:42:38,553 - lightrag - INFO - Process 40752 doc status load doc_status with 0 records
+2026-01-15 14:42:38,613 - lightrag - INFO - Process 40752 building query context...
+2026-01-15 14:42:38,613 - lightrag - INFO - Storage Initialization completed!
+2026-01-15 14:42:38,613 - lightrag - INFO - Query nodes: Hi, top_k: 60, cosine: 0.2
+2026-01-15 14:42:38,628 - lightrag - INFO - Query edges: Greeting, top_k: 60, cosine: 0.2
+2026-01-15 14:46:38,675 - lightrag - INFO - Process 40752 building query context...
+2026-01-15 14:46:38,675 - lightrag - INFO - Query nodes: Hi, top_k: 60, cosine: 0.2
+2026-01-15 14:46:38,689 - lightrag - INFO - Query edges: Greeting, top_k: 60, cosine: 0.2
+2026-01-15 14:49:50,260 - lightrag - INFO - Creating a new event loop in main thread.
+2026-01-15 14:51:14,957 - lightrag - INFO - Created new empty graph
+2026-01-15 14:51:15,873 - lightrag - INFO - Process 41320 KV load full_docs with 0 records
+2026-01-15 14:51:15,894 - lightrag - INFO - Process 41320 KV load text_chunks with 0 records
+2026-01-15 14:51:15,929 - lightrag - INFO - Process 41320 KV load llm_response_cache with 1 records
+2026-01-15 14:51:15,947 - lightrag - INFO - Process 41320 doc status load doc_status with 0 records
+2026-01-15 14:51:16,014 - lightrag - INFO - Process 41320 building query context...
+2026-01-15 14:51:16,014 - lightrag - INFO - Storage Initialization completed!
+2026-01-15 14:51:16,015 - lightrag - INFO - Query nodes: Hi, top_k: 60, cosine: 0.2
+2026-01-15 14:51:16,032 - lightrag - INFO - Query edges: Greeting, top_k: 60, cosine: 0.2
+2026-01-15 14:53:57,951 - lightrag - INFO - Creating a new event loop in main thread.
+2026-01-15 14:54:45,744 - lightrag - INFO - Created new empty graph
+2026-01-15 14:54:46,463 - lightrag - INFO - Process 37276 KV load full_docs with 0 records
+2026-01-15 14:54:46,472 - lightrag - INFO - Process 37276 KV load text_chunks with 0 records
+2026-01-15 14:54:46,486 - lightrag - INFO - Process 37276 KV load llm_response_cache with 1 records
+2026-01-15 14:54:46,495 - lightrag - INFO - Process 37276 doc status load doc_status with 0 records
+2026-01-15 14:54:46,530 - lightrag - INFO - Process 37276 building query context...
+2026-01-15 14:54:46,531 - lightrag - INFO - Storage Initialization completed!
+2026-01-15 14:54:46,531 - lightrag - INFO - Query nodes: Hi, top_k: 60, cosine: 0.2
+2026-01-15 14:54:46,546 - lightrag - INFO - Query edges: Greeting, top_k: 60, cosine: 0.2
+2026-01-15 14:57:56,850 - lightrag - INFO - Creating a new event loop in main thread.
+2026-01-15 15:05:14,861 - lightrag - INFO - Created new empty graph
+2026-01-15 15:05:15,465 - lightrag - INFO - Process 35032 KV load full_docs with 0 records
+2026-01-15 15:05:15,476 - lightrag - INFO - Process 35032 KV load text_chunks with 0 records
+2026-01-15 15:05:15,492 - lightrag - INFO - Process 35032 KV load llm_response_cache with 1 records
+2026-01-15 15:05:15,503 - lightrag - INFO - Process 35032 doc status load doc_status with 0 records
+2026-01-15 15:05:15,545 - lightrag - INFO - Process 35032 building query context...
+2026-01-15 15:05:15,545 - lightrag - INFO - Storage Initialization completed!
+2026-01-15 15:05:15,546 - lightrag - INFO - Query nodes: Hi, top_k: 60, cosine: 0.2
+2026-01-15 15:05:15,562 - lightrag - INFO - Query edges: Greeting, top_k: 60, cosine: 0.2
+2026-01-15 15:05:59,600 - lightrag - INFO - Creating a new event loop in main thread.

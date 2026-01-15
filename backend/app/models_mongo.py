@@ -260,7 +260,7 @@ class TopUpHistory(BaseModel):
 
 
 class TopUpHistoryDTO(BaseModel):
-    amount: int
+    amount: float | int  # Accept both float and int
     note: str | None = Field(default=None, max_length=255)
     chatbot_id: str
 

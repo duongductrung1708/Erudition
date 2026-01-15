@@ -6,6 +6,7 @@ from neo4j import AsyncGraphDatabase
 from pydantic import (
     AnyUrl,
     BeforeValidator,
+    Field,
     HttpUrl,
     computed_field,
     model_validator,
@@ -25,10 +26,11 @@ def parse_cors(v: Any) -> list[str] | str:
 
 class Settings(BaseSettings):
     model_config = SettingsConfigDict(
-        # Use top level .env file (one level above ./backend/)
-        env_file="../.env",
+        # Try multiple .env file locations
+        env_file=[".env", "../.env"],  # Try backend/.env first, then root/.env
         env_ignore_empty=True,
         extra="ignore",
+        populate_by_name=True,  # Allow both field name and alias
     )
 
     API_V1_STR: str = "/api/v1"
@@ -219,8 +221,17 @@ class Settings(BaseSettings):
 
         return self
 
-    VNPAY_HASH_SECRET_KEY: str = os.getenv("VNPAY_HASH_SECRET_KEY", "")
-    vnp_TmnCode: str = os.getenv("VNP_TMN_CODE", "")
+    VNPAY_HASH_SECRET_KEY: str = ""
+    vnp_TmnCode: str = ""
+    
+    @model_validator(mode="after")
+    def _load_vnpay_from_env(self) -> Self:
+        """Load VNPay config from environment if not set"""
+        if not self.vnp_TmnCode:
+            self.vnp_TmnCode = os.getenv("VNP_TMN_CODE", "")
+        if not self.VNPAY_HASH_SECRET_KEY:
+            self.VNPAY_HASH_SECRET_KEY = os.getenv("VNPAY_HASH_SECRET_KEY", "")
+        return self
 
 
 settings = Settings()

@@ -135,17 +135,13 @@ class MongoDbContext:
             {"conversation_id": str(conversation_id)},
             projection
         )
-        history = []
-        if conversation_in_mongo and "history" in conversation_in_mongo:
-            for item in conversation_in_mongo["history"]:
-                if item.get("sender") == "user":
-                    history.append(item)
-                if item.get("sender") == "chatbot":
-                    history.append({
-                        "sender": "chatbot",
-                        "content": item["content"]
-                    })
-        return history
+        if not conversation_in_mongo or "history" not in conversation_in_mongo:
+            return []
+
+        # Trả về nguyên bản danh sách history đã lưu,
+        # để frontend có đủ các field: user_query_id, chatbot_response_id,
+        # date_time, is_favorite, usage_tokens, response_time, ...
+        return conversation_in_mongo["history"]
 
     async def get_chat_history_paginated(self, conversations, skip: int = 0, limit: int = None,
                                          filter_email: str = None,

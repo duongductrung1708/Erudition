@@ -7,6 +7,8 @@ from datetime import datetime
 from typing import List
 from zoneinfo import ZoneInfo
 
+from bson import ObjectId
+
 from app.db_context.MongoDbContext import mongo_context, mongo_db_context
 from app.models_mongo import Conversation
 
@@ -102,7 +104,9 @@ class ConversationServicesMongo:
                     conv_doc["first_msg"] = first_message["content"]
             
             if "_id" in conv_doc:
-                conv_doc["id"] = str(conv_doc["_id"])
+                # Không ghi đè id (UUID) bằng _id (ObjectId)
+                if "id" not in conv_doc:
+                    conv_doc["id"] = str(conv_doc["_id"])
                 del conv_doc["_id"]
             conversations.append(Conversation(**conv_doc))
         
@@ -114,21 +118,49 @@ class ConversationServicesMongo:
         cursor = mongo_context.conversations.find({"chatbot_id": chatbot_id})
         conversations = []
         async for conv_doc in cursor:
+            # Lấy first_msg nếu chưa có (giống logic get_conversations_by_user_id)
+            if conv_doc.get("first_msg") is None:
+                first_message = await mongo_db_context.get_first_message(
+                    conversation_id=str_to_uuid(conv_doc["id"])
+                )
+                if first_message:
+                    await mongo_context.conversations.update_one(
+                        {"id": conv_doc["id"]},
+                        {"$set": {"first_msg": first_message["content"]}}
+                    )
+                    conv_doc["first_msg"] = first_message["content"]
+
+            # Chỉ xóa _id, giữ nguyên id (UUID) nếu đã có
             if "_id" in conv_doc:
-                conv_doc["id"] = str(conv_doc["_id"])
+                if "id" not in conv_doc:
+                    # Nếu không có id thì dùng _id làm fallback (backward compatibility)
+                    conv_doc["id"] = str(conv_doc["_id"])
                 del conv_doc["_id"]
             conversations.append(Conversation(**conv_doc))
         return conversations
 
     @staticmethod
     async def get_conversation_by_id(conversation_id: str) -> Conversation | None:
-        """Get conversation by ID"""
+        """Get conversation by ID (UUID) or _id (ObjectId)"""
+        # Thử tìm bằng id (UUID) trước
         conv_doc = await mongo_context.conversations.find_one({"id": conversation_id})
+        
+        # Nếu không tìm thấy và conversation_id có vẻ là ObjectId, thử tìm bằng _id
+        if not conv_doc:
+            try:
+                obj_id = ObjectId(conversation_id)
+                conv_doc = await mongo_context.conversations.find_one({"_id": obj_id})
+            except Exception:
+                pass
+        
         if not conv_doc:
             return None
         
+        # Chỉ xóa _id, giữ nguyên id (UUID) nếu đã có
         if "_id" in conv_doc:
-            conv_doc["id"] = str(conv_doc["_id"])
+            if "id" not in conv_doc:
+                # Nếu không có id thì dùng _id làm fallback
+                conv_doc["id"] = str(conv_doc["_id"])
             del conv_doc["_id"]
         
         return Conversation(**conv_doc)
