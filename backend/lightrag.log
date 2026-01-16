@@ -20734,3 +20734,16 @@ Given a text document that is po...
 2026-01-16 12:47:31,603 - lightrag - INFO - Local query uses 60 entites, 50 relations, 15 chunks
 2026-01-16 12:47:32,946 - lightrag - INFO - Process 30868 KV writting 34 records to llm_response_cache
 2026-01-16 12:50:04,362 - lightrag - INFO - Creating a new event loop in main thread.
+2026-01-16 16:59:42,995 - lightrag - INFO - Loaded graph from E:\WED\Erudition\backend\app\rag_database\03edc83f-9789-4fd6-840b-c17500c80289\graph_chunk_entity_relation.graphml with 72 nodes, 55 edges
+2026-01-16 16:59:44,470 - lightrag - INFO - Process 22280 KV load full_docs with 1 records
+2026-01-16 16:59:44,489 - lightrag - INFO - Process 22280 KV load text_chunks with 16 records
+2026-01-16 16:59:44,531 - lightrag - INFO - Process 22280 KV load llm_response_cache with 34 records
+2026-01-16 16:59:44,556 - lightrag - INFO - Process 22280 doc status load doc_status with 1 records
+2026-01-16 16:59:45,441 - lightrag - INFO - Storage Initialization completed!
+2026-01-16 16:59:48,528 - lightrag - INFO - Inserting 1 records to llm_response_cache
+2026-01-16 16:59:48,546 - lightrag - INFO - Process 22280 building query context...
+2026-01-16 16:59:48,547 - lightrag - INFO - Query nodes: Hồ sơ, Kinh nghiệm, Bằng cấp, Kỹ năng, Phỏng vấn, top_k: 60, cosine: 0.2
+2026-01-16 16:59:48,567 - lightrag - INFO - Query edges: Thông tin, Ứng viên, top_k: 60, cosine: 0.2
+2026-01-16 16:59:51,621 - lightrag - INFO - Global query uses 58 entites, 53 relations, 13 chunks
+2026-01-16 16:59:51,636 - lightrag - INFO - Local query uses 60 entites, 52 relations, 15 chunks
+2026-01-16 16:59:55,044 - lightrag - INFO - Process 22280 KV writting 35 records to llm_response_cache
