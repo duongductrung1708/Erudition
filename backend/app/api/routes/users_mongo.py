@@ -103,6 +103,22 @@ async def read_user_me(current_user: CurrentUser) -> Any:
     return current_user
 
 
+@router.get("/switch_role", response_model=UserPublic)
+async def switch_role(current_user: CurrentUser) -> Any:
+    """
+    Switch user role between chatbot creator (owner) and regular user.
+    Toggles is_chatbot_creator flag.
+    """
+    from app.models_mongo import UserUpdate
+    
+    # Toggle is_chatbot_creator
+    new_role = not current_user.is_chatbot_creator
+    user_update = UserUpdate(is_chatbot_creator=new_role)
+    
+    updated_user = await update_user(db_user=current_user, user_in=user_update)
+    return updated_user
+
+
 @router.get("/token_bundle", response_model=list[TokenBundle])
 async def get_token_bundles(current_user: CurrentUser) -> Any:
     """

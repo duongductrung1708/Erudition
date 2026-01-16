@@ -223,17 +223,23 @@ export const deleteDocument = async (chatbot_id, document_id, token) => {
   }
 };
 
-export const deleteChatbotUser = async (chatbot_id, email, token) => {
+export const deleteChatbotUser = async (chatbot_id, user_id, token) => {
   try {
     const headers = {
       Authorization: `Bearer ${token}`,
       "Content-Type": "application/json",
     };
 
-    const response = await chatbot_api.delete(`/${chatbot_id}/${email}`, {
-      headers,
-    });
-    return response.data; // Return the response data (you can adjust depending on your API response structure)
+    const response = await chatbot_api.delete(
+      `/${chatbot_id}/remove_user`,
+      {
+        headers,
+        params: {
+          user_id: user_id,
+        },
+      }
+    );
+    return response.data;
   } catch (error) {
     console.error(
       "Error deleting chatbot user:",
@@ -254,13 +260,19 @@ export const addChatbotUser = async (chatbot_id, email, token) => {
       "Content-Type": "application/json",
     };
 
+    // Use query parameter for user_email
     const response = await chatbot_api.post(
-      `/${chatbot_id}/${email}`,
-      {}, // Empty body for this request (assuming email and chatbot_id are the only data needed)
-      { headers } // Pass headers in the config
+      `/${chatbot_id}/invite_user`,
+      {},
+      {
+        headers,
+        params: {
+          user_email: email,
+        },
+      }
     );
 
-    return response.data; // Return the response data (you can adjust depending on your API response structure)
+    return response.data;
   } catch (error) {
     console.error(
       "Error adding chatbot user:",

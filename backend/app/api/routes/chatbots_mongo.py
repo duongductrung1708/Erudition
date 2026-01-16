@@ -8,7 +8,7 @@ import uuid
 import uuid as uuid_lib
 from typing import Any
 
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, BackgroundTasks
 from fastapi.responses import StreamingResponse
 
 from app.api.deps_mongo import (
@@ -49,6 +49,9 @@ async def get_conversations_by_chatbot(
     # Filter out deleted conversations for non-admin users
     if not current_user.is_admin:
         conversations = [conv for conv in conversations if not conv.is_deleted]
+        # If user is invited (not owner), only show their own conversations
+        if chatbot.owner_id != current_user.id and current_user.id in chatbot.invited_user_ids:
+            conversations = [conv for conv in conversations if conv.user_id == current_user.id]
     
     return [conv.model_dump() for conv in conversations]
 
@@ -273,8 +276,19 @@ async def get_chat_history_by_conversation(
     if not current_user.is_admin:
         if chatbot.is_deleted:
             raise HTTPException(status_code=404, detail="Chatbot not found")
-        # Check if user owns the conversation or has access to the chatbot
-        if conversation.user_id != current_user.id and chatbot.owner_id != current_user.id and current_user.id not in chatbot.invited_user_ids:
+        # Check authorization:
+        # - Owner can view all conversations
+        # - Invited users can only view their own conversations
+        # - Other users cannot view
+        if chatbot.owner_id == current_user.id:
+            # Owner can view all conversations
+            pass
+        elif current_user.id in chatbot.invited_user_ids:
+            # Invited user can only view their own conversations
+            if conversation.user_id != current_user.id:
+                raise HTTPException(status_code=403, detail="You are not authorized to view this conversation")
+        else:
+            # User is not owner and not invited
             raise HTTPException(status_code=403, detail="You are not authorized to view this conversation")
     
     # Get chat history - dùng conversation.id (UUID) đã được normalize
@@ -636,6 +650,7 @@ async def invite_user_to_chatbot(
     chatbot_id: str,
     user_email: str,
     current_user: CurrentUser,
+    background_tasks: BackgroundTasks,
 ):
     """Invite user to chatbot"""
     chatbot = await ChatbotServicesMongo.get_chatbot_by_id(chatbot_id=chatbot_id)
@@ -653,6 +668,46 @@ async def invite_user_to_chatbot(
         user_id=user.id,
         chatbot_id=chatbot_id
     )
+    
+    # Send invitation email in background
+    async def prepare_email_data():
+        """Prepare email data asynchronously"""
+        from app.utils import generate_invite_email
+        from app.core.config import settings
+        
+        if not settings.emails_enabled:
+            return None
+        
+        username = user.full_name or user.email.split("@")[0]
+        email_data = await generate_invite_email(
+            email_to=user_email,
+            username=username,
+            chatbot=chatbot
+        )
+        return email_data
+    
+    def send_email_sync(email_data):
+        """Send email synchronously in background task"""
+        if email_data is None:
+            return
+        try:
+            from app.utils import send_email
+            send_email(
+                email_to=user_email,
+                subject=email_data.subject,
+                html_content=email_data.html_content,
+            )
+        except Exception as e:
+            print(f"Failed to send invitation email: {e}")
+    
+    # Prepare email data and schedule sending in background
+    try:
+        email_data = await prepare_email_data()
+        if email_data:
+            background_tasks.add_task(send_email_sync, email_data)
+    except Exception as e:
+        print(f"Failed to prepare invitation email: {e}")
+    
     return {"detail": "User invited successfully", "chatbot": updated_chatbot}
 
 

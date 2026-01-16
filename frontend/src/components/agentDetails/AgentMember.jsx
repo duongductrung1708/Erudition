@@ -71,7 +71,7 @@ const AgentMember = ({ agentDetails }) => {
           console.error("Access token is missing");
           return;
         }
-        await deleteChatbotUser(chatbotId, selectedUser.email, token);
+        await deleteChatbotUser(chatbotId, selectedUser.id, token);
         setChatbotUsers(
           chatbotUsers.filter((user) => user.id !== selectedUser.id)
         );
@@ -452,8 +452,8 @@ const AgentMember = ({ agentDetails }) => {
         <Dialog
           open={openForm}
           onClose={() => setOpenForm(false)}
-          fullWidth={isMobile}
-          maxWidth={isMobile ? "xs" : "sm"}
+          fullWidth
+          maxWidth={isMobile ? "xs" : "md"}
         >
           <UserForm
             open={openForm}

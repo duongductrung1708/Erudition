@@ -43,11 +43,13 @@ const UserForm = ({ open, onClose, onSave, user = null }) => {
       open={open}
       onClose={loading ? () => {} : onClose}
       disableEscapeKeyDown={loading}
+      fullWidth
+      maxWidth="md"
     >
       <DialogTitle fontWeight="bold">
         {user ? "Edit user" : "Invite new user"}
       </DialogTitle>
-      <DialogContent>
+      <DialogContent sx={{ minWidth: { xs: "100%", sm: "500px" } }}>
         <TextField
           label="Email"
           fullWidth
@@ -57,6 +59,7 @@ const UserForm = ({ open, onClose, onSave, user = null }) => {
           color="secondary"
           disabled={loading}
           required
+          sx={{ mt: 2 }}
         />
       </DialogContent>
       <DialogActions>

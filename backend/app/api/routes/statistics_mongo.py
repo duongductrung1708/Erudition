@@ -277,8 +277,10 @@ async def filter_chat_history_by_chatbot(
         if not chatbot:
             raise HTTPException(status_code=404, detail="Chatbot does not exist")
         
-        if chatbot.owner_id != current_user.id and not current_user.is_admin:
-            raise HTTPException(status_code=403, detail="Unauthorized access to this chatbot")
+        # Check authorization: owner, admin, or invited user
+        if not current_user.is_admin:
+            if chatbot.owner_id != current_user.id and current_user.id not in chatbot.invited_user_ids:
+                raise HTTPException(status_code=403, detail="Unauthorized access to this chatbot")
         
         skip = getattr(filter_params, "skip", 0)
         limit = getattr(filter_params, "limit", None)
@@ -296,6 +298,13 @@ async def filter_chat_history_by_chatbot(
         else:
             # Fallback: query by chatbot_id
             conversations = await ConversationServicesMongo.get_conversations_by_chatbot_id(chatbot_id=chatbot_id)
+        
+        # If user is invited (not owner), only show their own conversations
+        if not current_user.is_admin and chatbot.owner_id != current_user.id and current_user.id in chatbot.invited_user_ids:
+            conversations = [conv for conv in conversations if conv.user_id == current_user.id]
+            # Also filter by current user's email if filter_email is not set
+            if not filter_email:
+                filter_email = current_user.email
         
         if not conversations:
             return []

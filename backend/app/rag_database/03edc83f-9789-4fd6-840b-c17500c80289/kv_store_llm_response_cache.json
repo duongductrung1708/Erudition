@@ -17,6 +17,15 @@
       "embedding_min": null,
       "embedding_max": null,
       "original_prompt": "Có hình ảnh nào được đính kèm trong tài liệu không?"
+    },
+    "fa61e911d53d1320e877d4dc93480e80": {
+      "return": "{\"high_level_keywords\": [\"Th\\u00f4ng tin\", \"\\u1ee8ng vi\\u00ean\"], \"low_level_keywords\": [\"H\\u1ed3 s\\u01a1\", \"Kinh nghi\\u1ec7m\", \"B\\u1eb1ng c\\u1ea5p\", \"K\\u1ef9 n\\u0103ng\", \"Ph\\u1ecfng v\\u1ea5n\"]}",
+      "cache_type": "keywords",
+      "embedding": null,
+      "embedding_shape": null,
+      "embedding_min": null,
+      "embedding_max": null,
+      "original_prompt": "tôi muốn hỏi thông tin của ứng viên này"
     }
   },
   "default": {
