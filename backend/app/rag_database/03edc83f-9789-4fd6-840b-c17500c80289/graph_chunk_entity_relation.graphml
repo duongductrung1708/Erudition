@@ -1,0 +1,901 @@
+<?xml version='1.0' encoding='utf-8'?>
+<graphml xmlns="http://graphml.graphdrawing.org/xmlns" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://graphml.graphdrawing.org/xmlns http://graphml.graphdrawing.org/xmlns/1.0/graphml.xsd"><key id="d9" for="edge" attr.name="file_path" attr.type="string"/>
+<key id="d8" for="edge" attr.name="source_id" attr.type="string"/>
+<key id="d7" for="edge" attr.name="keywords" attr.type="string"/>
+<key id="d6" for="edge" attr.name="description" attr.type="string"/>
+<key id="d5" for="edge" attr.name="weight" attr.type="double"/>
+<key id="d4" for="node" attr.name="file_path" attr.type="string"/>
+<key id="d3" for="node" attr.name="source_id" attr.type="string"/>
+<key id="d2" for="node" attr.name="description" attr.type="string"/>
+<key id="d1" for="node" attr.name="entity_type" attr.type="string"/>
+<key id="d0" for="node" attr.name="entity_id" attr.type="string"/>
+<graph edgedefault="undirected"><node id="ảnh">
+  <data key="d0">ảnh</data>
+  <data key="d1">event</data>
+  <data key="d2">Ảnh là hình ảnh được sử dụng trong văn bản, không thể cung cấp thông tin chi tiết về nội dung.</data>
+  <data key="d3">chunk-aed25bb5ad812adc5f367cb55ddc46f4</data>
+  <data key="d4">6a2ca7b4-b00f-4da4-b7f5-d8d904a3db1b</data>
+</node>
+<node id="CONTACT">
+  <data key="d0">CONTACT</data>
+  <data key="d1">category</data>
+  <data key="d2">CONTACT là phần thông tin liên lạc, chứa thông tin số điện thoại.</data>
+  <data key="d3">chunk-5a416d2e9ad4340532548b2e68a0ebda</data>
+  <data key="d4">6a2ca7b4-b00f-4da4-b7f5-d8d904a3db1b</data>
+</node>
+<node id="+033-423-0359">
+  <data key="d0">+033-423-0359</data>
+  <data key="d1">category</data>
+  <data key="d2">+033-423-0359 là một số điện thoại liên lạc được cung cấp trong văn bản.</data>
+  <data key="d3">chunk-5a416d2e9ad4340532548b2e68a0ebda</data>
+  <data key="d4">6a2ca7b4-b00f-4da4-b7f5-d8d904a3db1b</data>
+</node>
+<node id="trungyna1708@gmail.com">
+  <data key="d0">trungyna1708@gmail.com</data>
+  <data key="d1">person</data>
+  <data key="d2">Địa chỉ email này có thể thuộc về một cá nhân có tên là Trung, nhưng không có thông tin nào khác về người này.&lt;SEP&gt;Địa chỉ email này có thể thuộc về một cá nhân có tên là Trung, tuy nhiên không có thông tin nào khác về người này.</data>
+  <data key="d3">chunk-566f60a230a0eedd8d7f8a548e0da62d</data>
+  <data key="d4">6a2ca7b4-b00f-4da4-b7f5-d8d904a3db1b</data>
+</node>
+<node id="Email">
+  <data key="d0">Email</data>
+  <data key="d1">category</data>
+  <data key="d2">Email là một dạng giao tiếp trực tuyến phổ biến, dùng để gửi và nhận thông tin giữa các cá nhân.</data>
+  <data key="d3">chunk-566f60a230a0eedd8d7f8a548e0da62d</data>
+  <data key="d4">6a2ca7b4-b00f-4da4-b7f5-d8d904a3db1b</data>
+</node>
+<node id="Au Co">
+  <data key="d0">Au Co</data>
+  <data key="d1">geo</data>
+  <data key="d2">Au Co là một địa chỉ cụ thể nằm tại Kinh Bắc, Bắc Ninh, Việt Nam.</data>
+  <data key="d3">chunk-958b222855c03630a1fd27e95c26fbd7</data>
+  <data key="d4">6a2ca7b4-b00f-4da4-b7f5-d8d904a3db1b</data>
+</node>
+<node id="Bac Ninh">
+  <data key="d0">Bac Ninh</data>
+  <data key="d1">geo</data>
+  <data key="d2">Bắc Ninh là một tỉnh ở miền Bắc Việt Nam, nổi tiếng với nhiều di tích lịch sử và văn hóa.</data>
+  <data key="d3">chunk-958b222855c03630a1fd27e95c26fbd7</data>
+  <data key="d4">6a2ca7b4-b00f-4da4-b7f5-d8d904a3db1b</data>
+</node>
+<node id="Email Address">
+  <data key="d0">Email Address</data>
+  <data key="d1">category</data>
+  <data key="d2">Email Address là một phương thức giao tiếp điện tử quan trọng thường được sử dụng trong công việc và học tập.</data>
+  <data key="d3">chunk-958b222855c03630a1fd27e95c26fbd7</data>
+  <data key="d4">6a2ca7b4-b00f-4da4-b7f5-d8d904a3db1b</data>
+</node>
+<node id="Kinh Bac">
+  <data key="d0">Kinh Bac</data>
+  <data key="d1">geo</data>
+  <data key="d2">Kinh Bắc là một khu vực nằm trong tỉnh Bắc Ninh, nổi tiếng với các giá trị văn hóa và lịch sử.</data>
+  <data key="d3">chunk-958b222855c03630a1fd27e95c26fbd7</data>
+  <data key="d4">6a2ca7b4-b00f-4da4-b7f5-d8d904a3db1b</data>
+</node>
+<node id="GitHub">
+  <data key="d0">GitHub</data>
+  <data key="d1">organization</data>
+  <data key="d2">GitHub là một nền tảng lưu trữ mã nguồn dựa trên Git, cung cấp môi trường để phát triển và hợp tác dự án lập trình.&lt;SEP&gt;GitHub là một nền tảng phát triển phần mềm cho phép người dùng lưu trữ và quản lý mã nguồn.</data>
+  <data key="d3">chunk-0cc32922444243a72e212e863be2014a&lt;SEP&gt;chunk-e701a690c65d8ae698d3c67f993910b7</data>
+  <data key="d4">6a2ca7b4-b00f-4da4-b7f5-d8d904a3db1b</data>
+</node>
+<node id="duongductrung1708">
+  <data key="d0">duongductrung1708</data>
+  <data key="d1">person</data>
+  <data key="d2">duongductrung1708 là tên người dùng của một cá nhân trên GitHub, không có nhiều thông tin cụ thể về hoạt động.</data>
+  <data key="d3">chunk-0cc32922444243a72e212e863be2014a</data>
+  <data key="d4">6a2ca7b4-b00f-4da4-b7f5-d8d904a3db1b</data>
+</node>
+<node id="Website">
+  <data key="d0">Website</data>
+  <data key="d1">category</data>
+  <data key="d2">Website là một khái niệm chỉ một tập hợp các trang web có liên quan, thường được truy cập qua Internet.&lt;SEP&gt;Website là một tập hợp các trang web liên kết với nhau, có nội dung được truy cập qua Internet.</data>
+  <data key="d3">chunk-605b6859de26771b3e0b6218329c8700&lt;SEP&gt;chunk-a8ddcad50ea184422a12263307b11a39</data>
+  <data key="d4">6a2ca7b4-b00f-4da4-b7f5-d8d904a3db1b</data>
+</node>
+<node id="React">
+  <data key="d0">React</data>
+  <data key="d1">category</data>
+  <data key="d2">React là một thư viện JavaScript phổ biến dành cho việc xây dựng các giao diện người dùng.&lt;SEP&gt;React là một thư viện JavaScript được sử dụng để xây dựng giao diện người dùng, thường được sử dụng trong phát triển ứng dụng web.&lt;SEP&gt;React là thư viện JavaScript phổ biến được sử dụng trong phát triển giao diện người dùng cho ứng dụng web.</data>
+  <data key="d3">chunk-e701a690c65d8ae698d3c67f993910b7&lt;SEP&gt;chunk-61981cd7ad7157fd25dd732f6652bbc8&lt;SEP&gt;chunk-561a67230527290661bce2f3ac0c3270</data>
+  <data key="d4">6a2ca7b4-b00f-4da4-b7f5-d8d904a3db1b</data>
+</node>
+<node id="Next.js">
+  <data key="d0">Next.js</data>
+  <data key="d1">category</data>
+  <data key="d2">Next.js là một framework React cho phép phát triển ứng dụng web có khả năng server-side rendering và tăng tốc độ tải trang.&lt;SEP&gt;Next.js là một framework React được sử dụng để xây dựng các ứng dụng web tĩnh và động.&lt;SEP&gt;Next.js là một framework cho React giúp phát triển ứng dụng web một cách dễ dàng và hiệu quả hơn.</data>
+  <data key="d3">chunk-e701a690c65d8ae698d3c67f993910b7&lt;SEP&gt;chunk-61981cd7ad7157fd25dd732f6652bbc8&lt;SEP&gt;chunk-561a67230527290661bce2f3ac0c3270</data>
+  <data key="d4">6a2ca7b4-b00f-4da4-b7f5-d8d904a3db1b</data>
+</node>
+<node id="Node.js">
+  <data key="d0">Node.js</data>
+  <data key="d1">category</data>
+  <data key="d2">Node.js là một môi trường chạy JavaScript trên phía máy chủ, cho phép xây dựng các ứng dụng mạng mạnh mẽ.</data>
+  <data key="d3">chunk-e701a690c65d8ae698d3c67f993910b7</data>
+  <data key="d4">6a2ca7b4-b00f-4da4-b7f5-d8d904a3db1b</data>
+</node>
+<node id="Express">
+  <data key="d0">Express</data>
+  <data key="d1">category</data>
+  <data key="d2">Express là một framework cho Node.js, giúp tối giản và tăng tốc quá trình phát triển ứng dụng web.</data>
+  <data key="d3">chunk-e701a690c65d8ae698d3c67f993910b7</data>
+  <data key="d4">6a2ca7b4-b00f-4da4-b7f5-d8d904a3db1b</data>
+</node>
+<node id="MongoDB">
+  <data key="d0">MongoDB</data>
+  <data key="d1">category</data>
+  <data key="d2">MongoDB là một cơ sở dữ liệu NoSQL nổi tiếng, có thể lưu trữ dữ liệu dưới dạng tài liệu.&lt;SEP&gt;MongoDB là một cơ sở dữ liệu NoSQL, lưu trữ dữ liệu theo dạng tài liệu JSON và cho phép mở rộng dễ dàng.</data>
+  <data key="d3">chunk-e701a690c65d8ae698d3c67f993910b7&lt;SEP&gt;chunk-61981cd7ad7157fd25dd732f6652bbc8</data>
+  <data key="d4">6a2ca7b4-b00f-4da4-b7f5-d8d904a3db1b</data>
+</node>
+<node id="JavaScript">
+  <data key="d0">JavaScript</data>
+  <data key="d1">category</data>
+  <data key="d2">JavaScript là một ngôn ngữ lập trình kịch bản được sử dụng phổ biến trong phát triển web để tạo tính tương tác cho trang web.</data>
+  <data key="d3">chunk-e701a690c65d8ae698d3c67f993910b7</data>
+  <data key="d4">6a2ca7b4-b00f-4da4-b7f5-d8d904a3db1b</data>
+</node>
+<node id="TypeScript">
+  <data key="d0">TypeScript</data>
+  <data key="d1">category</data>
+  <data key="d2">TypeScript là một ngôn ngữ lập trình mở rộng của JavaScript, cung cấp tính năng kiểu tĩnh.&lt;SEP&gt;TypeScript là một ngôn ngữ lập trình phát triển từ JavaScript, cung cấp các tính năng tĩnh và loại an toàn.&lt;SEP&gt;TypeScript là một ngôn ngữ lập trình phát triển từ JavaScript, cung cấp tính năng kiểu tĩnh để kiểm tra lỗi trong thời gian biên dịch.</data>
+  <data key="d3">chunk-e701a690c65d8ae698d3c67f993910b7&lt;SEP&gt;chunk-61981cd7ad7157fd25dd732f6652bbc8&lt;SEP&gt;chunk-561a67230527290661bce2f3ac0c3270</data>
+  <data key="d4">6a2ca7b4-b00f-4da4-b7f5-d8d904a3db1b</data>
+</node>
+<node id="Git">
+  <data key="d0">Git</data>
+  <data key="d1">category</data>
+  <data key="d2">Git là một hệ thống quản lý phiên bản giúp theo dõi sự thay đổi trong mã nguồn và hỗ trợ làm việc nhóm hiệu quả.</data>
+  <data key="d3">chunk-e701a690c65d8ae698d3c67f993910b7</data>
+  <data key="d4">6a2ca7b4-b00f-4da4-b7f5-d8d904a3db1b</data>
+</node>
+<node id="Gitlab">
+  <data key="d0">Gitlab</data>
+  <data key="d1">category</data>
+  <data key="d2">Gitlab là một dịch vụ lưu trữ mã nguồn và quản lý DevOps, cạnh tranh với GitHub, cung cấp các công cụ phát triển phần mềm.</data>
+  <data key="d3">chunk-e701a690c65d8ae698d3c67f993910b7</data>
+  <data key="d4">6a2ca7b4-b00f-4da4-b7f5-d8d904a3db1b</data>
+</node>
+<node id="Postman">
+  <data key="d0">Postman</data>
+  <data key="d1">category</data>
+  <data key="d2">Postman là một công cụ hỗ trợ phát triển và kiểm thử API, cho phép gửi yêu cầu và nhận phản hồi từ server.</data>
+  <data key="d3">chunk-e701a690c65d8ae698d3c67f993910b7</data>
+  <data key="d4">6a2ca7b4-b00f-4da4-b7f5-d8d904a3db1b</data>
+</node>
+<node id="GitLab">
+  <data key="d0">GitLab</data>
+  <data key="d1">category</data>
+  <data key="d2">GitLab là một dịch vụ lưu trữ mã nguồn và quản lý DevOps, cạnh tranh với GitHub, cung cấp các công cụ phát triển phần mềm.</data>
+  <data key="d3">chunk-e701a690c65d8ae698d3c67f993910b7</data>
+  <data key="d4">6a2ca7b4-b00f-4da4-b7f5-d8d904a3db1b</data>
+</node>
+<node id="Soft Skills">
+  <data key="d0">Soft Skills</data>
+  <data key="d1">category</data>
+  <data key="d2">Soft Skills là một loại kỹ năng cần thiết trong môi trường làm việc, bao gồm khả năng làm việc nhóm, quản lý thời gian, giải quyết vấn đề, tự học và tư duy phản biện.</data>
+  <data key="d3">chunk-7ba071e96df534d3e89d1e6a171012f6</data>
+  <data key="d4">6a2ca7b4-b00f-4da4-b7f5-d8d904a3db1b</data>
+</node>
+<node id="Teamwork">
+  <data key="d0">Teamwork</data>
+  <data key="d1">category</data>
+  <data key="d2">Teamwork là khả năng làm việc hiệu quả cùng với người khác để đạt được mục tiêu chung.</data>
+  <data key="d3">chunk-7ba071e96df534d3e89d1e6a171012f6</data>
+  <data key="d4">6a2ca7b4-b00f-4da4-b7f5-d8d904a3db1b</data>
+</node>
+<node id="Time Management">
+  <data key="d0">Time Management</data>
+  <data key="d1">category</data>
+  <data key="d2">Time Management là kỹ năng giúp cá nhân sắp xếp và sử dụng thời gian một cách hiệu quả để hoàn thành nhiệm vụ.</data>
+  <data key="d3">chunk-7ba071e96df534d3e89d1e6a171012f6</data>
+  <data key="d4">6a2ca7b4-b00f-4da4-b7f5-d8d904a3db1b</data>
+</node>
+<node id="Problem Solving">
+  <data key="d0">Problem Solving</data>
+  <data key="d1">category</data>
+  <data key="d2">Problem Solving là khả năng nhận diện vấn đề và tìm ra giải pháp thích hợp để giải quyết chúng.</data>
+  <data key="d3">chunk-7ba071e96df534d3e89d1e6a171012f6</data>
+  <data key="d4">6a2ca7b4-b00f-4da4-b7f5-d8d904a3db1b</data>
+</node>
+<node id="Self-Learning">
+  <data key="d0">Self-Learning</data>
+  <data key="d1">category</data>
+  <data key="d2">Self-Learning là khả năng tự tìm kiếm và học tập kiến thức mới mà không cần sự hướng dẫn trực tiếp.</data>
+  <data key="d3">chunk-7ba071e96df534d3e89d1e6a171012f6</data>
+  <data key="d4">6a2ca7b4-b00f-4da4-b7f5-d8d904a3db1b</data>
+</node>
+<node id="Critical Thinking">
+  <data key="d0">Critical Thinking</data>
+  <data key="d1">category</data>
+  <data key="d2">Critical Thinking là khả năng phân tích và đánh giá thông tin một cách logic và khách quan trước khi đưa ra quyết định.</data>
+  <data key="d3">chunk-7ba071e96df534d3e89d1e6a171012f6</data>
+  <data key="d4">6a2ca7b4-b00f-4da4-b7f5-d8d904a3db1b</data>
+</node>
+<node id="DUONG DUC TRUNG">
+  <data key="d0">DUONG DUC TRUNG</data>
+  <data key="d1">person</data>
+  <data key="d2">DUONG DUC TRUNG là một cá nhân được đề cập trong tài liệu, tuy nhiên không có thông tin chi tiết về hoạt động hoặc thuộc tính của người này.&lt;SEP&gt;DUONG DUC TRUNG là một cá nhân, có thể liên quan đến một ngữ cảnh cụ thể nhưng không có thông tin chi tiết hơn về hoạt động hoặc thuộc tính.</data>
+  <data key="d3">chunk-879e57089f988e388f681b5aa4c734e6</data>
+  <data key="d4">6a2ca7b4-b00f-4da4-b7f5-d8d904a3db1b</data>
+</node>
+<node id="FRONT-END DEVELOPER">
+  <data key="d0">FRONT-END DEVELOPER</data>
+  <data key="d1">category</data>
+  <data key="d2">FRONT-END DEVELOPER là một danh mục nghề nghiệp trong lĩnh vực công nghệ thông tin, thường liên quan đến việc phát triển giao diện người dùng cho ứng dụng và trang web.</data>
+  <data key="d3">chunk-605b6859de26771b3e0b6218329c8700</data>
+  <data key="d4">6a2ca7b4-b00f-4da4-b7f5-d8d904a3db1b</data>
+</node>
+<node id="Front-End Development">
+  <data key="d0">Front-End Development</data>
+  <data key="d1">category</data>
+  <data key="d2">Front-End Development là lĩnh vực chuyên môn trong công nghệ thông tin tập trung vào việc tạo ra và tối ưu hóa giao diện người dùng cho ứng dụng và trang web.</data>
+  <data key="d3">chunk-605b6859de26771b3e0b6218329c8700</data>
+  <data key="d4">6a2ca7b4-b00f-4da4-b7f5-d8d904a3db1b</data>
+</node>
+<node id="Developer">
+  <data key="d0">Developer</data>
+  <data key="d1">person</data>
+  <data key="d2">Developer là những cá nhân có chuyên môn trong việc lập trình và phát triển ứng dụng, đặc biệt là trong lĩnh vực front-end.</data>
+  <data key="d3">chunk-605b6859de26771b3e0b6218329c8700</data>
+  <data key="d4">6a2ca7b4-b00f-4da4-b7f5-d8d904a3db1b</data>
+</node>
+<node id="Application">
+  <data key="d0">Application</data>
+  <data key="d1">category</data>
+  <data key="d2">Application là phần mềm được thiết kế để thực hiện các tác vụ cụ thể, thường chạy trên thiết bị di động hoặc máy tính.</data>
+  <data key="d3">chunk-605b6859de26771b3e0b6218329c8700</data>
+  <data key="d4">6a2ca7b4-b00f-4da4-b7f5-d8d904a3db1b</data>
+</node>
+<node id="Front-End Developer">
+  <data key="d0">Front-End Developer</data>
+  <data key="d1">person</data>
+  <data key="d2">Front-End Developer là một chuyên viên phát triển phần mềm với khả năng tập trung vào việc xây dựng các ứng dụng web tương tác, thân thiện với người dùng.</data>
+  <data key="d3">chunk-561a67230527290661bce2f3ac0c3270</data>
+  <data key="d4">6a2ca7b4-b00f-4da4-b7f5-d8d904a3db1b</data>
+</node>
+<node id="Web Applications">
+  <data key="d0">Web Applications</data>
+  <data key="d1">category</data>
+  <data key="d2">Web Applications là các ứng dụng chạy trên trình duyệt với giao diện người dùng thân thiện và tương tác.</data>
+  <data key="d3">chunk-561a67230527290661bce2f3ac0c3270</data>
+  <data key="d4">6a2ca7b4-b00f-4da4-b7f5-d8d904a3db1b</data>
+</node>
+<node id="Interactive Design">
+  <data key="d0">Interactive Design</data>
+  <data key="d1">category</data>
+  <data key="d2">Interactive Design đề cập đến việc thiết kế giao diện giúp người dùng có thể tương tác dễ dàng và hiệu quả.</data>
+  <data key="d3">chunk-561a67230527290661bce2f3ac0c3270</data>
+  <data key="d4">6a2ca7b4-b00f-4da4-b7f5-d8d904a3db1b</data>
+</node>
+<node id="User-Centric Design">
+  <data key="d0">User-Centric Design</data>
+  <data key="d1">category</data>
+  <data key="d2">User-Centric Design là phương pháp thiết kế tập trung vào nhu cầu và trải nghiệm của người dùng.</data>
+  <data key="d3">chunk-561a67230527290661bce2f3ac0c3270</data>
+  <data key="d4">6a2ca7b4-b00f-4da4-b7f5-d8d904a3db1b</data>
+</node>
+<node id="FPT University">
+  <data key="d0">FPT University</data>
+  <data key="d1">organization</data>
+  <data key="d2">FPT University is a higher education institution located in Ha Noi, specializing in Information Technology.&lt;SEP&gt;FPT University là một cơ sở giáo dục đại học nằm ở Hà Nội, chuyên đào tạo lĩnh vực Công nghệ Thông tin.</data>
+  <data key="d3">chunk-be378201f5af795cd203fd69078be43a</data>
+  <data key="d4">6a2ca7b4-b00f-4da4-b7f5-d8d904a3db1b</data>
+</node>
+<node id="Ha Noi">
+  <data key="d0">Ha Noi</data>
+  <data key="d1">geo</data>
+  <data key="d2">Ha Noi is the capital city of Vietnam, where FPT University is located.&lt;SEP&gt;Hà Nội là thủ đô của Việt Nam, nơi đặt trụ sở của FPT University.</data>
+  <data key="d3">chunk-be378201f5af795cd203fd69078be43a</data>
+  <data key="d4">6a2ca7b4-b00f-4da4-b7f5-d8d904a3db1b</data>
+</node>
+<node id="Bachelor of Information Technology">
+  <data key="d0">Bachelor of Information Technology</data>
+  <data key="d1">category</data>
+  <data key="d2">Bachelor of Information Technology is an academic degree awarded by FPT University, focusing on information technology studies.&lt;SEP&gt;Cử nhân Công nghệ Thông tin là một bằng cấp được cấp bởi FPT University, tập trung vào các nghiên cứu về công nghệ thông tin.</data>
+  <data key="d3">chunk-be378201f5af795cd203fd69078be43a</data>
+  <data key="d4">6a2ca7b4-b00f-4da4-b7f5-d8d904a3db1b</data>
+</node>
+<node id="Univ. of Michigan">
+  <data key="d0">Univ. of Michigan</data>
+  <data key="d1">organization</data>
+  <data key="d2">Univ. of Michigan là một trường đại học nổi tiếng chuyên về nghiên cứu và thiết kế trải nghiệm người dùng.</data>
+  <data key="d3">chunk-d49f402f217045048ff36382ce5891ce</data>
+  <data key="d4">6a2ca7b4-b00f-4da4-b7f5-d8d904a3db1b</data>
+</node>
+<node id="Univ. of Minnesota">
+  <data key="d0">Univ. of Minnesota</data>
+  <data key="d1">organization</data>
+  <data key="d2">Univ. of Minnesota là một trường đại học cung cấp chương trình chuyên về vòng đời phát triển phần mềm.</data>
+  <data key="d3">chunk-d49f402f217045048ff36382ce5891ce</data>
+  <data key="d4">6a2ca7b4-b00f-4da4-b7f5-d8d904a3db1b</data>
+</node>
+<node id="User Experience Research &amp; Design Specialization">
+  <data key="d0">User Experience Research &amp; Design Specialization</data>
+  <data key="d1">category</data>
+  <data key="d2">Chuyên ngành Nghiên cứu và Thiết kế Trải nghiệm Người dùng là một chương trình học tại Trường Đại học Michigan vào năm 2024.&lt;SEP&gt;Chuyên ngành Nghiên cứu và Thiết kế Trải nghiệm Người dùng là một chương trình học tại Đại học Michigan, tập trung vào cách phát triển sản phẩm với trải nghiệm của người dùng làm trung tâm.</data>
+  <data key="d3">chunk-d49f402f217045048ff36382ce5891ce</data>
+  <data key="d4">6a2ca7b4-b00f-4da4-b7f5-d8d904a3db1b</data>
+</node>
+<node id="Software Development Lifecycle Specialization">
+  <data key="d0">Software Development Lifecycle Specialization</data>
+  <data key="d1">category</data>
+  <data key="d2">Chuyên ngành Vòng đời Phát triển Phần mềm là một chương trình học tại Đại học Minnesota, dạy về quy trình phát triển phần mềm từ đầu đến cuối.&lt;SEP&gt;Chuyên ngành Vòng đời Phát triển Phần mềm là một chương trình đào tạo tại Trường Đại học Minnesota vào năm 2023.</data>
+  <data key="d3">chunk-d49f402f217045048ff36382ce5891ce</data>
+  <data key="d4">6a2ca7b4-b00f-4da4-b7f5-d8d904a3db1b</data>
+</node>
+<node id="Web Design for Everybody Specialization">
+  <data key="d0">Web Design for Everybody Specialization</data>
+  <data key="d1">category</data>
+  <data key="d2">Chuyên ngành Thiết kế Web cho Mọi Người là một chương trình học tại Trường Đại học Michigan vào năm 2023.&lt;SEP&gt;Chuyên ngành Thiết kế Web cho Mọi Người là một chương trình học tại Đại học Michigan, nhằm giúp mọi người tạo dựng và thiết kế website.</data>
+  <data key="d3">chunk-d49f402f217045048ff36382ce5891ce</data>
+  <data key="d4">6a2ca7b4-b00f-4da4-b7f5-d8d904a3db1b</data>
+</node>
+<node id="PROJECTS">
+  <data key="d0">PROJECTS</data>
+  <data key="d1">category</data>
+  <data key="d2">PROJECTS là một danh mục dùng để chỉ các sáng kiến, kế hoạch hoặc công việc cụ thể được thực hiện nhằm đạt được một mục tiêu nào đó.</data>
+  <data key="d3">chunk-4525cf2ecbb5dac18e3f1af961db9b92</data>
+  <data key="d4">6a2ca7b4-b00f-4da4-b7f5-d8d904a3db1b</data>
+</node>
+<node id="Team A">
+  <data key="d0">Team A</data>
+  <data key="d1">organization</data>
+  <data key="d2">Team A là một nhóm làm việc kết hợp các thành viên với kỹ năng khác nhau để hoàn thành các dự án.</data>
+  <data key="d3">chunk-4525cf2ecbb5dac18e3f1af961db9b92</data>
+  <data key="d4">6a2ca7b4-b00f-4da4-b7f5-d8d904a3db1b</data>
+</node>
+<node id="Nguyễn Văn B">
+  <data key="d0">Nguyễn Văn B</data>
+  <data key="d1">person</data>
+  <data key="d2">Nguyễn Văn B là một cá nhân chủ chốt trong việc dẫn dắt và thực hiện các dự án trong Team A.</data>
+  <data key="d3">chunk-4525cf2ecbb5dac18e3f1af961db9b92</data>
+  <data key="d4">6a2ca7b4-b00f-4da4-b7f5-d8d904a3db1b</data>
+</node>
+<node id="Dự án X">
+  <data key="d0">Dự án X</data>
+  <data key="d1">event</data>
+  <data key="d2">Dự án X là một chiến dịch cụ thể trong lĩnh vực nghiên cứu và phát triển mà Team A đang triển khai.</data>
+  <data key="d3">chunk-4525cf2ecbb5dac18e3f1af961db9b92</data>
+  <data key="d4">6a2ca7b4-b00f-4da4-b7f5-d8d904a3db1b</data>
+</node>
+<node id="Kết quả Y">
+  <data key="d0">Kết quả Y</data>
+  <data key="d1">category</data>
+  <data key="d2">Kết quả Y là các sản phẩm hoặc thành tựu đạt được từ việc thực hiện Dự án X.</data>
+  <data key="d3">chunk-4525cf2ecbb5dac18e3f1af961db9b92</data>
+  <data key="d4">6a2ca7b4-b00f-4da4-b7f5-d8d904a3db1b</data>
+</node>
+<node id="Erudition">
+  <data key="d0">Erudition</data>
+  <data key="d1">organization</data>
+  <data key="d2">Erudition là một nền tảng chatbot AI hoàn chỉnh được thiết kế cho doanh nghiệp, cung cấp quản lý cuộc hội thoại thông minh.&lt;SEP&gt;Erudition là một tổ chức với 5 thành viên, hoạt động từ năm 2021 đến 2025.</data>
+  <data key="d3">chunk-b57f022b6811820954bb2ceed5073e51&lt;SEP&gt;chunk-61981cd7ad7157fd25dd732f6652bbc8</data>
+  <data key="d4">6a2ca7b4-b00f-4da4-b7f5-d8d904a3db1b</data>
+</node>
+<node id="Vivu-Go">
+  <data key="d0">Vivu-Go</data>
+  <data key="d1">organization</data>
+  <data key="d2">Vivu-Go là một nền tảng lập kế hoạch chuyến đi thông minh giúp người dùng tạo lịch trình linh hoạt và tối ưu hóa tuyến đường di chuyển.</data>
+  <data key="d3">chunk-61981cd7ad7157fd25dd732f6652bbc8</data>
+  <data key="d4">6a2ca7b4-b00f-4da4-b7f5-d8d904a3db1b</data>
+</node>
+<node id="Zen Writing">
+  <data key="d0">Zen Writing</data>
+  <data key="d1">organization</data>
+  <data key="d2">Zen Writing là một ứng dụng viết sáng tạo giúp tìm kiếm và hiển thị hình ảnh từ Unsplash dựa trên đầu vào của người dùng.</data>
+  <data key="d3">chunk-61981cd7ad7157fd25dd732f6652bbc8</data>
+  <data key="d4">6a2ca7b4-b00f-4da4-b7f5-d8d904a3db1b</data>
+</node>
+<node id="Duong Duc Trung">
+  <data key="d0">Duong Duc Trung</data>
+  <data key="d1">person</data>
+  <data key="d2">Duong Duc Trung là người tham gia phát triển và thiết kế giao diện cho các dự án như Erudition và Vivu-Go.&lt;SEP&gt;Duong Duc Trung là người tham gia phát triển và thiết kế giao diện cho các dự án như Erudition, Vivu-Go và Zen Writing.</data>
+  <data key="d3">chunk-61981cd7ad7157fd25dd732f6652bbc8</data>
+  <data key="d4">6a2ca7b4-b00f-4da4-b7f5-d8d904a3db1b</data>
+</node>
+<node id="Vite">
+  <data key="d0">Vite</data>
+  <data key="d1">category</data>
+  <data key="d2">Vite là một công cụ xây dựng nhanh dành cho các ứng dụng hiện đại, hỗ trợ phát triển web hiệu quả.</data>
+  <data key="d3">chunk-61981cd7ad7157fd25dd732f6652bbc8</data>
+  <data key="d4">6a2ca7b4-b00f-4da4-b7f5-d8d904a3db1b</data>
+</node>
+<node id="Material-UI">
+  <data key="d0">Material-UI</data>
+  <data key="d1">category</data>
+  <data key="d2">Material-UI là một bộ công cụ giao diện người dùng cho React, cung cấp các thành phần đẹp và dễ sử dụng.</data>
+  <data key="d3">chunk-61981cd7ad7157fd25dd732f6652bbc8</data>
+  <data key="d4">6a2ca7b4-b00f-4da4-b7f5-d8d904a3db1b</data>
+</node>
+<node id="Tailwind CSS">
+  <data key="d0">Tailwind CSS</data>
+  <data key="d1">category</data>
+  <data key="d2">Tailwind CSS là một framework CSS dùng để thiết kế giao diện linh hoạt và tùy chỉnh.</data>
+  <data key="d3">chunk-61981cd7ad7157fd25dd732f6652bbc8</data>
+  <data key="d4">6a2ca7b4-b00f-4da4-b7f5-d8d904a3db1b</data>
+</node>
+<node id="FastAPI">
+  <data key="d0">FastAPI</data>
+  <data key="d1">category</data>
+  <data key="d2">FastAPI là một framework web hiện đại và nhanh chóng cho việc xây dựng API với Python.</data>
+  <data key="d3">chunk-61981cd7ad7157fd25dd732f6652bbc8</data>
+  <data key="d4">6a2ca7b4-b00f-4da4-b7f5-d8d904a3db1b</data>
+</node>
+<node id="LightRAG">
+  <data key="d0">LightRAG</data>
+  <data key="d1">category</data>
+  <data key="d2">LightRAG là một thư viện hỗ trợ cho việc xây dựng chatbot sử dụng AI.</data>
+  <data key="d3">chunk-61981cd7ad7157fd25dd732f6652bbc8</data>
+  <data key="d4">6a2ca7b4-b00f-4da4-b7f5-d8d904a3db1b</data>
+</node>
+<node id="LangChain">
+  <data key="d0">LangChain</data>
+  <data key="d1">category</data>
+  <data key="d2">LangChain là một framework cho phép xây dựng ứng dụng AI dễ dàng với các dịch vụ hiện có.</data>
+  <data key="d3">chunk-61981cd7ad7157fd25dd732f6652bbc8</data>
+  <data key="d4">6a2ca7b4-b00f-4da4-b7f5-d8d904a3db1b</data>
+</node>
+<node id="ChromaDB">
+  <data key="d0">ChromaDB</data>
+  <data key="d1">category</data>
+  <data key="d2">ChromaDB là một cơ sở dữ liệu thích hợp cho các ứng dụng AI, hỗ trợ tìm kiếm và quản lý mô hình.</data>
+  <data key="d3">chunk-61981cd7ad7157fd25dd732f6652bbc8</data>
+  <data key="d4">6a2ca7b4-b00f-4da4-b7f5-d8d904a3db1b</data>
+</node>
+<node id="Neo4j">
+  <data key="d0">Neo4j</data>
+  <data key="d1">category</data>
+  <data key="d2">Neo4j là một cơ sở dữ liệu đồ thị giúp quản lý và truy vấn dữ liệu có cấu trúc đồ thị.</data>
+  <data key="d3">chunk-61981cd7ad7157fd25dd732f6652bbc8</data>
+  <data key="d4">6a2ca7b4-b00f-4da4-b7f5-d8d904a3db1b</data>
+</node>
+<node id="Zustand">
+  <data key="d0">Zustand</data>
+  <data key="d1">category</data>
+  <data key="d2">Zustand là một thư viện quản lý trạng thái cho ứng dụng React, dễ dàng thiết lập và sử dụng.</data>
+  <data key="d3">chunk-61981cd7ad7157fd25dd732f6652bbc8</data>
+  <data key="d4">6a2ca7b4-b00f-4da4-b7f5-d8d904a3db1b</data>
+</node>
+<node id="Supabase">
+  <data key="d0">Supabase</data>
+  <data key="d1">category</data>
+  <data key="d2">Supabase là một nền tảng mã nguồn mở cung cấp API cho cơ sở dữ liệu và lưu trữ.</data>
+  <data key="d3">chunk-61981cd7ad7157fd25dd732f6652bbc8</data>
+  <data key="d4">6a2ca7b4-b00f-4da4-b7f5-d8d904a3db1b</data>
+</node>
+<node id="Google Gemini API">
+  <data key="d0">Google Gemini API</data>
+  <data key="d1">category</data>
+  <data key="d2">Google Gemini API là một dịch vụ của Google hỗ trợ trong việc tìm kiếm và truy xuất dữ liệu.</data>
+  <data key="d3">chunk-61981cd7ad7157fd25dd732f6652bbc8</data>
+  <data key="d4">6a2ca7b4-b00f-4da4-b7f5-d8d904a3db1b</data>
+</node>
+<node id="Mapbox API">
+  <data key="d0">Mapbox API</data>
+  <data key="d1">category</data>
+  <data key="d2">Mapbox API là một dịch vụ bản đồ cho phép tạo ra bản đồ tùy chỉnh cho ứng dụng.</data>
+  <data key="d3">chunk-61981cd7ad7157fd25dd732f6652bbc8</data>
+  <data key="d4">6a2ca7b4-b00f-4da4-b7f5-d8d904a3db1b</data>
+</node>
+<node id="github.com/duongductrung1708/Zen-Writing">
+  <data key="d0">github.com/duongductrung1708/Zen-Writing</data>
+  <data key="d1">category</data>
+  <data key="d2">Link đến dự án Zen-Writing trên GitHub.&lt;SEP&gt;Đây là liên kết đến kho chứa dự án Zen-Writing trên GitHub.</data>
+  <data key="d3">chunk-b57f022b6811820954bb2ceed5073e51</data>
+  <data key="d4">6a2ca7b4-b00f-4da4-b7f5-d8d904a3db1b</data>
+</node>
+<node id="han-zen-writing.vercel.app">
+  <data key="d0">han-zen-writing.vercel.app</data>
+  <data key="d1">category</data>
+  <data key="d2">Link đến bản demo của dự án Zen-Writing.&lt;SEP&gt;Đây là liên kết đến bản demo của dự án Zen-Writing.</data>
+  <data key="d3">chunk-b57f022b6811820954bb2ceed5073e51</data>
+  <data key="d4">6a2ca7b4-b00f-4da4-b7f5-d8d904a3db1b</data>
+</node>
+<node id="Zen-Writing">
+  <data key="d0">Zen-Writing</data>
+  <data key="d1">category</data>
+  <data key="d2">Zen-Writing là một dự án được phát triển bởi Erudition, bao gồm các ứng dụng viết năng suất.</data>
+  <data key="d3">chunk-b57f022b6811820954bb2ceed5073e51</data>
+  <data key="d4">6a2ca7b4-b00f-4da4-b7f5-d8d904a3db1b</data>
+</node>
+<node id="2021 - 2025">
+  <data key="d0">2021 - 2025</data>
+  <data key="d1">event</data>
+  <data key="d2">Khoảng thời gian mà tổ chức Erudition thực hiện các hoạt động liên quan đến dự án Zen-Writing.</data>
+  <data key="d3">chunk-b57f022b6811820954bb2ceed5073e51</data>
+  <data key="d4">6a2ca7b4-b00f-4da4-b7f5-d8d904a3db1b</data>
+</node>
+<node id="Unsplash Search API">
+  <data key="d0">Unsplash Search API</data>
+  <data key="d3">chunk-61981cd7ad7157fd25dd732f6652bbc8</data>
+  <data key="d2">Zen Writing sử dụng Unsplash Search API để tìm kiếm hình ảnh cho người dùng dựa trên đầu vào.</data>
+  <data key="d1">UNKNOWN</data>
+  <data key="d4">6a2ca7b4-b00f-4da4-b7f5-d8d904a3db1b</data>
+</node>
+<edge source="CONTACT" target="CONTACT">
+  <data key="d5">5.0</data>
+  <data key="d6">Thông tin liên lạc được cung cấp để hỗ trợ việc trao đổi thông tin.</data>
+  <data key="d7">thông tin, liên lạc</data>
+  <data key="d8">chunk-5a416d2e9ad4340532548b2e68a0ebda</data>
+  <data key="d9">6a2ca7b4-b00f-4da4-b7f5-d8d904a3db1b</data>
+</edge>
+<edge source="CONTACT" target="+033-423-0359">
+  <data key="d5">8.0</data>
+  <data key="d6">CONTACT chứa số điện thoại +033-423-0359, thể hiện thông tin liên lạc."&lt;</data>
+  <data key="d7">thông tin liên lạc</data>
+  <data key="d8">chunk-5a416d2e9ad4340532548b2e68a0ebda</data>
+  <data key="d9">6a2ca7b4-b00f-4da4-b7f5-d8d904a3db1b</data>
+</edge>
+<edge source="trungyna1708@gmail.com" target="Email">
+  <data key="d5">8.0</data>
+  <data key="d6">Địa chỉ email này là một phần của thể loại giao tiếp trực tuyến, thể hiện bản chất và phương thức liên lạc cá nhân.</data>
+  <data key="d7">giao tiếp, trực tuyến</data>
+  <data key="d8">chunk-566f60a230a0eedd8d7f8a548e0da62d</data>
+  <data key="d9">6a2ca7b4-b00f-4da4-b7f5-d8d904a3db1b</data>
+</edge>
+<edge source="Au Co" target="Bac Ninh">
+  <data key="d5">8.0</data>
+  <data key="d6">Au Co là một địa điểm thuộc tỉnh Bắc Ninh, cho thấy mối liên hệ về địa lý giữa hai thực thể này.</data>
+  <data key="d7">địa điểm, địa lý</data>
+  <data key="d8">chunk-958b222855c03630a1fd27e95c26fbd7</data>
+  <data key="d9">6a2ca7b4-b00f-4da4-b7f5-d8d904a3db1b</data>
+</edge>
+<edge source="Au Co" target="Kinh Bac">
+  <data key="d5">7.0</data>
+  <data key="d6">Au Co là địa chỉ nằm trong khu vực Kinh Bắc, thể hiện sự liên kết địa lý giữa chúng.</data>
+  <data key="d7">địa điểm, địa lý</data>
+  <data key="d8">chunk-958b222855c03630a1fd27e95c26fbd7</data>
+  <data key="d9">6a2ca7b4-b00f-4da4-b7f5-d8d904a3db1b</data>
+</edge>
+<edge source="Bac Ninh" target="Kinh Bac">
+  <data key="d5">8.0</data>
+  <data key="d6">Kinh Bắc là một phần của tỉnh Bắc Ninh, cho thấy mối liên kết giữa khu vực và tỉnh.</data>
+  <data key="d7">địa lý, hành chính</data>
+  <data key="d8">chunk-958b222855c03630a1fd27e95c26fbd7</data>
+  <data key="d9">6a2ca7b4-b00f-4da4-b7f5-d8d904a3db1b</data>
+</edge>
+<edge source="GitHub" target="duongductrung1708">
+  <data key="d5">12.0</data>
+  <data key="d6">duongductrung1708 sử dụng GitHub để lưu trữ và quản lý mã nguồn cá nhân của mình.</data>
+  <data key="d7">sử dụng nền tảng, phát triển phần mềm</data>
+  <data key="d8">chunk-0cc32922444243a72e212e863be2014a</data>
+  <data key="d9">6a2ca7b4-b00f-4da4-b7f5-d8d904a3db1b</data>
+</edge>
+<edge source="GitHub" target="Git">
+  <data key="d5">18.0</data>
+  <data key="d6">GitHub sử dụng Git làm nền tảng cho hệ thống quản lý phiên bản và lưu trữ mã nguồn.&lt;SEP&gt;GitHub sử dụng Git làm nền tảng cho việc quản lý phiên bản và lưu trữ mã nguồn.</data>
+  <data key="d7">quản lý phiên bản, phát triển hợp tác</data>
+  <data key="d8">chunk-e701a690c65d8ae698d3c67f993910b7</data>
+  <data key="d9">6a2ca7b4-b00f-4da4-b7f5-d8d904a3db1b</data>
+</edge>
+<edge source="Website" target="Developer">
+  <data key="d5">7.0</data>
+  <data key="d6">Các Developer cũng tham gia vào việc thiết kế và phát triển các Website.</data>
+  <data key="d7">thiết kế, phát triển</data>
+  <data key="d8">chunk-605b6859de26771b3e0b6218329c8700</data>
+  <data key="d9">6a2ca7b4-b00f-4da4-b7f5-d8d904a3db1b</data>
+</edge>
+<edge source="React" target="Next.js">
+  <data key="d5">16.0</data>
+  <data key="d6">Next.js là một framework được xây dựng trên nền tảng React, cho phép phát triển ứng dụng web hiệu quả hơn.&lt;SEP&gt;Next.js được xây dựng trên nền tảng React, cho phép phát triển ứng dụng web tối ưu hơn.</data>
+  <data key="d7">framework, phát triển ứng dụng</data>
+  <data key="d8">chunk-e701a690c65d8ae698d3c67f993910b7</data>
+  <data key="d9">6a2ca7b4-b00f-4da4-b7f5-d8d904a3db1b</data>
+</edge>
+<edge source="React" target="Front-End Developer">
+  <data key="d5">16.0</data>
+  <data key="d6">Front-End Developer sử dụng React để phát triển các ứng dụng web tương tác và hiện đại.</data>
+  <data key="d7">công nghệ phát triển, lập trình viên</data>
+  <data key="d8">chunk-561a67230527290661bce2f3ac0c3270</data>
+  <data key="d9">6a2ca7b4-b00f-4da4-b7f5-d8d904a3db1b</data>
+</edge>
+<edge source="React" target="Erudition">
+  <data key="d5">9.0</data>
+  <data key="d6">Erudition sử dụng React để xây dựng giao diện người dùng hiệu quả trong ứng dụng chatbot.</data>
+  <data key="d7">công nghệ phát triển, xây dựng giao diện</data>
+  <data key="d8">chunk-61981cd7ad7157fd25dd732f6652bbc8</data>
+  <data key="d9">6a2ca7b4-b00f-4da4-b7f5-d8d904a3db1b</data>
+</edge>
+<edge source="React" target="Zen Writing">
+  <data key="d5">9.0</data>
+  <data key="d6">Zen Writing sử dụng React để quản lý giao diện và hiệu suất ứng dụng viết sáng tạo.</data>
+  <data key="d7">công nghệ phát triển, xây dựng giao diện</data>
+  <data key="d8">chunk-61981cd7ad7157fd25dd732f6652bbc8</data>
+  <data key="d9">6a2ca7b4-b00f-4da4-b7f5-d8d904a3db1b</data>
+</edge>
+<edge source="Next.js" target="Front-End Developer">
+  <data key="d5">16.0</data>
+  <data key="d6">Front-End Developer áp dụng Next.js để tối ưu hóa quy trình phát triển ứng dụng web.</data>
+  <data key="d7">công nghệ phát triển, lập trình viên</data>
+  <data key="d8">chunk-561a67230527290661bce2f3ac0c3270</data>
+  <data key="d9">6a2ca7b4-b00f-4da4-b7f5-d8d904a3db1b</data>
+</edge>
+<edge source="Next.js" target="Vivu-Go">
+  <data key="d5">9.0</data>
+  <data key="d6">Vivu-Go xây dựng dựa trên framework Next.js để cung cấp trải nghiệm lập kế hoạch chuyến đi hiệu quả.</data>
+  <data key="d7">công nghệ phát triển, ứng dụng web</data>
+  <data key="d8">chunk-61981cd7ad7157fd25dd732f6652bbc8</data>
+  <data key="d9">6a2ca7b4-b00f-4da4-b7f5-d8d904a3db1b</data>
+</edge>
+<edge source="Node.js" target="Express">
+  <data key="d5">18.0</data>
+  <data key="d6">Express là một framework thường được sử dụng kết hợp với Node.js để xây dựng API và các ứng dụng web.&lt;SEP&gt;Express thường được sử dụng trong các ứng dụng Node.js để tạo ra server và xây dựng API.</data>
+  <data key="d7">server, API</data>
+  <data key="d8">chunk-e701a690c65d8ae698d3c67f993910b7</data>
+  <data key="d9">6a2ca7b4-b00f-4da4-b7f5-d8d904a3db1b</data>
+</edge>
+<edge source="Node.js" target="MongoDB">
+  <data key="d5">16.0</data>
+  <data key="d6">MongoDB thường được sử dụng như một cơ sở dữ liệu cho các ứng dụng phát triển bằng Node.js.&lt;SEP&gt;MongoDB thường được sử dụng như một cơ sở dữ liệu cho các ứng dụng xây dựng trên nền Node.js.</data>
+  <data key="d7">cơ sở dữ liệu, ứng dụng web</data>
+  <data key="d8">chunk-e701a690c65d8ae698d3c67f993910b7</data>
+  <data key="d9">6a2ca7b4-b00f-4da4-b7f5-d8d904a3db1b</data>
+</edge>
+<edge source="Node.js" target="Postman">
+  <data key="d5">14.0</data>
+  <data key="d6">Postman thường được sử dụng để kiểm thử API được xây dựng trên nền tảng Node.js.&lt;SEP&gt;Postman thường được sử dụng để kiểm thử API được xây dựng với Node.js.</data>
+  <data key="d7">kiểm thử API, phát triển ứng dụng</data>
+  <data key="d8">chunk-e701a690c65d8ae698d3c67f993910b7</data>
+  <data key="d9">6a2ca7b4-b00f-4da4-b7f5-d8d904a3db1b</data>
+</edge>
+<edge source="MongoDB" target="Erudition">
+  <data key="d5">8.0</data>
+  <data key="d6">Erudition sử dụng MongoDB để lưu trữ dữ liệu liên quan đến cuộc trò chuyện.</data>
+  <data key="d7">công nghệ phát triển, lưu trữ dữ liệu</data>
+  <data key="d8">chunk-61981cd7ad7157fd25dd732f6652bbc8</data>
+  <data key="d9">6a2ca7b4-b00f-4da4-b7f5-d8d904a3db1b</data>
+</edge>
+<edge source="JavaScript" target="TypeScript">
+  <data key="d5">14.0</data>
+  <data key="d6">TypeScript mở rộng JavaScript bằng cách thêm kiểu tĩnh, giúp lập trình viên kiểm soát mã nguồn tốt hơn.&lt;SEP&gt;TypeScript mở rộng JavaScript bằng cách thêm tính năng kiểu tĩnh, hỗ trợ phát triển mã nguồn tốt hơn.</data>
+  <data key="d7">ngôn ngữ lập trình, phát triển</data>
+  <data key="d8">chunk-e701a690c65d8ae698d3c67f993910b7</data>
+  <data key="d9">6a2ca7b4-b00f-4da4-b7f5-d8d904a3db1b</data>
+</edge>
+<edge source="TypeScript" target="Front-End Developer">
+  <data key="d5">18.0</data>
+  <data key="d6">Front-End Developer sử dụng TypeScript để đảm bảo tính an toàn và độ chính xác của mã nguồn mà họ phát triển.</data>
+  <data key="d7">công nghệ phát triển, lập trình viên</data>
+  <data key="d8">chunk-561a67230527290661bce2f3ac0c3270</data>
+  <data key="d9">6a2ca7b4-b00f-4da4-b7f5-d8d904a3db1b</data>
+</edge>
+<edge source="Git" target="Gitlab">
+  <data key="d5">8.0</data>
+  <data key="d6">Gitlab cũng sử dụng Git để quản lý phiên bản, cung cấp môi trường tương tự như GitHub.</data>
+  <data key="d7">quản lý phiên bản, phát triển</data>
+  <data key="d8">chunk-e701a690c65d8ae698d3c67f993910b7</data>
+  <data key="d9">6a2ca7b4-b00f-4da4-b7f5-d8d904a3db1b</data>
+</edge>
+<edge source="Git" target="GitLab">
+  <data key="d5">8.0</data>
+  <data key="d6">GitLab cũng sử dụng Git để quản lý phiên bản, cung cấp môi trường tương tự như GitHub.</data>
+  <data key="d7">quản lý phiên bản, phát triển</data>
+  <data key="d8">chunk-e701a690c65d8ae698d3c67f993910b7</data>
+  <data key="d9">6a2ca7b4-b00f-4da4-b7f5-d8d904a3db1b</data>
+</edge>
+<edge source="Soft Skills" target="Teamwork">
+  <data key="d5">16.0</data>
+  <data key="d6">Teamwork là một trong những phần quan trọng của Soft Skills, liên quan đến khả năng làm việc nhóm.</data>
+  <data key="d7">kỹ năng làm việc nhóm, kỹ năng mềm</data>
+  <data key="d8">chunk-7ba071e96df534d3e89d1e6a171012f6</data>
+  <data key="d9">6a2ca7b4-b00f-4da4-b7f5-d8d904a3db1b</data>
+</edge>
+<edge source="Soft Skills" target="Time Management">
+  <data key="d5">16.0</data>
+  <data key="d6">Time Management là một kỹ năng cần thiết trong danh sách Soft Skills, giúp tổ chức hiệu quả thời gian.</data>
+  <data key="d7">quản lý thời gian, kỹ năng mềm</data>
+  <data key="d8">chunk-7ba071e96df534d3e89d1e6a171012f6</data>
+  <data key="d9">6a2ca7b4-b00f-4da4-b7f5-d8d904a3db1b</data>
+</edge>
+<edge source="Soft Skills" target="Problem Solving">
+  <data key="d5">16.0</data>
+  <data key="d6">Problem Solving là một kỹ năng thuộc Soft Skills, giúp giải quyết các vấn đề phát sinh trong công việc.</data>
+  <data key="d7">giải quyết vấn đề, kỹ năng mềm</data>
+  <data key="d8">chunk-7ba071e96df534d3e89d1e6a171012f6</data>
+  <data key="d9">6a2ca7b4-b00f-4da4-b7f5-d8d904a3db1b</data>
+</edge>
+<edge source="Soft Skills" target="Self-Learning">
+  <data key="d5">16.0</data>
+  <data key="d6">Self-Learning là một phần của Soft Skills, giúp cá nhân liên tục nâng cao kiến thức diễn ra trong quá trình làm việc.</data>
+  <data key="d7">tự học, kỹ năng mềm</data>
+  <data key="d8">chunk-7ba071e96df534d3e89d1e6a171012f6</data>
+  <data key="d9">6a2ca7b4-b00f-4da4-b7f5-d8d904a3db1b</data>
+</edge>
+<edge source="Soft Skills" target="Critical Thinking">
+  <data key="d5">16.0</data>
+  <data key="d6">Critical Thinking là một kỹ năng quan trọng trong Soft Skills, giúp đưa ra các quyết định sáng suốt hơn.</data>
+  <data key="d7">tư duy phản biện, kỹ năng mềm</data>
+  <data key="d8">chunk-7ba071e96df534d3e89d1e6a171012f6</data>
+  <data key="d9">6a2ca7b4-b00f-4da4-b7f5-d8d904a3db1b</data>
+</edge>
+<edge source="Front-End Development" target="Developer">
+  <data key="d5">8.0</data>
+  <data key="d6">Các Developer chuyên về Front-End Development chịu trách nhiệm trong việc phát triển giao diện người dùng cho các ứng dụng và website.</data>
+  <data key="d7">chuyên môn, kỹ năng</data>
+  <data key="d8">chunk-605b6859de26771b3e0b6218329c8700</data>
+  <data key="d9">6a2ca7b4-b00f-4da4-b7f5-d8d904a3db1b</data>
+</edge>
+<edge source="Developer" target="Application">
+  <data key="d5">7.0</data>
+  <data key="d6">Các Developer phát triển ứng dụng cần thiết cho việc tối ưu hóa giao diện người dùng.</data>
+  <data key="d7">phát triển, ứng dụng</data>
+  <data key="d8">chunk-605b6859de26771b3e0b6218329c8700</data>
+  <data key="d9">6a2ca7b4-b00f-4da4-b7f5-d8d904a3db1b</data>
+</edge>
+<edge source="Front-End Developer" target="Web Applications">
+  <data key="d5">9.0</data>
+  <data key="d6">Front-End Developer phát triển các ứng dụng web tương tác để phục vụ người dùng.</data>
+  <data key="d7">phát triển ứng dụng, người dùng</data>
+  <data key="d8">chunk-561a67230527290661bce2f3ac0c3270</data>
+  <data key="d9">6a2ca7b4-b00f-4da4-b7f5-d8d904a3db1b</data>
+</edge>
+<edge source="Front-End Developer" target="Interactive Design">
+  <data key="d5">8.0</data>
+  <data key="d6">Front-End Developer áp dụng thiết kế tương tác trong quá trình phát triển ứng dụng nhằm nâng cao trải nghiệm người dùng.</data>
+  <data key="d7">thiết kế, trải nghiệm người dùng</data>
+  <data key="d8">chunk-561a67230527290661bce2f3ac0c3270</data>
+  <data key="d9">6a2ca7b4-b00f-4da4-b7f5-d8d904a3db1b</data>
+</edge>
+<edge source="Front-End Developer" target="User-Centric Design">
+  <data key="d5">8.0</data>
+  <data key="d6">Front-End Developer tập trung vào việc sử dụng thiết kế hướng tới người dùng để phát triển các ứng dụng hiệu quả hơn.</data>
+  <data key="d7">người dùng, thiết kế hướng tới</data>
+  <data key="d8">chunk-561a67230527290661bce2f3ac0c3270</data>
+  <data key="d9">6a2ca7b4-b00f-4da4-b7f5-d8d904a3db1b</data>
+</edge>
+<edge source="FPT University" target="Ha Noi">
+  <data key="d5">20.0</data>
+  <data key="d6">FPT University is located in Ha Noi, establishing a geographic link between the institution and the city.&lt;SEP&gt;FPT University tọa lạc tại Hà Nội, tạo ra một liên kết địa lý giữa cơ sở giáo dục và thành phố.</data>
+  <data key="d7">location, educational institution&lt;SEP&gt;vị trí, cơ sở giáo dục</data>
+  <data key="d8">chunk-be378201f5af795cd203fd69078be43a</data>
+  <data key="d9">6a2ca7b4-b00f-4da4-b7f5-d8d904a3db1b</data>
+</edge>
+<edge source="FPT University" target="Bachelor of Information Technology">
+  <data key="d5">18.0</data>
+  <data key="d6">FPT University cung cấp chương trình Cử nhân Công nghệ Thông tin như một phần trong chương trình đào tạo của mình.&lt;SEP&gt;FPT University offers the Bachelor of Information Technology as part of its academic programs.</data>
+  <data key="d7">academic offering, degree program&lt;SEP&gt;chương trình học, bằng cấp</data>
+  <data key="d8">chunk-be378201f5af795cd203fd69078be43a</data>
+  <data key="d9">6a2ca7b4-b00f-4da4-b7f5-d8d904a3db1b</data>
+</edge>
+<edge source="Univ. of Michigan" target="User Experience Research &amp; Design Specialization">
+  <data key="d5">16.0</data>
+  <data key="d6">Univ. of Michigan cung cấp chuyên ngành Nghiên cứu và Thiết kế Trải nghiệm Người dùng vào năm 2024.&lt;SEP&gt;Univ. of Michigan cung cấp chuyên ngành Nghiên cứu và Thiết kế Trải nghiệm Người dùng, tập trung vào thiết kế sản phẩm với trải nghiệm người dùng làm trung tâm.</data>
+  <data key="d7">học thuật, chương trình đào tạo</data>
+  <data key="d8">chunk-d49f402f217045048ff36382ce5891ce</data>
+  <data key="d9">6a2ca7b4-b00f-4da4-b7f5-d8d904a3db1b</data>
+</edge>
+<edge source="Univ. of Michigan" target="Web Design for Everybody Specialization">
+  <data key="d5">16.0</data>
+  <data key="d6">Univ. of Michigan cung cấp chuyên ngành Thiết kế Web cho Mọi Người vào năm 2023.&lt;SEP&gt;Univ. of Michigan cung cấp chuyên ngành Thiết kế Web cho Mọi Người, giúp người học xây dựng và thiết kế website.</data>
+  <data key="d7">học thuật, chương trình đào tạo</data>
+  <data key="d8">chunk-d49f402f217045048ff36382ce5891ce</data>
+  <data key="d9">6a2ca7b4-b00f-4da4-b7f5-d8d904a3db1b</data>
+</edge>
+<edge source="Univ. of Minnesota" target="Software Development Lifecycle Specialization">
+  <data key="d5">16.0</data>
+  <data key="d6">Univ. of Minnesota cung cấp chuyên ngành Vòng đời Phát triển Phần mềm vào năm 2023.&lt;SEP&gt;Univ. of Minnesota cung cấp chuyên ngành Vòng đời Phát triển Phần mềm, giúp người học hiểu về các giai đoạn phát triển phần mềm.</data>
+  <data key="d7">học thuật, chương trình đào tạo</data>
+  <data key="d8">chunk-d49f402f217045048ff36382ce5891ce</data>
+  <data key="d9">6a2ca7b4-b00f-4da4-b7f5-d8d904a3db1b</data>
+</edge>
+<edge source="User Experience Research &amp; Design Specialization" target="Web Design for Everybody Specialization">
+  <data key="d5">7.0</data>
+  <data key="d6">Cả hai chuyên ngành này đều thuộc Đại học Michigan, tập trung vào thiết kế và trải nghiệm kỹ thuật số.</data>
+  <data key="d7">sự liên kết học thuật, tập trung vào thiết kế</data>
+  <data key="d8">chunk-d49f402f217045048ff36382ce5891ce</data>
+  <data key="d9">6a2ca7b4-b00f-4da4-b7f5-d8d904a3db1b</data>
+</edge>
+<edge source="Team A" target="Nguyễn Văn B">
+  <data key="d5">9.0</data>
+  <data key="d6">Nguyễn Văn B lãnh đạo Team A và chịu trách nhiệm thực hiện các nhiệm vụ của nhóm.</data>
+  <data key="d7">lãnh đạo, trách nhiệm</data>
+  <data key="d8">chunk-4525cf2ecbb5dac18e3f1af961db9b92</data>
+  <data key="d9">6a2ca7b4-b00f-4da4-b7f5-d8d904a3db1b</data>
+</edge>
+<edge source="Team A" target="Dự án X">
+  <data key="d5">8.0</data>
+  <data key="d6">Team A đang thực hiện Dự án X để đạt được những mục tiêu cụ thể trong lĩnh vực nghiên cứu.</data>
+  <data key="d7">thực hiện, kế hoạch</data>
+  <data key="d8">chunk-4525cf2ecbb5dac18e3f1af961db9b92</data>
+  <data key="d9">6a2ca7b4-b00f-4da4-b7f5-d8d904a3db1b</data>
+</edge>
+<edge source="Dự án X" target="Kết quả Y">
+  <data key="d5">10.0</data>
+  <data key="d6">Kết quả Y là sản phẩm của Dự án X, thể hiện sự thành công trong việc thực hiện dự án.</data>
+  <data key="d7">thành công, kết quả</data>
+  <data key="d8">chunk-4525cf2ecbb5dac18e3f1af961db9b92</data>
+  <data key="d9">6a2ca7b4-b00f-4da4-b7f5-d8d904a3db1b</data>
+</edge>
+<edge source="Erudition" target="Duong Duc Trung">
+  <data key="d5">16.0</data>
+  <data key="d6">Duong Duc Trung là người thiết kế giao diện và phát triển front-end cho nền tảng Erudition.</data>
+  <data key="d7">trách nhiệm, vai trò</data>
+  <data key="d8">chunk-61981cd7ad7157fd25dd732f6652bbc8</data>
+  <data key="d9">6a2ca7b4-b00f-4da4-b7f5-d8d904a3db1b</data>
+</edge>
+<edge source="Erudition" target="FastAPI">
+  <data key="d5">9.0</data>
+  <data key="d6">Erudition áp dụng FastAPI để xây dựng API cho nền tảng chatbot.</data>
+  <data key="d7">công nghệ phát triển, API</data>
+  <data key="d8">chunk-61981cd7ad7157fd25dd732f6652bbc8</data>
+  <data key="d9">6a2ca7b4-b00f-4da4-b7f5-d8d904a3db1b</data>
+</edge>
+<edge source="Erudition" target="github.com/duongductrung1708/Zen-Writing">
+  <data key="d5">14.0</data>
+  <data key="d6">Erudition có mối liên hệ với dự án Zen-Writing thông qua liên kết GitHub của họ.&lt;SEP&gt;Tổ chức Erudition quản lý kho lưu trữ GitHub cho dự án Zen-Writing.</data>
+  <data key="d7">dự án, liên kết&lt;SEP&gt;quản lý, nguồn lực</data>
+  <data key="d8">chunk-b57f022b6811820954bb2ceed5073e51</data>
+  <data key="d9">6a2ca7b4-b00f-4da4-b7f5-d8d904a3db1b</data>
+</edge>
+<edge source="Erudition" target="han-zen-writing.vercel.app">
+  <data key="d5">14.0</data>
+  <data key="d6">Erudition có mối liên hệ với bản demo của dự án Zen-Writing qua liên kết đến trang web."&lt;/|&gt;"dự án, liên kết&lt;SEP&gt;Tổ chức Erudition cung cấp link đến bản demo của Zen-Writing."&lt;/|&gt;"dự án, trải nghiệm</data>
+  <data key="d7">7</data>
+  <data key="d8">chunk-b57f022b6811820954bb2ceed5073e51</data>
+  <data key="d9">6a2ca7b4-b00f-4da4-b7f5-d8d904a3db1b</data>
+</edge>
+<edge source="Erudition" target="Zen-Writing">
+  <data key="d5">8.0</data>
+  <data key="d6">Erudition là tổ chức đứng sau việc phát triển dự án Zen-Writing.</data>
+  <data key="d7">dự án, phát triển</data>
+  <data key="d8">chunk-b57f022b6811820954bb2ceed5073e51</data>
+  <data key="d9">6a2ca7b4-b00f-4da4-b7f5-d8d904a3db1b</data>
+</edge>
+<edge source="Erudition" target="2021 - 2025">
+  <data key="d5">6.0</data>
+  <data key="d6">Thời gian tổ chức Erudition hoạt động và thực hiện dự án Zen-Writing từ năm 2021 đến 2025.</data>
+  <data key="d7">thời gian, hoạt động</data>
+  <data key="d8">chunk-b57f022b6811820954bb2ceed5073e51</data>
+  <data key="d9">6a2ca7b4-b00f-4da4-b7f5-d8d904a3db1b</data>
+</edge>
+<edge source="Vivu-Go" target="Duong Duc Trung">
+  <data key="d5">16.0</data>
+  <data key="d6">Duong Duc Trung đã tham gia phát triển nền tảng Vivu-Go với vai trò tương tự như ở Erudition.</data>
+  <data key="d7">trách nhiệm, vai trò</data>
+  <data key="d8">chunk-61981cd7ad7157fd25dd732f6652bbc8</data>
+  <data key="d9">6a2ca7b4-b00f-4da4-b7f5-d8d904a3db1b</data>
+</edge>
+<edge source="Vivu-Go" target="Supabase">
+  <data key="d5">8.0</data>
+  <data key="d6">Vivu-Go sử dụng Supabase để quản lý cơ sở dữ liệu cho nền tảng lập kế hoạch chuyến đi.</data>
+  <data key="d7">công nghệ phát triển, cơ sở dữ liệu</data>
+  <data key="d8">chunk-61981cd7ad7157fd25dd732f6652bbc8</data>
+  <data key="d9">6a2ca7b4-b00f-4da4-b7f5-d8d904a3db1b</data>
+</edge>
+<edge source="Vivu-Go" target="Google Gemini API">
+  <data key="d5">7.0</data>
+  <data key="d6">Vivu-Go tích hợp Google Gemini API để cải thiện trải nghiệm lập kế hoạch chuyến đi.</data>
+  <data key="d7">tích hợp, trải nghiệm người dùng</data>
+  <data key="d8">chunk-61981cd7ad7157fd25dd732f6652bbc8</data>
+  <data key="d9">6a2ca7b4-b00f-4da4-b7f5-d8d904a3db1b</data>
+</edge>
+<edge source="Zen Writing" target="Duong Duc Trung">
+  <data key="d5">16.0</data>
+  <data key="d6">Dự án Zen Writing cũng có sự đóng góp của Duong Duc Trung trong vai trò phát triển ứng dụng.</data>
+  <data key="d7">trách nhiệm, vai trò</data>
+  <data key="d8">chunk-61981cd7ad7157fd25dd732f6652bbc8</data>
+  <data key="d9">6a2ca7b4-b00f-4da4-b7f5-d8d904a3db1b</data>
+</edge>
+<edge source="Zen Writing" target="Unsplash Search API">
+  <data key="d5">9.0</data>
+  <data key="d6">Zen Writing sử dụng Unsplash Search API để tìm kiếm hình ảnh cho người dùng dựa trên đầu vào.</data>
+  <data key="d7">tích hợp, tìm kiếm hình ảnh</data>
+  <data key="d8">chunk-61981cd7ad7157fd25dd732f6652bbc8</data>
+  <data key="d9">6a2ca7b4-b00f-4da4-b7f5-d8d904a3db1b</data>
+</edge>
+<edge source="github.com/duongductrung1708/Zen-Writing" target="Zen-Writing">
+  <data key="d5">7.0</data>
+  <data key="d6">Dự án Zen-Writing có một kho lưu trữ mã nguồn trên GitHub để người dùng có thể truy cập và đóng góp.</data>
+  <data key="d7">mã nguồn, cộng đồng</data>
+  <data key="d8">chunk-b57f022b6811820954bb2ceed5073e51</data>
+  <data key="d9">6a2ca7b4-b00f-4da4-b7f5-d8d904a3db1b</data>
+</edge>
+<edge source="han-zen-writing.vercel.app" target="Zen-Writing">
+  <data key="d5">7.0</data>
+  <data key="d6">Dự án Zen-Writing có một bản demo cho người dùng trải nghiệm trực tuyến.</data>
+  <data key="d7">trải nghiệm, demo</data>
+  <data key="d8">chunk-b57f022b6811820954bb2ceed5073e51</data>
+  <data key="d9">6a2ca7b4-b00f-4da4-b7f5-d8d904a3db1b</data>
+</edge>
+</graph></graphml>

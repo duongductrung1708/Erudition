@@ -87,12 +87,18 @@ class DocumentServices:
             # return content
             content_bytes = await StorageService.download_bytes(file_path)
             return content_bytes.decode("utf-8")
-        # except FileNotFoundError:
-        #     await ws_mng.send_status(db_obj.chatbot_id, "error", "An issue occurred while accessing the storage.")
-        #     raise FileNotFoundError(f"Markdown file not found at path: {file_path}")
+        except PermissionError as e:
+            logger.error(f"Permission error while downloading document: {e}")
+            await ws_mng.send_status(db_obj.chatbot_id, "error", "Storage access permission denied. Please contact administrator.")
+            raise ValueError(f"Storage access denied: {str(e)}")
+        except FileNotFoundError:
+            logger.error(f"File not found at path: {file_path}")
+            await ws_mng.send_status(db_obj.chatbot_id, "error", "Document file not found in storage.")
+            raise ValueError(f"Document file not found at path: {file_path}")
         except Exception as e:
             logger.error(f"Error while downloading document: {e}")
-            raise
+            await ws_mng.send_status(db_obj.chatbot_id, "error", "An error occurred while accessing document storage.")
+            raise ValueError(f"Failed to retrieve document content: {str(e)}")
 
     @staticmethod
     async def update_origin_content(document_id: str, markdown_text: str):
@@ -420,13 +426,16 @@ class DocumentServices:
                 elif status == DocStatus.FAILED:
                     raise Exception("Lightrag process failed")
                 elif status == "":
-                    await DocumentServices.delete_document_by_id(db_obj.id)
+                    # If status is empty, document was not enqueued properly
+                    await DocumentServicesMongo.update_document_status(document_id=db_obj.id, status=DocumentStatus.FAILED)
+                    await ws_mng.send_status(db_obj.chatbot_id, "error",
+                                              f"{db_obj.document_title} failed to index. Please try again.")
         except Exception as e:
-            print(e)
-            await DocumentServices.delete_document_by_id(db_obj.id, delete_in_posgres=False)
+            print(f"Error in lightrag_upload: {e}")
+            # Update status to FAILED instead of deleting
+            await DocumentServicesMongo.update_document_status(document_id=db_obj.id, status=DocumentStatus.FAILED)
             await ws_mng.send_status(db_obj.chatbot_id, "error",
-                                      f"{db_obj.document_title} upload failed. Please delete failed document and upload again")
-            await DocumentServicesMongo.update_document(document_id=db_obj.id, update_data={"status": DocumentStatus.FAILED, "latest_modified": datetime.now()})
+                                      f"{db_obj.document_title} upload failed. You can try to re-index or delete it manually.")
 
     @staticmethod
     async def get_documents_by_chatbot_id(chatbot_id: str) -> list[DocumentModel]:

@@ -2,8 +2,9 @@
 Users routes for MongoDB
 Replaces users.py (PostgreSQL version)
 """
-from fastapi import APIRouter, HTTPException, Request
+from fastapi import APIRouter, HTTPException, Request, Query
 from typing import Any
+from datetime import datetime
 
 from app.api.deps_mongo import CurrentUser
 from app.core.security import verify_password, get_password_hash
@@ -369,4 +370,81 @@ async def payment_return(
         "vnp_BankTranNo": vnp_BankTranNo,
         "vnp_CardType": vnp_CardType,
     }
+
+
+@router.get("/payment_history")
+async def get_payment_history(
+    current_user: CurrentUser,
+    chatbot_id: str,
+    created_from: datetime | None = None,
+    created_to: datetime | None = None,
+) -> Any:
+    """
+    Get payment history (top-up history) for a specific chatbot.
+    Returns all top-up transactions for the chatbot.
+    """
+    from zoneinfo import ZoneInfo
+    from app.services.ChatbotServicesMongo import ChatbotServicesMongo
+    
+    # Validate chatbot exists and user has access
+    chatbot = await ChatbotServicesMongo.get_chatbot_by_id(chatbot_id=chatbot_id)
+    if not chatbot:
+        raise HTTPException(status_code=404, detail="Chatbot not found")
+    
+    # Check authorization: user must be owner or invited user, or admin
+    if not current_user.is_admin:
+        if chatbot.owner_id != current_user.id and current_user.id not in chatbot.get("invited_user_ids", []):
+            raise HTTPException(
+                status_code=403,
+                detail="You don't have permission to view payment history for this chatbot"
+            )
+    
+    # Build query filter
+    query_filter = {"chatbot_id": chatbot_id}
+    
+    # Add date filters if provided
+    if created_from or created_to:
+        date_filter = {}
+        if created_from:
+            # Normalize to timezone-aware
+            if created_from.tzinfo is None:
+                created_from = created_from.replace(tzinfo=ZoneInfo("UTC"))
+            else:
+                created_from = created_from.astimezone(ZoneInfo("UTC"))
+            date_filter["$gte"] = created_from
+        if created_to:
+            # Normalize to timezone-aware
+            if created_to.tzinfo is None:
+                created_to = created_to.replace(tzinfo=ZoneInfo("UTC"))
+            else:
+                created_to = created_to.astimezone(ZoneInfo("UTC"))
+            date_filter["$lte"] = created_to
+        if date_filter:
+            query_filter["created_at"] = date_filter
+    
+    # Get top-up histories from MongoDB
+    cursor = mongo_context.top_up_histories.find(query_filter).sort("created_at", -1)
+    
+    histories = []
+    async for doc in cursor:
+        # Convert _id to id if needed
+        if "_id" in doc:
+            if "id" not in doc or doc.get("id") is None:
+                doc["id"] = str(doc["_id"])
+            del doc["_id"]
+        
+        # Convert datetime objects to ISO strings for JSON serialization
+        if "created_at" in doc and doc["created_at"]:
+            if isinstance(doc["created_at"], datetime):
+                doc["created_at"] = doc["created_at"].isoformat()
+        if "pay_date" in doc and doc["pay_date"]:
+            if isinstance(doc["pay_date"], datetime):
+                doc["pay_date"] = doc["pay_date"].isoformat()
+        if "updated_at" in doc and doc["updated_at"]:
+            if isinstance(doc["updated_at"], datetime):
+                doc["updated_at"] = doc["updated_at"].isoformat()
+        
+        histories.append(doc)
+    
+    return histories
 

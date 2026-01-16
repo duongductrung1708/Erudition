@@ -9,7 +9,7 @@ from datetime import datetime
 print("[DOCUMENTS_MONGO] Starting imports...")
 sys.stdout.flush()
 
-from fastapi import APIRouter, UploadFile, File, HTTPException, Form, BackgroundTasks, Request
+from fastapi import APIRouter, UploadFile, File, HTTPException, Form, BackgroundTasks, Request, Query
 print("[DOCUMENTS_MONGO] FastAPI imported")
 sys.stdout.flush()
 
@@ -88,15 +88,70 @@ async def lightrag_process(
     background_tasks: BackgroundTasks,
     request: Request
 ):
-    """LightRAG upload endpoint"""
+    """LightRAG upload endpoint - Process and index document"""
+    from app.services.DocumentServices import DocumentServices
+    from app.services.ChatbotServicesMongo import ChatbotServicesMongo
+    
+    # Validate chatbot exists and user has access
+    chatbot = await ChatbotServicesMongo.get_chatbot_by_id(chatbot_id=chatbot_id)
+    if not chatbot:
+        raise HTTPException(status_code=404, detail="Chatbot not found")
+    
+    if chatbot.owner_id != current_user.id and current_user.id not in chatbot.get("invited_user_ids", []):
+        raise HTTPException(
+            status_code=403,
+            detail="You don't have permission to process documents for this chatbot"
+        )
+    
+    # Parse request payload
+    # Frontend sends: JSON.stringify({ payload: { data, title, use_gen_qa, id } })
     payload = await request.json()
-    items = payload.get("payload", [])
+    items = payload.get("payload", {})
+    
+    # Extract fields from payload
     use_gen_qa = items.get("use_gen_qa", False)
     doc_id = items.get("id")
+    document_data = items.get("data", "")
+    document_title = items.get("title", "")
     
-    # TODO: Update DocumentServices.background_process_and_upload to use MongoDB
-    # For now, return placeholder
-    return {"message": "Document upload in progress. We will notify you once it's complete."}
+    if not doc_id:
+        raise HTTPException(status_code=400, detail="Document ID is required")
+    
+    if not document_data:
+        raise HTTPException(status_code=400, detail="Document data is required")
+    
+    # Get document from database
+    document = await DocumentServicesMongo.get_document_by_id(document_id=doc_id)
+    if not document:
+        raise HTTPException(status_code=404, detail="Document not found")
+    
+    if document.chatbot_id != chatbot_id:
+        raise HTTPException(
+            status_code=400,
+            detail="Document does not belong to this chatbot"
+        )
+    
+    # Check if chatbot has enough tokens
+    if chatbot.remaining_tokens == 0:
+        raise HTTPException(
+            status_code=409,
+            detail="Token balance is 0, cannot index document"
+        )
+    
+    # Add background task to process and index document
+    background_tasks.add_task(
+        DocumentServices.background_process_and_upload,
+        data=document_data,
+        chatbot_id=chatbot_id,
+        document_title=document_title or document.document_title,
+        use_gen_qa=use_gen_qa,
+        document_id=doc_id
+    )
+    
+    return {
+        "message": "Document indexing started. Processing will continue in background.",
+        "document_id": doc_id
+    }
 
 
 @router.post("/{chatbot_id}/document-load-to-markdown")
@@ -111,6 +166,14 @@ async def upload_document(
     chatbot = await ChatbotServicesMongo.get_chatbot_by_id(chatbot_id=chatbot_id)
     if not chatbot:
         raise HTTPException(status_code=404, detail="Chatbot not found")
+    
+    # Check authorization: user must be owner or invited user
+    if chatbot.owner_id != current_user.id and current_user.id not in chatbot.get("invited_user_ids", []):
+        raise HTTPException(
+            status_code=403,
+            detail="You don't have permission to upload documents to this chatbot"
+        )
+    
     if chatbot.remaining_tokens == 0:
         raise HTTPException(status_code=409, detail="Token balance is 0, can not upload!")
     
@@ -147,16 +210,51 @@ async def upload_document(
 @router.get("/get-original-content")
 async def get_original_content(
     current_user: CurrentUser,
-    document_id: str
+    document_id: str = Query(..., description="Document ID (UUID or MongoDB ObjectId)")
 ):
     """Get original content of a document"""
     # Lazy import to avoid blocking on module import
     from app.services.DocumentServices import DocumentServices
+    from app.services.DocumentServicesMongo import DocumentServicesMongo
+    
+    # Check if document exists and user has access
+    document = await DocumentServicesMongo.get_document_by_id(document_id=document_id)
+    if not document:
+        raise HTTPException(status_code=404, detail="Document not found")
+    
+    # Check authorization: user must have access to the chatbot
+    from app.services.ChatbotServicesMongo import ChatbotServicesMongo
+    chatbot = await ChatbotServicesMongo.get_chatbot_by_id(chatbot_id=document.chatbot_id)
+    if not chatbot:
+        raise HTTPException(status_code=404, detail="Chatbot not found")
+    
+    if chatbot.owner_id != current_user.id and current_user.id not in chatbot.get("invited_user_ids", []) and not current_user.is_admin:
+        raise HTTPException(
+            status_code=403,
+            detail="You don't have permission to view this document"
+        )
+    
+    # Call service method with string ID (it will handle both UUID and ObjectId)
     try:
-        doc_uuid = uuid.UUID(document_id)
-        return await DocumentServices.get_document_origin_content(doc_uuid)
-    except ValueError:
-        raise HTTPException(status_code=400, detail="Invalid document ID format")
+        return await DocumentServices.get_document_origin_content(document_id)
+    except ValueError as e:
+        # Handle storage access errors and file not found errors
+        error_msg = str(e)
+        if "Storage access denied" in error_msg or "Permission" in error_msg:
+            raise HTTPException(
+                status_code=403,
+                detail=f"Storage access denied. Please check AWS S3 permissions. {error_msg}"
+            )
+        elif "not found" in error_msg.lower():
+            raise HTTPException(
+                status_code=404,
+                detail=error_msg
+            )
+        else:
+            raise HTTPException(
+                status_code=500,
+                detail=f"Failed to retrieve document content: {error_msg}"
+            )
 
 
 @router.post("/ai-reconstruct-tables-of-a-document")

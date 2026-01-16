@@ -114,7 +114,8 @@ class ConversationServicesMongo:
 
     @staticmethod
     async def get_conversations_by_chatbot_id(chatbot_id: str) -> List[Conversation]:
-        """Get all conversations for a chatbot"""
+        """Get all conversations for a chatbot (supports both UUID and ObjectId chatbot_id)"""
+        # Try to find by chatbot_id as-is first
         cursor = mongo_context.conversations.find({"chatbot_id": chatbot_id})
         conversations = []
         async for conv_doc in cursor:

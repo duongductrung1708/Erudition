@@ -20171,3 +20171,566 @@ You are a helpful assistant tas...
 2026-01-15 15:05:15,546 - lightrag - INFO - Query nodes: Hi, top_k: 60, cosine: 0.2
 2026-01-15 15:05:15,562 - lightrag - INFO - Query edges: Greeting, top_k: 60, cosine: 0.2
 2026-01-15 15:05:59,600 - lightrag - INFO - Creating a new event loop in main thread.
+2026-01-16 11:16:41,171 - lightrag - ERROR - Error while downloading document: An error occurred (AccessDenied) when calling the GetObject operation: User: arn:aws:iam::201981101436:user/admin is not authorized to perform: s3:GetObject on resource: "arn:aws:s3:::erudition/03edc83f-9789-4fd6-840b-c17500c80289/full_docs/d769f0f0-5d99-41ae-8964-abd3f0e11f3f.md" with an explicit deny in an identity-based policy
+2026-01-16 11:19:04,744 - lightrag - ERROR - Permission error while downloading document: Access denied to S3 resource. Please check AWS IAM permissions for s3:GetObject on bucket 'erudition'. Original error: An error occurred (AccessDenied) when calling the GetObject operation: User: arn:aws:iam::201981101436:user/admin is not authorized to perform: s3:GetObject on resource: "arn:aws:s3:::erudition/03edc83f-9789-4fd6-840b-c17500c80289/full_docs/d769f0f0-5d99-41ae-8964-abd3f0e11f3f.md" with an explicit deny in an identity-based policy
+2026-01-16 11:42:44,063 - lightrag - DEBUG - LightRAG init with param:
+  working_dir = E:\WED\Erudition\backend\app\rag_database\03edc83f-9789-4fd6-840b-c17500c80289,
+  kv_storage = JsonKVStorage,
+  vector_storage = ChromaVectorDBStorage,
+  graph_storage = NetworkXStorage,
+  doc_status_storage = JsonDocStatusStorage,
+  log_level = None,
+  log_file_path = None,
+  entity_extract_max_gleaning = 1,
+  entity_summary_to_max_tokens = 500,
+  chunk_token_size = 1200,
+  chunk_overlap_token_size = 100,
+  tiktoken_model_name = gpt-4o-mini,
+  chunking_func = <function chunking_by_token_size at 0x00000217AC693A30>,
+  node_embedding_algorithm = node2vec,
+  node2vec_params = {'dimensions': 1536, 'num_walks': 10, 'walk_length': 40, 'window_size': 2, 'iterations': 3, 'random_seed': 3},
+  embedding_func = {'embedding_dim': 1536, 'max_token_size': 8192, 'func': <function openai_embed at 0x00000217D1183520>},
+  embedding_batch_num = 100,
+  embedding_func_max_async = 100,
+  embedding_cache_config = {'enabled': False, 'similarity_threshold': 0.95, 'use_llm_check': False},
+  llm_model_func = <function gpt_4o_mini_complete at 0x00000217D1183910>,
+  llm_model_name = gpt-4o-mini,
+  llm_model_max_token_size = 32768,
+  llm_model_max_async = 4,
+  llm_model_kwargs = {},
+  vector_db_storage_cls_kwargs = {'cosine_better_than_threshold': 0.2, 'local_path': 'E:\\WED\\Erudition\\backend\\app\\rag_database\\03edc83f-9789-4fd6-840b-c17500c80289/vector_storage', 'collection_settings': {'hnsw:space': 'cosine', 'hnsw:construction_ef': 128, 'hnsw:search_ef': 128, 'hnsw:M': 16, 'hnsw:batch_size': 100, 'hnsw:sync_threshold': 1000}},
+  namespace_prefix = ,
+  enable_llm_cache = True,
+  enable_llm_cache_for_entity_extract = True,
+  max_parallel_insert = 100,
+  addon_params = {'language': 'Vietnamese'},
+  auto_manage_storages_states = True,
+  convert_response_to_json_func = <function convert_response_to_json at 0x00000217AC844040>,
+  cosine_better_than_threshold = 0.2,
+  _storages_status = not_created
+
+2026-01-16 11:42:58,661 - lightrag - INFO - Created new empty graph
+2026-01-16 11:42:59,038 - lightrag - INFO - Process 29884 KV load full_docs with 0 records
+2026-01-16 11:42:59,049 - lightrag - INFO - Process 29884 KV load text_chunks with 0 records
+2026-01-16 11:42:59,070 - lightrag - INFO - Process 29884 KV load llm_response_cache with 1 records
+2026-01-16 11:42:59,079 - lightrag - INFO - Process 29884 doc status load doc_status with 0 records
+2026-01-16 11:42:59,115 - lightrag - DEBUG - Initialized Storages
+2026-01-16 11:42:59,121 - lightrag - INFO - Inserting 1 records to doc_status
+2026-01-16 11:43:01,717 - lightrag - INFO - Process 29884 doc status writting 1 records to doc_status
+2026-01-16 11:43:01,724 - lightrag - INFO - Stored 1 new unique documents
+2026-01-16 11:43:01,726 - lightrag - DEBUG - Initialized Storages
+2026-01-16 11:43:01,727 - lightrag - INFO - Storage Initialization completed!
+2026-01-16 11:43:01,729 - lightrag - INFO - Processing 1 document(s) in 1 batches
+2026-01-16 11:43:01,731 - lightrag - INFO - Start processing batch 1 of 1.
+2026-01-16 11:43:01,913 - lightrag - INFO - Inserting 1 records to doc_status
+2026-01-16 11:43:01,921 - lightrag - INFO - Process 29884 doc status writting 1 records to doc_status
+2026-01-16 11:43:01,928 - lightrag - INFO - Inserting 16 to chunks
+2026-01-16 11:43:01,929 - lightrag - INFO - Inserting 1 records to full_docs
+2026-01-16 11:43:01,936 - lightrag - INFO - Inserting 16 records to text_chunks
+2026-01-16 11:43:01,957 - lightrag - DEBUG - Non-embedding cached missed(mode:default type:extract)
+2026-01-16 11:43:01,968 - lightrag - DEBUG - ===== Sending Query to LLM =====
+2026-01-16 11:43:01,968 - lightrag - DEBUG - Model: gpt-4o-mini   Base URL: None
+2026-01-16 11:43:01,968 - lightrag - DEBUG - Additional kwargs: {}
+2026-01-16 11:43:01,969 - lightrag - DEBUG - Query: ---Goal---
+Given a text document that is po...
+2026-01-16 11:43:01,969 - lightrag - DEBUG - System prompt: None
+2026-01-16 11:43:01,977 - lightrag - DEBUG - Non-embedding cached missed(mode:default type:extract)
+2026-01-16 11:43:01,988 - lightrag - DEBUG - ===== Sending Query to LLM =====
+2026-01-16 11:43:01,989 - lightrag - DEBUG - Model: gpt-4o-mini   Base URL: None
+2026-01-16 11:43:01,989 - lightrag - DEBUG - Additional kwargs: {}
+2026-01-16 11:43:01,989 - lightrag - DEBUG - Query: ---Goal---
+Given a text document that is po...
+2026-01-16 11:43:01,989 - lightrag - DEBUG - System prompt: None
+2026-01-16 11:43:01,994 - lightrag - DEBUG - Non-embedding cached missed(mode:default type:extract)
+2026-01-16 11:43:02,005 - lightrag - DEBUG - ===== Sending Query to LLM =====
+2026-01-16 11:43:02,005 - lightrag - DEBUG - Model: gpt-4o-mini   Base URL: None
+2026-01-16 11:43:02,005 - lightrag - DEBUG - Additional kwargs: {}
+2026-01-16 11:43:02,005 - lightrag - DEBUG - Query: ---Goal---
+Given a text document that is po...
+2026-01-16 11:43:02,006 - lightrag - DEBUG - System prompt: None
+2026-01-16 11:43:02,011 - lightrag - DEBUG - Non-embedding cached missed(mode:default type:extract)
+2026-01-16 11:43:02,021 - lightrag - DEBUG - ===== Sending Query to LLM =====
+2026-01-16 11:43:02,022 - lightrag - DEBUG - Model: gpt-4o-mini   Base URL: None
+2026-01-16 11:43:02,022 - lightrag - DEBUG - Additional kwargs: {}
+2026-01-16 11:43:02,022 - lightrag - DEBUG - Query: ---Goal---
+Given a text document that is po...
+2026-01-16 11:43:02,022 - lightrag - DEBUG - System prompt: None
+2026-01-16 11:43:02,026 - lightrag - DEBUG - Non-embedding cached missed(mode:default type:extract)
+2026-01-16 11:43:02,026 - lightrag - DEBUG - Non-embedding cached missed(mode:default type:extract)
+2026-01-16 11:43:02,027 - lightrag - DEBUG - Non-embedding cached missed(mode:default type:extract)
+2026-01-16 11:43:02,028 - lightrag - DEBUG - Non-embedding cached missed(mode:default type:extract)
+2026-01-16 11:43:02,028 - lightrag - DEBUG - Non-embedding cached missed(mode:default type:extract)
+2026-01-16 11:43:02,029 - lightrag - DEBUG - Non-embedding cached missed(mode:default type:extract)
+2026-01-16 11:43:02,029 - lightrag - DEBUG - Non-embedding cached missed(mode:default type:extract)
+2026-01-16 11:43:02,030 - lightrag - DEBUG - Non-embedding cached missed(mode:default type:extract)
+2026-01-16 11:43:02,030 - lightrag - DEBUG - Non-embedding cached missed(mode:default type:extract)
+2026-01-16 11:43:02,030 - lightrag - DEBUG - Non-embedding cached missed(mode:default type:extract)
+2026-01-16 11:43:02,031 - lightrag - DEBUG - Non-embedding cached missed(mode:default type:extract)
+2026-01-16 11:43:02,031 - lightrag - DEBUG - Non-embedding cached missed(mode:default type:extract)
+2026-01-16 11:43:02,287 - lightrag - ERROR - Failed to process document doc-5e5fef66436d1101b9d284ed0c57610c: 'Document' object has no attribute 'chatbot'
+2026-01-16 11:43:02,293 - lightrag - INFO - Inserting 1 records to doc_status
+2026-01-16 11:43:02,301 - lightrag - INFO - Process 29884 doc status writting 1 records to doc_status
+2026-01-16 11:43:02,377 - lightrag - INFO - Process 29884 KV writting 1 records to full_docs
+2026-01-16 11:43:02,387 - lightrag - INFO - Process 29884 KV writting 16 records to text_chunks
+2026-01-16 11:43:02,395 - lightrag - INFO - Writing graph with 0 nodes, 0 edges
+2026-01-16 11:43:02,403 - lightrag - INFO - In memory DB persist to disk
+2026-01-16 11:43:02,403 - lightrag - INFO - Completed batch 1 of 1.
+2026-01-16 11:43:02,405 - lightrag - INFO - Document processing pipeline completed
+2026-01-16 11:43:02,834 - lightrag - DEBUG - Starting deletion for document doc-5e5fef66436d1101b9d284ed0c57610c
+2026-01-16 11:43:02,836 - lightrag - DEBUG - Found 16 chunks to delete
+2026-01-16 11:43:02,850 - lightrag - DEBUG - Chunk chunk-aed25bb5ad812adc5f367cb55ddc46f4 has 0 related entities
+2026-01-16 11:43:02,852 - lightrag - DEBUG - Chunk chunk-aed25bb5ad812adc5f367cb55ddc46f4 has 0 related relations
+2026-01-16 11:43:02,854 - lightrag - DEBUG - Chunk chunk-b57f022b6811820954bb2ceed5073e51 has 0 related entities
+2026-01-16 11:43:02,857 - lightrag - DEBUG - Chunk chunk-b57f022b6811820954bb2ceed5073e51 has 0 related relations
+2026-01-16 11:43:02,858 - lightrag - DEBUG - Chunk chunk-e701a690c65d8ae698d3c67f993910b7 has 0 related entities
+2026-01-16 11:43:02,861 - lightrag - DEBUG - Chunk chunk-e701a690c65d8ae698d3c67f993910b7 has 0 related relations
+2026-01-16 11:43:02,863 - lightrag - DEBUG - Chunk chunk-958b222855c03630a1fd27e95c26fbd7 has 0 related entities
+2026-01-16 11:43:02,865 - lightrag - DEBUG - Chunk chunk-958b222855c03630a1fd27e95c26fbd7 has 0 related relations
+2026-01-16 11:43:02,867 - lightrag - DEBUG - Chunk chunk-566f60a230a0eedd8d7f8a548e0da62d has 0 related entities
+2026-01-16 11:43:02,869 - lightrag - DEBUG - Chunk chunk-566f60a230a0eedd8d7f8a548e0da62d has 0 related relations
+2026-01-16 11:43:02,871 - lightrag - DEBUG - Chunk chunk-5a416d2e9ad4340532548b2e68a0ebda has 0 related entities
+2026-01-16 11:43:02,873 - lightrag - DEBUG - Chunk chunk-5a416d2e9ad4340532548b2e68a0ebda has 0 related relations
+2026-01-16 11:43:02,875 - lightrag - DEBUG - Chunk chunk-605b6859de26771b3e0b6218329c8700 has 0 related entities
+2026-01-16 11:43:02,877 - lightrag - DEBUG - Chunk chunk-605b6859de26771b3e0b6218329c8700 has 0 related relations
+2026-01-16 11:43:02,878 - lightrag - DEBUG - Chunk chunk-879e57089f988e388f681b5aa4c734e6 has 0 related entities
+2026-01-16 11:43:02,881 - lightrag - DEBUG - Chunk chunk-879e57089f988e388f681b5aa4c734e6 has 0 related relations
+2026-01-16 11:43:02,883 - lightrag - DEBUG - Chunk chunk-0cc32922444243a72e212e863be2014a has 0 related entities
+2026-01-16 11:43:02,885 - lightrag - DEBUG - Chunk chunk-0cc32922444243a72e212e863be2014a has 0 related relations
+2026-01-16 11:43:02,887 - lightrag - DEBUG - Chunk chunk-d49f402f217045048ff36382ce5891ce has 0 related entities
+2026-01-16 11:43:02,890 - lightrag - DEBUG - Chunk chunk-d49f402f217045048ff36382ce5891ce has 0 related relations
+2026-01-16 11:43:02,892 - lightrag - DEBUG - Chunk chunk-561a67230527290661bce2f3ac0c3270 has 0 related entities
+2026-01-16 11:43:02,894 - lightrag - DEBUG - Chunk chunk-561a67230527290661bce2f3ac0c3270 has 0 related relations
+2026-01-16 11:43:02,896 - lightrag - DEBUG - Chunk chunk-a8ddcad50ea184422a12263307b11a39 has 0 related entities
+2026-01-16 11:43:02,898 - lightrag - DEBUG - Chunk chunk-a8ddcad50ea184422a12263307b11a39 has 0 related relations
+2026-01-16 11:43:02,900 - lightrag - DEBUG - Chunk chunk-4525cf2ecbb5dac18e3f1af961db9b92 has 0 related entities
+2026-01-16 11:43:02,902 - lightrag - DEBUG - Chunk chunk-4525cf2ecbb5dac18e3f1af961db9b92 has 0 related relations
+2026-01-16 11:43:02,904 - lightrag - DEBUG - Chunk chunk-be378201f5af795cd203fd69078be43a has 0 related entities
+2026-01-16 11:43:02,906 - lightrag - DEBUG - Chunk chunk-be378201f5af795cd203fd69078be43a has 0 related relations
+2026-01-16 11:43:02,908 - lightrag - DEBUG - Chunk chunk-61981cd7ad7157fd25dd732f6652bbc8 has 0 related entities
+2026-01-16 11:43:02,910 - lightrag - DEBUG - Chunk chunk-61981cd7ad7157fd25dd732f6652bbc8 has 0 related relations
+2026-01-16 11:43:02,912 - lightrag - DEBUG - Chunk chunk-7ba071e96df534d3e89d1e6a171012f6 has 0 related entities
+2026-01-16 11:43:02,914 - lightrag - DEBUG - Chunk chunk-7ba071e96df534d3e89d1e6a171012f6 has 0 related relations
+2026-01-16 11:43:02,914 - lightrag - INFO - Deleting 16 vectors from chunks
+2026-01-16 11:43:02,934 - lightrag - DEBUG - Successfully deleted 16 vectors from chunks
+2026-01-16 11:43:02,943 - lightrag - INFO - Process 29884 KV writting 0 records to text_chunks
+2026-01-16 11:43:02,959 - lightrag - INFO - Process 29884 KV writting 0 records to full_docs
+2026-01-16 11:43:02,972 - lightrag - INFO - Process 29884 doc status writting 0 records to doc_status
+2026-01-16 11:43:02,982 - lightrag - INFO - Writing graph with 0 nodes, 0 edges
+2026-01-16 11:43:02,991 - lightrag - INFO - In memory DB persist to disk
+2026-01-16 11:43:02,991 - lightrag - INFO - Successfully deleted document doc-5e5fef66436d1101b9d284ed0c57610c and related data. Deleted 0 entities and 0 relationships. Updated 0 entities and 0 relationships.
+2026-01-16 11:45:19,176 - lightrag - INFO - Creating a new event loop in main thread.
+2026-01-16 11:45:19,177 - lightrag - DEBUG - Finalized Storages
+2026-01-16 11:56:22,067 - lightrag - ERROR - Error while downloading document: An error occurred (NoSuchKey) when calling the GetObject operation: The specified key does not exist.
+2026-01-16 11:59:04,350 - lightrag - ERROR - Error while downloading document: An error occurred (NoSuchKey) when calling the GetObject operation: The specified key does not exist.
+2026-01-16 12:00:54,833 - lightrag - ERROR - Error while downloading document: An error occurred (NoSuchKey) when calling the GetObject operation: The specified key does not exist.
+2026-01-16 12:02:33,398 - lightrag - DEBUG - LightRAG init with param:
+  working_dir = E:\WED\Erudition\backend\app\rag_database\03edc83f-9789-4fd6-840b-c17500c80289,
+  kv_storage = JsonKVStorage,
+  vector_storage = ChromaVectorDBStorage,
+  graph_storage = NetworkXStorage,
+  doc_status_storage = JsonDocStatusStorage,
+  log_level = None,
+  log_file_path = None,
+  entity_extract_max_gleaning = 1,
+  entity_summary_to_max_tokens = 500,
+  chunk_token_size = 1200,
+  chunk_overlap_token_size = 100,
+  tiktoken_model_name = gpt-4o-mini,
+  chunking_func = <function chunking_by_token_size at 0x000002562FE00D30>,
+  node_embedding_algorithm = node2vec,
+  node2vec_params = {'dimensions': 1536, 'num_walks': 10, 'walk_length': 40, 'window_size': 2, 'iterations': 3, 'random_seed': 3},
+  embedding_func = {'embedding_dim': 1536, 'max_token_size': 8192, 'func': <function openai_embed at 0x0000025654DA1AB0>},
+  embedding_batch_num = 100,
+  embedding_func_max_async = 100,
+  embedding_cache_config = {'enabled': False, 'similarity_threshold': 0.95, 'use_llm_check': False},
+  llm_model_func = <function gpt_4o_mini_complete at 0x0000025654D61630>,
+  llm_model_name = gpt-4o-mini,
+  llm_model_max_token_size = 32768,
+  llm_model_max_async = 4,
+  llm_model_kwargs = {},
+  vector_db_storage_cls_kwargs = {'cosine_better_than_threshold': 0.2, 'local_path': 'E:\\WED\\Erudition\\backend\\app\\rag_database\\03edc83f-9789-4fd6-840b-c17500c80289/vector_storage', 'collection_settings': {'hnsw:space': 'cosine', 'hnsw:construction_ef': 128, 'hnsw:search_ef': 128, 'hnsw:M': 16, 'hnsw:batch_size': 100, 'hnsw:sync_threshold': 1000}},
+  namespace_prefix = ,
+  enable_llm_cache = True,
+  enable_llm_cache_for_entity_extract = True,
+  max_parallel_insert = 100,
+  addon_params = {'language': 'Vietnamese'},
+  auto_manage_storages_states = True,
+  convert_response_to_json_func = <function convert_response_to_json at 0x000002562FE01F30>,
+  cosine_better_than_threshold = 0.2,
+  _storages_status = not_created
+
+2026-01-16 12:02:42,995 - lightrag - INFO - Loaded graph from E:\WED\Erudition\backend\app\rag_database\03edc83f-9789-4fd6-840b-c17500c80289\graph_chunk_entity_relation.graphml with 0 nodes, 0 edges
+2026-01-16 12:02:43,227 - lightrag - INFO - Process 41704 KV load full_docs with 0 records
+2026-01-16 12:02:43,236 - lightrag - INFO - Process 41704 KV load text_chunks with 0 records
+2026-01-16 12:02:43,252 - lightrag - INFO - Process 41704 KV load llm_response_cache with 1 records
+2026-01-16 12:02:43,260 - lightrag - INFO - Process 41704 doc status load doc_status with 0 records
+2026-01-16 12:02:43,289 - lightrag - DEBUG - Initialized Storages
+2026-01-16 12:02:43,295 - lightrag - INFO - Inserting 1 records to doc_status
+2026-01-16 12:02:45,789 - lightrag - INFO - Process 41704 doc status writting 1 records to doc_status
+2026-01-16 12:02:45,795 - lightrag - INFO - Stored 1 new unique documents
+2026-01-16 12:02:45,796 - lightrag - DEBUG - Initialized Storages
+2026-01-16 12:02:45,798 - lightrag - INFO - Storage Initialization completed!
+2026-01-16 12:02:45,800 - lightrag - INFO - Processing 1 document(s) in 1 batches
+2026-01-16 12:02:45,802 - lightrag - INFO - Start processing batch 1 of 1.
+2026-01-16 12:02:46,668 - lightrag - INFO - Inserting 1 records to doc_status
+2026-01-16 12:02:46,675 - lightrag - INFO - Process 41704 doc status writting 1 records to doc_status
+2026-01-16 12:02:46,681 - lightrag - INFO - Inserting 16 to chunks
+2026-01-16 12:02:46,682 - lightrag - INFO - Inserting 1 records to full_docs
+2026-01-16 12:02:46,689 - lightrag - INFO - Inserting 16 records to text_chunks
+2026-01-16 12:02:46,708 - lightrag - DEBUG - Non-embedding cached missed(mode:default type:extract)
+2026-01-16 12:02:46,721 - lightrag - DEBUG - ===== Sending Query to LLM =====
+2026-01-16 12:02:46,721 - lightrag - DEBUG - Model: gpt-4o-mini   Base URL: None
+2026-01-16 12:02:46,722 - lightrag - DEBUG - Additional kwargs: {}
+2026-01-16 12:02:46,722 - lightrag - DEBUG - Query: ---Goal---
+Given a text document that is po...
+2026-01-16 12:02:46,722 - lightrag - DEBUG - System prompt: None
+2026-01-16 12:02:46,728 - lightrag - DEBUG - Non-embedding cached missed(mode:default type:extract)
+2026-01-16 12:02:46,745 - lightrag - DEBUG - ===== Sending Query to LLM =====
+2026-01-16 12:02:46,746 - lightrag - DEBUG - Model: gpt-4o-mini   Base URL: None
+2026-01-16 12:02:46,746 - lightrag - DEBUG - Additional kwargs: {}
+2026-01-16 12:02:46,746 - lightrag - DEBUG - Query: ---Goal---
+Given a text document that is po...
+2026-01-16 12:02:46,746 - lightrag - DEBUG - System prompt: None
+2026-01-16 12:02:46,755 - lightrag - DEBUG - Non-embedding cached missed(mode:default type:extract)
+2026-01-16 12:02:46,766 - lightrag - DEBUG - ===== Sending Query to LLM =====
+2026-01-16 12:02:46,767 - lightrag - DEBUG - Model: gpt-4o-mini   Base URL: None
+2026-01-16 12:02:46,767 - lightrag - DEBUG - Additional kwargs: {}
+2026-01-16 12:02:46,767 - lightrag - DEBUG - Query: ---Goal---
+Given a text document that is po...
+2026-01-16 12:02:46,767 - lightrag - DEBUG - System prompt: None
+2026-01-16 12:02:46,771 - lightrag - DEBUG - Non-embedding cached missed(mode:default type:extract)
+2026-01-16 12:02:46,784 - lightrag - DEBUG - ===== Sending Query to LLM =====
+2026-01-16 12:02:46,784 - lightrag - DEBUG - Model: gpt-4o-mini   Base URL: None
+2026-01-16 12:02:46,784 - lightrag - DEBUG - Additional kwargs: {}
+2026-01-16 12:02:46,785 - lightrag - DEBUG - Query: ---Goal---
+Given a text document that is po...
+2026-01-16 12:02:46,785 - lightrag - DEBUG - System prompt: None
+2026-01-16 12:02:46,789 - lightrag - DEBUG - Non-embedding cached missed(mode:default type:extract)
+2026-01-16 12:02:46,790 - lightrag - DEBUG - Non-embedding cached missed(mode:default type:extract)
+2026-01-16 12:02:46,791 - lightrag - DEBUG - Non-embedding cached missed(mode:default type:extract)
+2026-01-16 12:02:46,792 - lightrag - DEBUG - Non-embedding cached missed(mode:default type:extract)
+2026-01-16 12:02:46,792 - lightrag - DEBUG - Non-embedding cached missed(mode:default type:extract)
+2026-01-16 12:02:46,793 - lightrag - DEBUG - Non-embedding cached missed(mode:default type:extract)
+2026-01-16 12:02:46,793 - lightrag - DEBUG - Non-embedding cached missed(mode:default type:extract)
+2026-01-16 12:02:46,794 - lightrag - DEBUG - Non-embedding cached missed(mode:default type:extract)
+2026-01-16 12:02:46,794 - lightrag - DEBUG - Non-embedding cached missed(mode:default type:extract)
+2026-01-16 12:02:46,795 - lightrag - DEBUG - Non-embedding cached missed(mode:default type:extract)
+2026-01-16 12:02:46,796 - lightrag - DEBUG - Non-embedding cached missed(mode:default type:extract)
+2026-01-16 12:02:46,796 - lightrag - DEBUG - Non-embedding cached missed(mode:default type:extract)
+2026-01-16 12:02:49,002 - lightrag - INFO - Inserting 1 records to llm_response_cache
+2026-01-16 12:02:49,012 - lightrag - DEBUG - Non-embedding cached missed(mode:default type:extract)
+2026-01-16 12:02:49,023 - lightrag - DEBUG - ===== Sending Query to LLM =====
+2026-01-16 12:02:49,023 - lightrag - DEBUG - Model: gpt-4o-mini   Base URL: None
+2026-01-16 12:02:49,023 - lightrag - DEBUG - Additional kwargs: {}
+2026-01-16 12:02:49,023 - lightrag - DEBUG - Query: MANY entities and relationships were missed...
+2026-01-16 12:02:49,024 - lightrag - DEBUG - System prompt: None
+2026-01-16 12:02:49,151 - lightrag - INFO - Inserting 1 records to llm_response_cache
+2026-01-16 12:02:49,159 - lightrag - DEBUG - Non-embedding cached missed(mode:default type:extract)
+2026-01-16 12:02:49,170 - lightrag - DEBUG - ===== Sending Query to LLM =====
+2026-01-16 12:02:49,170 - lightrag - DEBUG - Model: gpt-4o-mini   Base URL: None
+2026-01-16 12:02:49,170 - lightrag - DEBUG - Additional kwargs: {}
+2026-01-16 12:02:49,170 - lightrag - DEBUG - Query: MANY entities and relationships were missed...
+2026-01-16 12:02:49,170 - lightrag - DEBUG - System prompt: None
+2026-01-16 12:02:50,355 - lightrag - INFO - Inserting 1 records to llm_response_cache
+2026-01-16 12:02:50,363 - lightrag - DEBUG - Non-embedding cached missed(mode:default type:extract)
+2026-01-16 12:02:50,374 - lightrag - DEBUG - ===== Sending Query to LLM =====
+2026-01-16 12:02:50,374 - lightrag - DEBUG - Model: gpt-4o-mini   Base URL: None
+2026-01-16 12:02:50,374 - lightrag - DEBUG - Additional kwargs: {}
+2026-01-16 12:02:50,374 - lightrag - DEBUG - Query: MANY entities and relationships were missed...
+2026-01-16 12:02:50,374 - lightrag - DEBUG - System prompt: None
+2026-01-16 12:02:51,820 - lightrag - INFO - Inserting 1 records to llm_response_cache
+2026-01-16 12:02:51,828 - lightrag - DEBUG - Non-embedding cached missed(mode:default type:extract)
+2026-01-16 12:02:51,838 - lightrag - DEBUG - ===== Sending Query to LLM =====
+2026-01-16 12:02:51,838 - lightrag - DEBUG - Model: gpt-4o-mini   Base URL: None
+2026-01-16 12:02:51,839 - lightrag - DEBUG - Additional kwargs: {}
+2026-01-16 12:02:51,839 - lightrag - DEBUG - Query: MANY entities and relationships were missed...
+2026-01-16 12:02:51,839 - lightrag - DEBUG - System prompt: None
+2026-01-16 12:02:52,749 - lightrag - INFO - Inserting 1 records to llm_response_cache
+2026-01-16 12:02:52,755 - lightrag - INFO -   Chunk 1/16: extracted 1 entities and 0 relationships (deduplicated)
+2026-01-16 12:02:52,767 - lightrag - DEBUG - ===== Sending Query to LLM =====
+2026-01-16 12:02:52,768 - lightrag - DEBUG - Model: gpt-4o-mini   Base URL: None
+2026-01-16 12:02:52,768 - lightrag - DEBUG - Additional kwargs: {}
+2026-01-16 12:02:52,768 - lightrag - DEBUG - Query: ---Goal---
+Given a text document that is po...
+2026-01-16 12:02:52,768 - lightrag - DEBUG - System prompt: None
+2026-01-16 12:02:53,905 - lightrag - INFO - Inserting 1 records to llm_response_cache
+2026-01-16 12:02:53,912 - lightrag - INFO -   Chunk 2/16: extracted 2 entities and 1 relationships (deduplicated)
+2026-01-16 12:02:53,924 - lightrag - DEBUG - ===== Sending Query to LLM =====
+2026-01-16 12:02:53,924 - lightrag - DEBUG - Model: gpt-4o-mini   Base URL: None
+2026-01-16 12:02:53,924 - lightrag - DEBUG - Additional kwargs: {}
+2026-01-16 12:02:53,925 - lightrag - DEBUG - Query: ---Goal---
+Given a text document that is po...
+2026-01-16 12:02:53,925 - lightrag - DEBUG - System prompt: None
+2026-01-16 12:02:54,411 - lightrag - INFO - Inserting 1 records to llm_response_cache
+2026-01-16 12:02:54,419 - lightrag - INFO -   Chunk 3/16: extracted 2 entities and 2 relationships (deduplicated)
+2026-01-16 12:02:54,431 - lightrag - DEBUG - ===== Sending Query to LLM =====
+2026-01-16 12:02:54,431 - lightrag - DEBUG - Model: gpt-4o-mini   Base URL: None
+2026-01-16 12:02:54,431 - lightrag - DEBUG - Additional kwargs: {}
+2026-01-16 12:02:54,432 - lightrag - DEBUG - Query: ---Goal---
+Given a text document that is po...
+2026-01-16 12:02:54,432 - lightrag - DEBUG - System prompt: None
+2026-01-16 12:02:55,251 - lightrag - INFO - Inserting 1 records to llm_response_cache
+2026-01-16 12:02:55,259 - lightrag - DEBUG - Non-embedding cached missed(mode:default type:extract)
+2026-01-16 12:02:55,270 - lightrag - DEBUG - ===== Sending Query to LLM =====
+2026-01-16 12:02:55,270 - lightrag - DEBUG - Model: gpt-4o-mini   Base URL: None
+2026-01-16 12:02:55,270 - lightrag - DEBUG - Additional kwargs: {}
+2026-01-16 12:02:55,271 - lightrag - DEBUG - Query: MANY entities and relationships were missed...
+2026-01-16 12:02:55,271 - lightrag - DEBUG - System prompt: None
+2026-01-16 12:02:56,059 - lightrag - INFO - Inserting 1 records to llm_response_cache
+2026-01-16 12:02:56,067 - lightrag - DEBUG - Non-embedding cached missed(mode:default type:extract)
+2026-01-16 12:02:56,078 - lightrag - DEBUG - ===== Sending Query to LLM =====
+2026-01-16 12:02:56,078 - lightrag - DEBUG - Model: gpt-4o-mini   Base URL: None
+2026-01-16 12:02:56,078 - lightrag - DEBUG - Additional kwargs: {}
+2026-01-16 12:02:56,078 - lightrag - DEBUG - Query: MANY entities and relationships were missed...
+2026-01-16 12:02:56,078 - lightrag - DEBUG - System prompt: None
+2026-01-16 12:02:57,695 - lightrag - INFO - Inserting 1 records to llm_response_cache
+2026-01-16 12:02:57,703 - lightrag - INFO -   Chunk 4/16: extracted 4 entities and 3 relationships (deduplicated)
+2026-01-16 12:02:57,715 - lightrag - DEBUG - ===== Sending Query to LLM =====
+2026-01-16 12:02:57,716 - lightrag - DEBUG - Model: gpt-4o-mini   Base URL: None
+2026-01-16 12:02:57,716 - lightrag - DEBUG - Additional kwargs: {}
+2026-01-16 12:02:57,716 - lightrag - DEBUG - Query: ---Goal---
+Given a text document that is po...
+2026-01-16 12:02:57,716 - lightrag - DEBUG - System prompt: None
+2026-01-16 12:02:58,347 - lightrag - INFO - Inserting 1 records to llm_response_cache
+2026-01-16 12:02:58,354 - lightrag - INFO -   Chunk 5/16: extracted 1 entities and 0 relationships (deduplicated)
+2026-01-16 12:02:58,366 - lightrag - DEBUG - ===== Sending Query to LLM =====
+2026-01-16 12:02:58,367 - lightrag - DEBUG - Model: gpt-4o-mini   Base URL: None
+2026-01-16 12:02:58,367 - lightrag - DEBUG - Additional kwargs: {}
+2026-01-16 12:02:58,367 - lightrag - DEBUG - Query: ---Goal---
+Given a text document that is po...
+2026-01-16 12:02:58,367 - lightrag - DEBUG - System prompt: None
+2026-01-16 12:02:59,627 - lightrag - INFO - Inserting 1 records to llm_response_cache
+2026-01-16 12:02:59,634 - lightrag - DEBUG - Non-embedding cached missed(mode:default type:extract)
+2026-01-16 12:02:59,645 - lightrag - DEBUG - ===== Sending Query to LLM =====
+2026-01-16 12:02:59,645 - lightrag - DEBUG - Model: gpt-4o-mini   Base URL: None
+2026-01-16 12:02:59,645 - lightrag - DEBUG - Additional kwargs: {}
+2026-01-16 12:02:59,646 - lightrag - DEBUG - Query: MANY entities and relationships were missed...
+2026-01-16 12:02:59,646 - lightrag - DEBUG - System prompt: None
+2026-01-16 12:03:03,469 - lightrag - INFO - Inserting 1 records to llm_response_cache
+2026-01-16 12:03:03,477 - lightrag - DEBUG - Non-embedding cached missed(mode:default type:extract)
+2026-01-16 12:03:03,488 - lightrag - DEBUG - ===== Sending Query to LLM =====
+2026-01-16 12:03:03,488 - lightrag - DEBUG - Model: gpt-4o-mini   Base URL: None
+2026-01-16 12:03:03,489 - lightrag - DEBUG - Additional kwargs: {}
+2026-01-16 12:03:03,489 - lightrag - DEBUG - Query: MANY entities and relationships were missed...
+2026-01-16 12:03:03,489 - lightrag - DEBUG - System prompt: None
+2026-01-16 12:03:05,224 - lightrag - INFO - Inserting 1 records to llm_response_cache
+2026-01-16 12:03:05,232 - lightrag - INFO -   Chunk 6/16: extracted 5 entities and 3 relationships (deduplicated)
+2026-01-16 12:03:05,245 - lightrag - DEBUG - ===== Sending Query to LLM =====
+2026-01-16 12:03:05,245 - lightrag - DEBUG - Model: gpt-4o-mini   Base URL: None
+2026-01-16 12:03:05,245 - lightrag - DEBUG - Additional kwargs: {}
+2026-01-16 12:03:05,245 - lightrag - DEBUG - Query: ---Goal---
+Given a text document that is po...
+2026-01-16 12:03:05,246 - lightrag - DEBUG - System prompt: None
+2026-01-16 12:03:07,250 - lightrag - INFO - Inserting 1 records to llm_response_cache
+2026-01-16 12:03:07,259 - lightrag - DEBUG - Non-embedding cached missed(mode:default type:extract)
+2026-01-16 12:03:07,270 - lightrag - DEBUG - ===== Sending Query to LLM =====
+2026-01-16 12:03:07,270 - lightrag - DEBUG - Model: gpt-4o-mini   Base URL: None
+2026-01-16 12:03:07,270 - lightrag - DEBUG - Additional kwargs: {}
+2026-01-16 12:03:07,270 - lightrag - DEBUG - Query: MANY entities and relationships were missed...
+2026-01-16 12:03:07,271 - lightrag - DEBUG - System prompt: None
+2026-01-16 12:03:07,737 - lightrag - INFO - Inserting 1 records to llm_response_cache
+2026-01-16 12:03:07,745 - lightrag - DEBUG - Non-embedding cached missed(mode:default type:extract)
+2026-01-16 12:03:07,759 - lightrag - DEBUG - ===== Sending Query to LLM =====
+2026-01-16 12:03:07,759 - lightrag - DEBUG - Model: gpt-4o-mini   Base URL: None
+2026-01-16 12:03:07,759 - lightrag - DEBUG - Additional kwargs: {}
+2026-01-16 12:03:07,760 - lightrag - DEBUG - Query: MANY entities and relationships were missed...
+2026-01-16 12:03:07,760 - lightrag - DEBUG - System prompt: None
+2026-01-16 12:03:09,464 - lightrag - INFO - Inserting 1 records to llm_response_cache
+2026-01-16 12:03:09,472 - lightrag - INFO -   Chunk 7/16: extracted 1 entities and 0 relationships (deduplicated)
+2026-01-16 12:03:09,485 - lightrag - DEBUG - ===== Sending Query to LLM =====
+2026-01-16 12:03:09,485 - lightrag - DEBUG - Model: gpt-4o-mini   Base URL: None
+2026-01-16 12:03:09,486 - lightrag - DEBUG - Additional kwargs: {}
+2026-01-16 12:03:09,486 - lightrag - DEBUG - Query: ---Goal---
+Given a text document that is po...
+2026-01-16 12:03:09,486 - lightrag - DEBUG - System prompt: None
+2026-01-16 12:03:10,283 - lightrag - INFO - Inserting 1 records to llm_response_cache
+2026-01-16 12:03:10,292 - lightrag - INFO -   Chunk 8/16: extracted 5 entities and 3 relationships (deduplicated)
+2026-01-16 12:03:10,304 - lightrag - DEBUG - ===== Sending Query to LLM =====
+2026-01-16 12:03:10,304 - lightrag - DEBUG - Model: gpt-4o-mini   Base URL: None
+2026-01-16 12:03:10,305 - lightrag - DEBUG - Additional kwargs: {}
+2026-01-16 12:03:10,305 - lightrag - DEBUG - Query: ---Goal---
+Given a text document that is po...
+2026-01-16 12:03:10,305 - lightrag - DEBUG - System prompt: None
+2026-01-16 12:03:15,862 - lightrag - INFO - Inserting 1 records to llm_response_cache
+2026-01-16 12:03:15,870 - lightrag - DEBUG - Non-embedding cached missed(mode:default type:extract)
+2026-01-16 12:03:15,881 - lightrag - DEBUG - ===== Sending Query to LLM =====
+2026-01-16 12:03:15,881 - lightrag - DEBUG - Model: gpt-4o-mini   Base URL: None
+2026-01-16 12:03:15,881 - lightrag - DEBUG - Additional kwargs: {}
+2026-01-16 12:03:15,881 - lightrag - DEBUG - Query: MANY entities and relationships were missed...
+2026-01-16 12:03:15,882 - lightrag - DEBUG - System prompt: None
+2026-01-16 12:03:18,297 - lightrag - INFO - Inserting 1 records to llm_response_cache
+2026-01-16 12:03:18,305 - lightrag - INFO -   Chunk 9/16: extracted 7 entities and 6 relationships (deduplicated)
+2026-01-16 12:03:18,317 - lightrag - DEBUG - ===== Sending Query to LLM =====
+2026-01-16 12:03:18,318 - lightrag - DEBUG - Model: gpt-4o-mini   Base URL: None
+2026-01-16 12:03:18,318 - lightrag - DEBUG - Additional kwargs: {}
+2026-01-16 12:03:18,318 - lightrag - DEBUG - Query: ---Goal---
+Given a text document that is po...
+2026-01-16 12:03:18,318 - lightrag - DEBUG - System prompt: None
+2026-01-16 12:03:20,771 - lightrag - INFO - Inserting 1 records to llm_response_cache
+2026-01-16 12:03:20,782 - lightrag - DEBUG - Non-embedding cached missed(mode:default type:extract)
+2026-01-16 12:03:20,792 - lightrag - DEBUG - ===== Sending Query to LLM =====
+2026-01-16 12:03:20,793 - lightrag - DEBUG - Model: gpt-4o-mini   Base URL: None
+2026-01-16 12:03:20,793 - lightrag - DEBUG - Additional kwargs: {}
+2026-01-16 12:03:20,793 - lightrag - DEBUG - Query: MANY entities and relationships were missed...
+2026-01-16 12:03:20,793 - lightrag - DEBUG - System prompt: None
+2026-01-16 12:03:22,474 - lightrag - INFO - Inserting 1 records to llm_response_cache
+2026-01-16 12:03:22,482 - lightrag - INFO -   Chunk 10/16: extracted 3 entities and 2 relationships (deduplicated)
+2026-01-16 12:03:22,494 - lightrag - DEBUG - ===== Sending Query to LLM =====
+2026-01-16 12:03:22,494 - lightrag - DEBUG - Model: gpt-4o-mini   Base URL: None
+2026-01-16 12:03:22,495 - lightrag - DEBUG - Additional kwargs: {}
+2026-01-16 12:03:22,495 - lightrag - DEBUG - Query: ---Goal---
+Given a text document that is po...
+2026-01-16 12:03:22,495 - lightrag - DEBUG - System prompt: None
+2026-01-16 12:03:23,260 - lightrag - INFO - Inserting 1 records to llm_response_cache
+2026-01-16 12:03:23,275 - lightrag - DEBUG - Non-embedding cached missed(mode:default type:extract)
+2026-01-16 12:03:23,285 - lightrag - DEBUG - ===== Sending Query to LLM =====
+2026-01-16 12:03:23,286 - lightrag - DEBUG - Model: gpt-4o-mini   Base URL: None
+2026-01-16 12:03:23,286 - lightrag - DEBUG - Additional kwargs: {}
+2026-01-16 12:03:23,286 - lightrag - DEBUG - Query: MANY entities and relationships were missed...
+2026-01-16 12:03:23,286 - lightrag - DEBUG - System prompt: None
+2026-01-16 12:03:28,037 - lightrag - INFO - Inserting 1 records to llm_response_cache
+2026-01-16 12:03:28,045 - lightrag - INFO -   Chunk 11/16: extracted 2 entities and 1 relationships (deduplicated)
+2026-01-16 12:03:28,058 - lightrag - DEBUG - ===== Sending Query to LLM =====
+2026-01-16 12:03:28,058 - lightrag - DEBUG - Model: gpt-4o-mini   Base URL: None
+2026-01-16 12:03:28,058 - lightrag - DEBUG - Additional kwargs: {}
+2026-01-16 12:03:28,059 - lightrag - DEBUG - Query: ---Goal---
+Given a text document that is po...
+2026-01-16 12:03:28,059 - lightrag - DEBUG - System prompt: None
+2026-01-16 12:03:32,833 - lightrag - INFO - Inserting 1 records to llm_response_cache
+2026-01-16 12:03:32,853 - lightrag - INFO -   Chunk 12/16: extracted 5 entities and 4 relationships (deduplicated)
+2026-01-16 12:03:32,867 - lightrag - DEBUG - ===== Sending Query to LLM =====
+2026-01-16 12:03:32,868 - lightrag - DEBUG - Model: gpt-4o-mini   Base URL: None
+2026-01-16 12:03:32,868 - lightrag - DEBUG - Additional kwargs: {}
+2026-01-16 12:03:32,868 - lightrag - DEBUG - Query: ---Goal---
+Given a text document that is po...
+2026-01-16 12:03:32,868 - lightrag - DEBUG - System prompt: None
+2026-01-16 12:03:35,941 - lightrag - INFO - Inserting 1 records to llm_response_cache
+2026-01-16 12:03:35,953 - lightrag - DEBUG - Non-embedding cached missed(mode:default type:extract)
+2026-01-16 12:03:35,965 - lightrag - DEBUG - ===== Sending Query to LLM =====
+2026-01-16 12:03:35,965 - lightrag - DEBUG - Model: gpt-4o-mini   Base URL: None
+2026-01-16 12:03:35,965 - lightrag - DEBUG - Additional kwargs: {}
+2026-01-16 12:03:35,965 - lightrag - DEBUG - Query: MANY entities and relationships were missed...
+2026-01-16 12:03:35,966 - lightrag - DEBUG - System prompt: None
+2026-01-16 12:03:39,804 - lightrag - INFO - Inserting 1 records to llm_response_cache
+2026-01-16 12:03:39,816 - lightrag - DEBUG - Non-embedding cached missed(mode:default type:extract)
+2026-01-16 12:03:39,826 - lightrag - DEBUG - ===== Sending Query to LLM =====
+2026-01-16 12:03:39,826 - lightrag - DEBUG - Model: gpt-4o-mini   Base URL: None
+2026-01-16 12:03:39,827 - lightrag - DEBUG - Additional kwargs: {}
+2026-01-16 12:03:39,827 - lightrag - DEBUG - Query: MANY entities and relationships were missed...
+2026-01-16 12:03:39,827 - lightrag - DEBUG - System prompt: None
+2026-01-16 12:03:41,540 - lightrag - INFO - Inserting 1 records to llm_response_cache
+2026-01-16 12:03:41,554 - lightrag - INFO -   Chunk 13/16: extracted 20 entities and 11 relationships (deduplicated)
+2026-01-16 12:03:49,108 - lightrag - INFO - Inserting 1 records to llm_response_cache
+2026-01-16 12:03:49,119 - lightrag - DEBUG - Non-embedding cached missed(mode:default type:extract)
+2026-01-16 12:03:49,131 - lightrag - DEBUG - ===== Sending Query to LLM =====
+2026-01-16 12:03:49,131 - lightrag - DEBUG - Model: gpt-4o-mini   Base URL: None
+2026-01-16 12:03:49,131 - lightrag - DEBUG - Additional kwargs: {}
+2026-01-16 12:03:49,131 - lightrag - DEBUG - Query: MANY entities and relationships were missed...
+2026-01-16 12:03:49,131 - lightrag - DEBUG - System prompt: None
+2026-01-16 12:03:50,313 - lightrag - INFO - Inserting 1 records to llm_response_cache
+2026-01-16 12:03:50,325 - lightrag - INFO -   Chunk 14/16: extracted 6 entities and 5 relationships (deduplicated)
+2026-01-16 12:03:53,156 - lightrag - INFO - Inserting 1 records to llm_response_cache
+2026-01-16 12:03:53,164 - lightrag - INFO -   Chunk 15/16: extracted 5 entities and 6 relationships (deduplicated)
+2026-01-16 12:04:06,631 - lightrag - INFO - Inserting 1 records to llm_response_cache
+2026-01-16 12:04:06,641 - lightrag - INFO -   Chunk 16/16: extracted 12 entities and 8 relationships (deduplicated)
+2026-01-16 12:04:06,644 - lightrag - DEBUG - file_path: 6a2ca7b4-b00f-4da4-b7f5-d8d904a3db1b
+2026-01-16 12:04:06,644 - lightrag - DEBUG - file_path: 6a2ca7b4-b00f-4da4-b7f5-d8d904a3db1b
+2026-01-16 12:04:06,645 - lightrag - DEBUG - file_path: 6a2ca7b4-b00f-4da4-b7f5-d8d904a3db1b
+2026-01-16 12:04:06,646 - lightrag - DEBUG - file_path: 6a2ca7b4-b00f-4da4-b7f5-d8d904a3db1b
+2026-01-16 12:04:06,647 - lightrag - DEBUG - file_path: 6a2ca7b4-b00f-4da4-b7f5-d8d904a3db1b
+2026-01-16 12:04:06,648 - lightrag - DEBUG - file_path: 6a2ca7b4-b00f-4da4-b7f5-d8d904a3db1b
+2026-01-16 12:04:06,649 - lightrag - DEBUG - file_path: 6a2ca7b4-b00f-4da4-b7f5-d8d904a3db1b
+2026-01-16 12:04:06,649 - lightrag - DEBUG - file_path: 6a2ca7b4-b00f-4da4-b7f5-d8d904a3db1b
+2026-01-16 12:04:06,650 - lightrag - DEBUG - file_path: 6a2ca7b4-b00f-4da4-b7f5-d8d904a3db1b
+2026-01-16 12:04:06,651 - lightrag - DEBUG - file_path: 6a2ca7b4-b00f-4da4-b7f5-d8d904a3db1b
+2026-01-16 12:04:06,651 - lightrag - DEBUG - file_path: 6a2ca7b4-b00f-4da4-b7f5-d8d904a3db1b
+2026-01-16 12:04:06,652 - lightrag - DEBUG - file_path: 6a2ca7b4-b00f-4da4-b7f5-d8d904a3db1b
+2026-01-16 12:04:06,653 - lightrag - DEBUG - file_path: 6a2ca7b4-b00f-4da4-b7f5-d8d904a3db1b
+2026-01-16 12:04:06,653 - lightrag - DEBUG - file_path: 6a2ca7b4-b00f-4da4-b7f5-d8d904a3db1b
+2026-01-16 12:04:06,654 - lightrag - DEBUG - file_path: 6a2ca7b4-b00f-4da4-b7f5-d8d904a3db1b
+2026-01-16 12:04:06,655 - lightrag - DEBUG - file_path: 6a2ca7b4-b00f-4da4-b7f5-d8d904a3db1b
+2026-01-16 12:04:06,655 - lightrag - DEBUG - file_path: 6a2ca7b4-b00f-4da4-b7f5-d8d904a3db1b
+2026-01-16 12:04:06,656 - lightrag - DEBUG - file_path: 6a2ca7b4-b00f-4da4-b7f5-d8d904a3db1b
+2026-01-16 12:04:06,656 - lightrag - DEBUG - file_path: 6a2ca7b4-b00f-4da4-b7f5-d8d904a3db1b
+2026-01-16 12:04:06,657 - lightrag - DEBUG - file_path: 6a2ca7b4-b00f-4da4-b7f5-d8d904a3db1b
+2026-01-16 12:04:06,657 - lightrag - DEBUG - file_path: 6a2ca7b4-b00f-4da4-b7f5-d8d904a3db1b
+2026-01-16 12:04:06,658 - lightrag - DEBUG - file_path: 6a2ca7b4-b00f-4da4-b7f5-d8d904a3db1b
+2026-01-16 12:04:06,659 - lightrag - DEBUG - file_path: 6a2ca7b4-b00f-4da4-b7f5-d8d904a3db1b
+2026-01-16 12:04:06,659 - lightrag - DEBUG - file_path: 6a2ca7b4-b00f-4da4-b7f5-d8d904a3db1b
+2026-01-16 12:04:06,660 - lightrag - DEBUG - file_path: 6a2ca7b4-b00f-4da4-b7f5-d8d904a3db1b
+2026-01-16 12:04:06,661 - lightrag - DEBUG - file_path: 6a2ca7b4-b00f-4da4-b7f5-d8d904a3db1b
+2026-01-16 12:04:06,661 - lightrag - DEBUG - file_path: 6a2ca7b4-b00f-4da4-b7f5-d8d904a3db1b
+2026-01-16 12:04:06,662 - lightrag - DEBUG - file_path: 6a2ca7b4-b00f-4da4-b7f5-d8d904a3db1b
+2026-01-16 12:04:06,663 - lightrag - DEBUG - file_path: 6a2ca7b4-b00f-4da4-b7f5-d8d904a3db1b
+2026-01-16 12:04:06,663 - lightrag - DEBUG - file_path: 6a2ca7b4-b00f-4da4-b7f5-d8d904a3db1b
+2026-01-16 12:04:06,664 - lightrag - DEBUG - file_path: 6a2ca7b4-b00f-4da4-b7f5-d8d904a3db1b
+2026-01-16 12:04:06,665 - lightrag - DEBUG - file_path: 6a2ca7b4-b00f-4da4-b7f5-d8d904a3db1b
+2026-01-16 12:04:06,665 - lightrag - DEBUG - file_path: 6a2ca7b4-b00f-4da4-b7f5-d8d904a3db1b
+2026-01-16 12:04:06,666 - lightrag - DEBUG - file_path: 6a2ca7b4-b00f-4da4-b7f5-d8d904a3db1b
+2026-01-16 12:04:06,666 - lightrag - DEBUG - file_path: 6a2ca7b4-b00f-4da4-b7f5-d8d904a3db1b
+2026-01-16 12:04:06,667 - lightrag - DEBUG - file_path: 6a2ca7b4-b00f-4da4-b7f5-d8d904a3db1b
+2026-01-16 12:04:06,668 - lightrag - DEBUG - file_path: 6a2ca7b4-b00f-4da4-b7f5-d8d904a3db1b
+2026-01-16 12:04:06,668 - lightrag - DEBUG - file_path: 6a2ca7b4-b00f-4da4-b7f5-d8d904a3db1b
+2026-01-16 12:04:06,669 - lightrag - DEBUG - file_path: 6a2ca7b4-b00f-4da4-b7f5-d8d904a3db1b
+2026-01-16 12:04:06,669 - lightrag - DEBUG - file_path: 6a2ca7b4-b00f-4da4-b7f5-d8d904a3db1b
+2026-01-16 12:04:06,670 - lightrag - DEBUG - file_path: 6a2ca7b4-b00f-4da4-b7f5-d8d904a3db1b
+2026-01-16 12:04:06,671 - lightrag - DEBUG - file_path: 6a2ca7b4-b00f-4da4-b7f5-d8d904a3db1b
+2026-01-16 12:04:06,671 - lightrag - DEBUG - file_path: 6a2ca7b4-b00f-4da4-b7f5-d8d904a3db1b
+2026-01-16 12:04:06,672 - lightrag - DEBUG - file_path: 6a2ca7b4-b00f-4da4-b7f5-d8d904a3db1b
+2026-01-16 12:04:06,673 - lightrag - DEBUG - file_path: 6a2ca7b4-b00f-4da4-b7f5-d8d904a3db1b
+2026-01-16 12:04:06,673 - lightrag - DEBUG - file_path: 6a2ca7b4-b00f-4da4-b7f5-d8d904a3db1b
+2026-01-16 12:04:06,674 - lightrag - DEBUG - file_path: 6a2ca7b4-b00f-4da4-b7f5-d8d904a3db1b
+2026-01-16 12:04:06,675 - lightrag - DEBUG - file_path: 6a2ca7b4-b00f-4da4-b7f5-d8d904a3db1b
+2026-01-16 12:04:06,675 - lightrag - DEBUG - file_path: 6a2ca7b4-b00f-4da4-b7f5-d8d904a3db1b
+2026-01-16 12:04:06,676 - lightrag - DEBUG - file_path: 6a2ca7b4-b00f-4da4-b7f5-d8d904a3db1b
+2026-01-16 12:04:06,676 - lightrag - DEBUG - file_path: 6a2ca7b4-b00f-4da4-b7f5-d8d904a3db1b
+2026-01-16 12:04:06,677 - lightrag - DEBUG - file_path: 6a2ca7b4-b00f-4da4-b7f5-d8d904a3db1b
+2026-01-16 12:04:06,678 - lightrag - DEBUG - file_path: 6a2ca7b4-b00f-4da4-b7f5-d8d904a3db1b
+2026-01-16 12:04:06,678 - lightrag - DEBUG - file_path: 6a2ca7b4-b00f-4da4-b7f5-d8d904a3db1b
+2026-01-16 12:04:06,679 - lightrag - DEBUG - file_path: 6a2ca7b4-b00f-4da4-b7f5-d8d904a3db1b
+2026-01-16 12:04:06,680 - lightrag - DEBUG - file_path: 6a2ca7b4-b00f-4da4-b7f5-d8d904a3db1b
+2026-01-16 12:04:06,680 - lightrag - DEBUG - file_path: 6a2ca7b4-b00f-4da4-b7f5-d8d904a3db1b
+2026-01-16 12:04:06,681 - lightrag - DEBUG - file_path: 6a2ca7b4-b00f-4da4-b7f5-d8d904a3db1b
+2026-01-16 12:04:06,681 - lightrag - DEBUG - file_path: 6a2ca7b4-b00f-4da4-b7f5-d8d904a3db1b
+2026-01-16 12:04:06,682 - lightrag - DEBUG - file_path: 6a2ca7b4-b00f-4da4-b7f5-d8d904a3db1b
+2026-01-16 12:04:06,683 - lightrag - DEBUG - file_path: 6a2ca7b4-b00f-4da4-b7f5-d8d904a3db1b
+2026-01-16 12:04:06,684 - lightrag - DEBUG - file_path: 6a2ca7b4-b00f-4da4-b7f5-d8d904a3db1b
+2026-01-16 12:04:06,685 - lightrag - DEBUG - file_path: 6a2ca7b4-b00f-4da4-b7f5-d8d904a3db1b
+2026-01-16 12:04:06,685 - lightrag - DEBUG - file_path: 6a2ca7b4-b00f-4da4-b7f5-d8d904a3db1b
+2026-01-16 12:04:06,686 - lightrag - DEBUG - file_path: 6a2ca7b4-b00f-4da4-b7f5-d8d904a3db1b
+2026-01-16 12:04:06,686 - lightrag - DEBUG - file_path: 6a2ca7b4-b00f-4da4-b7f5-d8d904a3db1b
+2026-01-16 12:04:06,687 - lightrag - DEBUG - file_path: 6a2ca7b4-b00f-4da4-b7f5-d8d904a3db1b
+2026-01-16 12:04:06,688 - lightrag - DEBUG - file_path: 6a2ca7b4-b00f-4da4-b7f5-d8d904a3db1b
+2026-01-16 12:04:06,688 - lightrag - DEBUG - file_path: 6a2ca7b4-b00f-4da4-b7f5-d8d904a3db1b
+2026-01-16 12:04:06,689 - lightrag - DEBUG - file_path: 6a2ca7b4-b00f-4da4-b7f5-d8d904a3db1b
+2026-01-16 12:04:06,689 - lightrag - DEBUG - file_path: 6a2ca7b4-b00f-4da4-b7f5-d8d904a3db1b
+2026-01-16 12:04:06,753 - lightrag - INFO - Extracted 71 entities and 55 relationships (deduplicated)
+2026-01-16 12:04:06,757 - lightrag - DEBUG - New entities:[{'entity_id': 'ảnh', 'entity_type': ...
+2026-01-16 12:04:06,757 - lightrag - DEBUG - New relationships:[{'src_id': 'CONTACT', 'tgt_id':...
+2026-01-16 12:04:06,757 - lightrag - INFO - Inserting 71 to entities
+2026-01-16 12:04:10,436 - lightrag - INFO - Inserting 55 to relationships
+2026-01-16 12:04:13,634 - lightrag - INFO - Inserting 1 records to doc_status
+2026-01-16 12:04:13,641 - lightrag - INFO - Process 41704 doc status writting 1 records to doc_status
+2026-01-16 12:04:13,891 - lightrag - INFO - Process 41704 KV writting 1 records to full_docs
+2026-01-16 12:04:13,900 - lightrag - INFO - Process 41704 KV writting 16 records to text_chunks
+2026-01-16 12:04:13,909 - lightrag - INFO - Process 41704 KV writting 33 records to llm_response_cache
+2026-01-16 12:04:13,921 - lightrag - INFO - Writing graph with 72 nodes, 55 edges
+2026-01-16 12:04:13,935 - lightrag - INFO - In memory DB persist to disk
+2026-01-16 12:04:13,936 - lightrag - INFO - Completed batch 1 of 1.
+2026-01-16 12:04:13,938 - lightrag - INFO - Document processing pipeline completed
+2026-01-16 12:31:24,979 - lightrag - INFO - Creating a new event loop in main thread.
+2026-01-16 12:31:24,981 - lightrag - DEBUG - Finalized Storages
+2026-01-16 12:47:26,111 - lightrag - INFO - Loaded graph from E:\WED\Erudition\backend\app\rag_database\03edc83f-9789-4fd6-840b-c17500c80289\graph_chunk_entity_relation.graphml with 72 nodes, 55 edges
+2026-01-16 12:47:26,972 - lightrag - INFO - Process 30868 KV load full_docs with 1 records
+2026-01-16 12:47:26,990 - lightrag - INFO - Process 30868 KV load text_chunks with 16 records
+2026-01-16 12:47:27,023 - lightrag - INFO - Process 30868 KV load llm_response_cache with 33 records
+2026-01-16 12:47:27,041 - lightrag - INFO - Process 30868 doc status load doc_status with 1 records
+2026-01-16 12:47:28,103 - lightrag - INFO - Storage Initialization completed!
+2026-01-16 12:47:30,121 - lightrag - INFO - Inserting 1 records to llm_response_cache
+2026-01-16 12:47:30,130 - lightrag - INFO - Process 30868 building query context...
+2026-01-16 12:47:30,131 - lightrag - INFO - Query nodes: Đính kèm, Tài liệu điện tử, Hình ảnh tài liệu, top_k: 60, cosine: 0.2
+2026-01-16 12:47:30,147 - lightrag - INFO - Query edges: Hình ảnh, Tài liệu, Nội dung, top_k: 60, cosine: 0.2
+2026-01-16 12:47:31,553 - lightrag - INFO - Global query uses 58 entites, 55 relations, 13 chunks
+2026-01-16 12:47:31,603 - lightrag - INFO - Local query uses 60 entites, 50 relations, 15 chunks
+2026-01-16 12:47:32,946 - lightrag - INFO - Process 30868 KV writting 34 records to llm_response_cache
+2026-01-16 12:50:04,362 - lightrag - INFO - Creating a new event loop in main thread.

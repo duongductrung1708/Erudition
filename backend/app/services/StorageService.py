@@ -44,7 +44,14 @@ class StorageService:
                 obj = await s3.get_object(Bucket=MINIO_BUCKET, Key=key)
                 return await obj["Body"].read()
             except Exception as e:
-                logging.error(f"Failed to download {key}: {e}")
+                error_msg = str(e)
+                logging.error(f"Failed to download {key}: {error_msg}")
+                # Check if it's an access denied error
+                if "AccessDenied" in error_msg or "not authorized" in error_msg:
+                    raise PermissionError(
+                        f"Access denied to S3 resource. Please check AWS IAM permissions for s3:GetObject on bucket '{MINIO_BUCKET}'. "
+                        f"Original error: {error_msg}"
+                    )
                 raise
 
     @staticmethod

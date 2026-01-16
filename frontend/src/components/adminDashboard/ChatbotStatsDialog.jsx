@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef, useCallback, useMemo } from "react";
 import {
   Box,
   Button,
@@ -88,6 +88,8 @@ const ChatbotStatsDialog = ({
   const [chatDetailDialogOpen, setChatDetailDialogOpen] = useState(false);
   const [chartType, setChartType] = useState("tokens");
   const [datePickerDialogOpen, setDatePickerDialogOpen] = useState(false);
+  const cacheRef = useRef({}); // Cache for API responses
+  const debounceTimerRef = useRef(null);
 
   useEffect(() => {
     if (open) {
@@ -148,30 +150,66 @@ const ChatbotStatsDialog = ({
       const now = dayjs();
       const isEndDateToday = endDate.isSame(now, "day");
 
-      const filterParams = {
-        chatbot_id: chatbotId === "all" ? undefined : chatbotId,
-        skip: 0,
-        limit: 0,
-        filter_email: userEmail,
-        from_date: fromDate.startOf("day").add(7, "hour").toISOString(),
-        to_date: isEndDateToday
-          ? now.toISOString()
-          : endDate.endOf("day").add(7, "hour").toISOString(),
-      };
+      const fromDateStr = fromDate.startOf("day").add(7, "hour").toISOString();
+      const toDateStr = isEndDateToday
+        ? now.toISOString()
+        : endDate.endOf("day").add(7, "hour").toISOString();
 
-      const history = await filterChatHistoryByChatbot(
-        filterParams,
-        accessToken
-      );
+      let history = [];
+      if (chatbotId === "all") {
+        // Fetch history for all chatbots
+        const allHistory = await Promise.all(
+          chatbots
+            .filter((bot) => bot.id !== "all")
+            .map((bot) =>
+              filterChatHistoryByChatbot(
+                {
+                  chatbot_id: bot.id,
+                  skip: 0,
+                  limit: 0,
+                  filter_email: userEmail,
+                  from_date: fromDateStr,
+                  to_date: toDateStr,
+                },
+                accessToken
+              ).catch((err) => {
+                console.error(`Error fetching history for chatbot ${bot.id}:`, err);
+                return []; // Return empty array on error
+              })
+            )
+        );
+        history = allHistory.flat();
+      } else {
+        const filterParams = {
+          chatbot_id: chatbotId,
+          skip: 0,
+          limit: 0,
+          filter_email: userEmail,
+          from_date: fromDateStr,
+          to_date: toDateStr,
+        };
 
+        history = await filterChatHistoryByChatbot(
+          filterParams,
+          accessToken
+        );
+      }
+
+      // Filter history by date range (inclusive)
       const filteredHistory = (history || []).filter((chat) => {
         const chatDate = dayjs(chat.date_time);
+        const fromDateStart = fromDate.startOf("day").add(7, "hour");
+        const endDateEnd = endDate.endOf("day").add(7, "hour");
         return (
-          chatDate.isAfter(fromDate.startOf("day").add(7, "hour"), "minute") &&
-          chatDate.isBefore(endDate.endOf("day").add(7, "hour"), "minute")
+          (chatDate.isAfter(fromDateStart, "minute") || chatDate.isSame(fromDateStart, "minute")) &&
+          (chatDate.isBefore(endDateEnd, "minute") || chatDate.isSame(endDateEnd, "minute"))
         );
       });
 
+      // Cache the result
+      const cacheKey = getCacheKey(chatbotId, "requests", fromDate, endDate);
+      cacheRef.current[cacheKey] = filteredHistory;
+      
       setChatHistory(filteredHistory);
       setSelectedChatbot(chatbotId);
     } catch (error) {
@@ -186,6 +224,11 @@ const ChatbotStatsDialog = ({
       setLoading(false);
     }
   };
+
+  // Generate cache key
+  const getCacheKey = useCallback((chatbotId, chartType, fromDate, endDate) => {
+    return `${chatbotId}-${chartType}-${fromDate.format('YYYY-MM-DD')}-${endDate.format('YYYY-MM-DD')}`;
+  }, []);
 
   const fetchUsageTokens = async (chatbotId) => {
     setLoading(true);
@@ -209,26 +252,43 @@ const ChatbotStatsDialog = ({
                 fromDateStr,
                 toDateStr,
                 accessToken
-              )
+              ).catch((err) => {
+                console.error(`Error fetching tokens for chatbot ${bot.id}:`, err);
+                return []; // Return empty array on error
+              })
             )
         );
         records = allRecords.flat();
       } else {
-        records = await getUsageTokenByChatbot(
-          chatbotId,
-          fromDateStr,
-          toDateStr,
-          accessToken
-        );
+        try {
+          records = await getUsageTokenByChatbot(
+            chatbotId,
+            fromDateStr,
+            toDateStr,
+            accessToken
+          );
+        } catch (error) {
+          records = [];
+        }
       }
+      
+      // Filter records by user_email and date range (inclusive)
+      const filteredRecords = records.filter((record) => {
+        const matchesEmail = record.user_email === userEmail;
+        const recordDate = dayjs(record.date_time);
+        const fromDateStart = fromDate.startOf("day");
+        const endDateEnd = endDate.endOf("day");
+        const matchesDate = 
+          (recordDate.isAfter(fromDateStart) || recordDate.isSame(fromDateStart, "day")) &&
+          (recordDate.isBefore(endDateEnd) || recordDate.isSame(endDateEnd, "day"));
+        
+        return matchesEmail && matchesDate;
+      });
 
-      const filteredRecords = records.filter(
-        (record) =>
-          record.user_email === userEmail &&
-          dayjs(record.date_time).isAfter(fromDate.startOf("day")) &&
-          dayjs(record.date_time).isBefore(endDate.endOf("day"))
-      );
-
+      // Cache the result
+      const cacheKey = getCacheKey(chatbotId, "tokens", fromDate, endDate);
+      cacheRef.current[cacheKey] = filteredRecords;
+      
       setUsageRecords(filteredRecords);
       setSelectedChatbot(chatbotId);
     } catch (error) {
@@ -244,19 +304,49 @@ const ChatbotStatsDialog = ({
     }
   };
 
-  const fetchData = (chatbotId) => {
+  const fetchData = useCallback((chatbotId) => {
+    if (!chatbotId) return;
+    
+    const cacheKey = getCacheKey(chatbotId, chartType, fromDate, endDate);
+    
+    // Check cache first
+    if (cacheRef.current[cacheKey]) {
+      if (chartType === "tokens") {
+        setUsageRecords(cacheRef.current[cacheKey]);
+      } else {
+        setChatHistory(cacheRef.current[cacheKey]);
+      }
+      setSelectedChatbot(chatbotId);
+      return;
+    }
+
     if (chartType === "tokens") {
       fetchUsageTokens(chatbotId);
     } else {
       fetchChatHistory(chatbotId);
     }
-  };
+  }, [chartType, fromDate, endDate, getCacheKey]);
 
+  // Debounced fetch data
   useEffect(() => {
     if (selectedChatbot) {
-      fetchData(selectedChatbot);
+      // Clear previous timer
+      if (debounceTimerRef.current) {
+        clearTimeout(debounceTimerRef.current);
+      }
+      
+      // Set new timer (debounce 300ms for date changes)
+      debounceTimerRef.current = setTimeout(() => {
+        fetchData(selectedChatbot);
+      }, 300);
+      
+      return () => {
+        if (debounceTimerRef.current) {
+          clearTimeout(debounceTimerRef.current);
+        }
+      };
     }
-  }, [selectedChatbot, fromDate, endDate, chartType]);
+  }, [selectedChatbot, fromDate, endDate, chartType, fetchData]);
 
   const prepareChartData = () => {
     if (chartType === "tokens") {
@@ -271,12 +361,13 @@ const ChatbotStatsDialog = ({
         return acc;
       }, {});
 
-      return Object.values(dailyStats).map((stat) => ({
+      const chartData = Object.values(dailyStats).map((stat) => ({
         date: stat.date,
         tokens: stat.totalTokens,
         cost: (stat.totalTokens / 1000) * TOKEN_PRICE_PER_1000,
         requests: 0,
       }));
+      return chartData;
     } else {
       const dailyStats = chatHistory.reduce((acc, chat) => {
         const date = dayjs(chat.date_time)
@@ -294,12 +385,13 @@ const ChatbotStatsDialog = ({
         return acc;
       }, {});
 
-      return Object.values(dailyStats).map((stat) => ({
+      const chartData = Object.values(dailyStats).map((stat) => ({
         date: stat.date,
         tokens: stat.totalTokens,
         cost: (stat.totalTokens / 1000) * TOKEN_PRICE_PER_1000,
         requests: stat.totalChats,
       }));
+      return chartData;
     }
   };
 

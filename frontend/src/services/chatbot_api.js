@@ -44,7 +44,7 @@ export const update_chatbot = async (chatbot_id, agent, token) => {
     "Content-Type": "application/json",
   };
   const response = await chatbot_api.put(
-    `/?chatbot_id=${chatbot_id}`,
+    `/${chatbot_id}`,
     payload,
     { headers }
   );

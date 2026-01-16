@@ -15,7 +15,8 @@ class DocumentServicesMongo:
 
     @staticmethod
     async def get_documents_by_chatbot_id(chatbot_id: str) -> List[Document]:
-        """Get all documents for a chatbot"""
+        """Get all documents for a chatbot (supports both UUID and ObjectId chatbot_id)"""
+        # Try to find by chatbot_id as-is first
         cursor = mongo_context.documents.find({"chatbot_id": chatbot_id})
         documents = []
         async for doc in cursor:
@@ -27,13 +28,36 @@ class DocumentServicesMongo:
 
     @staticmethod
     async def get_document_by_id(document_id: str) -> Document | None:
-        """Get document by ID"""
+        """Get document by ID (supports both UUID and MongoDB ObjectId)"""
+        from bson import ObjectId
+        
+        # Try to find by UUID id first
         doc = await mongo_context.documents.find_one({"id": document_id})
+        
+        # If not found and document_id looks like ObjectId, try finding by _id
+        if not doc:
+            try:
+                obj_id = ObjectId(document_id)
+                doc = await mongo_context.documents.find_one({"_id": obj_id})
+                if doc and "id" not in doc:
+                    # If document doesn't have UUID id, use _id as id
+                    doc["id"] = str(doc["_id"])
+            except Exception:
+                # document_id is not a valid ObjectId, return None
+                pass
+        
         if not doc:
             return None
+        
+        # Ensure id field exists
+        if "id" not in doc or doc.get("id") is None:
+            if "_id" in doc:
+                doc["id"] = str(doc["_id"])
+        
+        # Remove _id to avoid conflicts
         if "_id" in doc:
-            doc["id"] = str(doc["_id"])
             del doc["_id"]
+        
         return Document(**doc)
 
     @staticmethod

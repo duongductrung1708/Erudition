@@ -987,7 +987,13 @@ class LightRAG:
                         else:
                             ct = await get_markdown_text_of_doc(db_obj.chatbot_id, db_obj.id)
                         if ct.strip() == "": raise ValueError("Document has no content. Storage may be damaged")
-                        need, delta = tokens_need_and_delta_tokens(db_obj.chatbot, ct)
+                        
+                        # Load chatbot from database (MongoDB version)
+                        chatbot = await ChatbotServicesMongo.get_chatbot_by_id(chatbot_id=db_obj.chatbot_id)
+                        if not chatbot:
+                            raise ValueError(f"Chatbot not found with id: {db_obj.chatbot_id}")
+                        
+                        need, delta = tokens_need_and_delta_tokens(chatbot, ct)
                         if delta < 0: await process_if_not_enough_token(delta,"UPLOAD DOCUMENT: INDEX DOCUMENT", db_obj.chatbot_id)
                         document_title = db_obj.document_title
                         await manager.send_status(db_obj.chatbot_id, "info", f"{document_title} is processing")

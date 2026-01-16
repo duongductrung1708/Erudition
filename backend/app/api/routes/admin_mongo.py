@@ -142,7 +142,18 @@ async def get_all_chatbots() -> Any:
             chatbot_doc["id"] = str(chatbot_doc["_id"])
             del chatbot_doc["_id"]
         from app.models_mongo import Chatbot
-        chatbots.append(Chatbot(**chatbot_doc))
+        chatbot = Chatbot(**chatbot_doc)
+        
+        # Populate chatbot_creator information
+        owner = await get_user_by_id(user_id=chatbot.owner_id)
+        chatbot_dict = chatbot.model_dump()
+        chatbot_dict["chatbot_creator"] = {
+            "id": owner.id if owner else chatbot.owner_id,
+            "email": owner.email if owner else "",
+            "full_name": owner.full_name if owner else ""
+        }
+        
+        chatbots.append(chatbot_dict)
     
     return chatbots
 

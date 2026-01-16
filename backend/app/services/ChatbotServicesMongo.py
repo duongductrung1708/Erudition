@@ -105,8 +105,20 @@ class ChatbotServicesMongo:
 
     @staticmethod
     async def get_chatbot_by_id(chatbot_id: str) -> Chatbot | None:
-        """Get chatbot by ID"""
+        """Get chatbot by ID (supports both UUID and MongoDB ObjectId)"""
         chatbot_doc = await mongo_context.chatbots.find_one({"id": chatbot_id})
+        if not chatbot_doc:
+            # Try finding by _id if not found by UUID-like id
+            try:
+                from bson import ObjectId
+                obj_id = ObjectId(chatbot_id)
+                chatbot_doc = await mongo_context.chatbots.find_one({"_id": obj_id})
+                if chatbot_doc and "id" not in chatbot_doc:
+                    # If doc found by _id but missing UUID id, assign it
+                    chatbot_doc["id"] = str(chatbot_doc["_id"])
+            except Exception:
+                pass
+        
         if not chatbot_doc:
             return None
         
@@ -279,4 +291,9 @@ class ChatbotServicesMongo:
             "status": "Ready"
         })
         return ready_docs > 0
+
+    @staticmethod
+    async def add_usage_tokens(chatbot_id: str, tokens: int, action: str = "") -> bool:
+        """Add usage tokens and subtract from remaining tokens"""
+        return await ChatbotServicesMongo.subtract_tokens(chatbot_id=chatbot_id, tokens_to_subtract=tokens)
 

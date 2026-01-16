@@ -309,6 +309,24 @@ async def get_chatbot_detail_by_id(current_user: CurrentUser, chatbot_id: str):
     owner = await get_user_by_id(user_id=chatbot.owner_id)
     faqs = await get_faqs_by_chatbot_id(chatbot_id=chatbot_id)
     documents = await DocumentServicesMongo.get_documents_by_chatbot_id(chatbot_id=chatbot_id)
+    # Filter out documents that don't exist (cleanup orphaned document_ids)
+    valid_documents = []
+    valid_document_ids = []
+    for doc in documents:
+        # Verify document actually exists in database
+        doc_check = await DocumentServicesMongo.get_document_by_id(document_id=doc.id)
+        if doc_check:
+            valid_documents.append(doc)
+            valid_document_ids.append(doc.id)
+    
+    # Clean up chatbot's document_ids if there are orphaned references
+    if len(valid_document_ids) != len(chatbot.document_ids):
+        from app.db_context.MongoDbContext import mongo_context
+        await mongo_context.chatbots.update_one(
+            {"id": chatbot_id},
+            {"$set": {"document_ids": valid_document_ids}}
+        )
+    
     conversations = await ConversationServicesMongo.get_conversations_by_chatbot_id(chatbot_id=chatbot_id)
     
     # Get invited users
@@ -328,7 +346,7 @@ async def get_chatbot_detail_by_id(current_user: CurrentUser, chatbot_id: str):
     response = {
         **chatbot.model_dump(),
         "faqs": [{"id": faq.id, "answer": faq.answer, "question": faq.question} for faq in faqs],
-        "documents": [doc.model_dump() for doc in documents],
+        "documents": [doc.model_dump() for doc in valid_documents],
         "conversations": [conv.model_dump() for conv in conversations if not conv.is_deleted or current_user.is_admin],
         "chatbot_creator": {
             "id": owner.id if owner else chatbot.owner_id,
@@ -397,6 +415,13 @@ async def lightrag_query(
     if not current_user.is_admin:
         if chatbot.owner_id != current_user.id and current_user.id not in chatbot.invited_user_ids:
             raise HTTPException(status_code=403, detail="You don't have access to this chatbot")
+    
+    # Check token balance before processing query
+    if chatbot.remaining_tokens == 0:
+        raise HTTPException(
+            status_code=409,
+            detail="Token balance is 0. Please top up to continue chatting."
+        )
     
     # Validate conversation if it exists. Lần chat đầu tiên có thể chưa có conversation trong DB.
     conversation = await ConversationServicesMongo.get_conversation_by_id(
@@ -558,6 +583,18 @@ async def lightrag_query(
             
             # Calculate response time
             response_time = time.time() - start_time
+            
+            # Deduct tokens from chatbot if usage_tokens > 0
+            if usage_tokens > 0:
+                try:
+                    from app.services.ChatbotServicesMongo import ChatbotServicesMongo
+                    await ChatbotServicesMongo.add_usage_tokens(
+                        chatbot_id=chatbot_id,
+                        tokens=usage_tokens,
+                        action="CHAT MESSAGE"
+                    )
+                except Exception as e:
+                    print(f"[WARNING] Failed to deduct tokens: {e}")
             
             # Save conversation history
             try:

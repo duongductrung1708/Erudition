@@ -7,6 +7,7 @@ import {
   Dialog,
   DialogActions,
   DialogContent,
+  DialogContentText,
   DialogTitle,
   FormControlLabel,
   Checkbox,
@@ -48,6 +49,9 @@ const AgentInfo = ({ agentDetails, onRefresh, setAgentDetails }) => {
   const [loading, setLoading] = useState(false);
   const [aqs, setAqs] = useState([]);
   const [openKnowledgeDialog, setOpenKnowledgeDialog] = useState(false);
+  const [deleteFaqDialogOpen, setDeleteFaqDialogOpen] = useState(false);
+  const [faqToDelete, setFaqToDelete] = useState(null);
+  const [isDeletingFaq, setIsDeletingFaq] = useState(false);
   const [openDocumentViewDialog, setOpenDocumentViewDialog] = useState(false);
   const [openAqsViewDialog, setOpenAqsViewDialog] = useState(false);
   const [openFaqDialog, setOpenFaqDialog] = useState(false);
@@ -244,16 +248,29 @@ const AgentInfo = ({ agentDetails, onRefresh, setAgentDetails }) => {
       .finally(() => setLoading(false));
   };
 
-  const handleDeleteFaq = async (faqId) => {
-    if (!window.confirm("Are you sure you want to delete this FAQ?")) return;
+  const handleDeleteFaqClick = (faqId) => {
+    setFaqToDelete(faqId);
+    setDeleteFaqDialogOpen(true);
+  };
+
+  const handleCloseDeleteFaqDialog = () => {
+    setDeleteFaqDialogOpen(false);
+    setFaqToDelete(null);
+  };
+
+  const handleDeleteFaq = async () => {
+    if (!faqToDelete) return;
+    setIsDeletingFaq(true);
     setLoading(true);
     try {
-      await deleteFaq(faqId, user.accessToken);
+      await deleteFaq(faqToDelete, user.accessToken);
       toast.success("FAQ deleted successfully!");
       onRefresh();
+      handleCloseDeleteFaqDialog();
     } catch (error) {
       toast.error(error.detail || "Failed to delete FAQ");
     } finally {
+      setIsDeletingFaq(false);
       setLoading(false);
     }
   };
@@ -521,6 +538,17 @@ const AgentInfo = ({ agentDetails, onRefresh, setAgentDetails }) => {
                   handleClickViewDocument={handleClickViewDocument}
                   handleQAViewItemClick={handleQAViewItemClick}
                   isViewOnly={isViewOnly}
+                  onDocumentDeleted={(docId) => {
+                    // Optimistic update: remove document from agentDetails
+                    if (setAgentDetails && agentDetails) {
+                      setAgentDetails({
+                        ...agentDetails,
+                        documents: (agentDetails.documents || []).filter(
+                          doc => doc.id !== docId
+                        )
+                      });
+                    }
+                  }}
                 />
               </Box>
               <Box sx={{ width: "40%", flexBasis: "19rem", flexGrow: 1 }}>
@@ -561,7 +589,7 @@ const AgentInfo = ({ agentDetails, onRefresh, setAgentDetails }) => {
                   key={agentDetails?.faqs?.length || 0}
                   faqs={agentDetails?.faqs || []}
                   onEditFaq={handleOpenFaqDialog}
-                  onDeleteFaq={handleDeleteFaq}
+                  onDeleteFaq={handleDeleteFaqClick}
                 />
               </Box>
             </Box>
@@ -774,6 +802,53 @@ const AgentInfo = ({ agentDetails, onRefresh, setAgentDetails }) => {
                 </Button>
               </>
             )}
+          </DialogActions>
+        </Dialog>
+
+        {/* Delete FAQ Confirmation Dialog */}
+        <Dialog
+          open={deleteFaqDialogOpen}
+          onClose={handleCloseDeleteFaqDialog}
+          aria-labelledby="delete-faq-dialog-title"
+          aria-describedby="delete-faq-dialog-description"
+        >
+          <DialogTitle id="delete-faq-dialog-title" sx={{ color: "#EF4444", fontWeight: "bold" }}>
+            Delete FAQ
+          </DialogTitle>
+          <DialogContent>
+            <DialogContentText id="delete-faq-dialog-description">
+              Are you sure you want to delete this FAQ? This action cannot be undone.
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions sx={{ p: 2 }}>
+            <Button 
+              onClick={handleCloseDeleteFaqDialog} 
+              disabled={isDeletingFaq}
+              sx={{ color: "#6B7280" }}
+            >
+              Cancel
+            </Button>
+            <Button
+              onClick={handleDeleteFaq}
+              disabled={isDeletingFaq}
+              variant="contained"
+              color="error"
+              sx={{
+                backgroundColor: "#EF4444",
+                "&:hover": {
+                  backgroundColor: "#DC2626",
+                },
+              }}
+            >
+              {isDeletingFaq ? (
+                <>
+                  <CircularProgress size={16} sx={{ mr: 1, color: "white" }} />
+                  Deleting...
+                </>
+              ) : (
+                "Delete"
+              )}
+            </Button>
           </DialogActions>
         </Dialog>
       </Box>
