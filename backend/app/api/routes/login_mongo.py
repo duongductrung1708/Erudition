@@ -32,7 +32,15 @@ from app.utils import (
 )
 
 router = APIRouter(tags=["login"])
-oauth = OAuth(Config(environ=settings.model_dump()))
+# Only pass simple env-like dict to OAuth; exclude computed fields so we don't
+# trigger MongoDB/Neo4j connection at import time (e.g. on Render with wrong MONGO URL).
+_oauth_environ = settings.model_dump(
+    exclude={"mongo_collection", "neo4j_driver", "all_cors_origins", "emails_enabled"},
+    mode="python",
+)
+# Config expects string values
+_oauth_environ = {k: str(v) if v is not None else "" for k, v in _oauth_environ.items()}
+oauth = OAuth(Config(environ=_oauth_environ))
 oauth.register(
     name="google",
     client_id=settings.GOOGLE_CLIENT_ID,
