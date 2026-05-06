@@ -70,8 +70,13 @@ class DocumentServices:
             file = UploadFile(filename=filename, file=stream)
             import asyncio
 
+            # Docling is powerful but memory-hungry for PDFs (can OOM on 512MB instances).
+            # Prefer the lightweight PyMuPDF-based loader for PDFs by default.
+            loader_method = "langchain" if str(filename).lower().endswith(".pdf") else "docling"
             documents = await asyncio.wait_for(
-                DocumentHelper.load(file=file, document_model=document, loader_method="docling"),
+                DocumentHelper.load(
+                    file=file, document_model=document, loader_method=loader_method
+                ),
                 timeout=180,
             )
             result = documents[0].page_content
