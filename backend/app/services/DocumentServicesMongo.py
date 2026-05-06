@@ -3,7 +3,7 @@ Document Services for MongoDB
 Replaces DocumentServices.py (PostgreSQL version)
 """
 import uuid
-from datetime import datetime
+from datetime import datetime, timedelta
 from typing import List
 from zoneinfo import ZoneInfo
 
@@ -12,6 +12,28 @@ from app.models_mongo import Document, DocumentStatus
 
 
 class DocumentServicesMongo:
+    @staticmethod
+    async def mark_stuck_documents_failed(*, older_than_minutes: int = 10) -> int:
+        """
+        Mark documents stuck in Uploading/Processing as Failed.
+
+        This prevents docs from staying in 'Uploading' forever when the server reloads
+        or a background task is interrupted.
+        """
+        cutoff = datetime.now(ZoneInfo("Asia/Ho_Chi_Minh")) - timedelta(minutes=older_than_minutes)
+        res = await mongo_context.documents.update_many(
+            {
+                "status": {"$in": [DocumentStatus.UPLOADING, DocumentStatus.PROCESSING]},
+                "updated_at": {"$lte": cutoff},
+            },
+            {
+                "$set": {
+                    "status": DocumentStatus.FAILED,
+                    "updated_at": datetime.now(ZoneInfo("Asia/Ho_Chi_Minh")),
+                }
+            },
+        )
+        return int(res.modified_count or 0)
 
     @staticmethod
     async def get_documents_by_chatbot_id(chatbot_id: str) -> List[Document]:

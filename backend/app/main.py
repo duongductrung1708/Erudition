@@ -88,6 +88,17 @@ async def startup_event():
             # Set a timeout for init_db to prevent hanging
             await asyncio.wait_for(init_db(), timeout=10.0)
             print("[INFO] MongoDB initialized successfully")
+            # Cleanup stuck documents (best-effort)
+            try:
+                from app.services.DocumentServicesMongo import DocumentServicesMongo
+
+                cleaned = await DocumentServicesMongo.mark_stuck_documents_failed(
+                    older_than_minutes=10
+                )
+                if cleaned:
+                    print(f"[INFO] Marked {cleaned} stuck documents as Failed")
+            except Exception as e:
+                print(f"[WARNING] Failed to cleanup stuck documents: {e}")
         except asyncio.TimeoutError:
             print("[WARNING] MongoDB initialization timed out after 10 seconds")
             print("[INFO] Continuing anyway - connection will be established on first request")

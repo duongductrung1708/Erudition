@@ -62,14 +62,37 @@ class DocumentServices:
         """Load and convert file to markdown - MongoDB version"""
         await ws_mng.send_status(document.chatbot_id, "info", f"{document.document_title} uploading")
         try:
+            await DocumentServicesMongo.update_document_status(
+                document_id=document.id, status=DocumentStatus.PROCESSING
+            )
             stream = BytesIO(file_content)
             file = UploadFile(filename=filename, file=stream)
-            documents = await DocumentHelper.load(file=file, document_model=document, loader_method="docling")
+            import asyncio
+
+            documents = await asyncio.wait_for(
+                DocumentHelper.load(file=file, document_model=document, loader_method="docling"),
+                timeout=180,
+            )
             result = documents[0].page_content
-            await DocumentServices.save_file_to_server(document.id, result, document.chatbot_id)
+            await asyncio.wait_for(
+                DocumentServices.save_file_to_server(document.id, result, document.chatbot_id),
+                timeout=60,
+            )
             # Update status in MongoDB
             await DocumentServicesMongo.update_document_status(document_id=document.id, status=DocumentStatus.UPLOADED)
             await ws_mng.send_status(document.chatbot_id, "success", f"{document.document_title} upload successfully", document_id=document.id, document_title=document.document_title)
+        except asyncio.TimeoutError:
+            logger.error("Error while uploading document: timeout")
+            await DocumentServicesMongo.update_document_status(
+                document_id=document.id, status=DocumentStatus.FAILED
+            )
+            await ws_mng.send_status(
+                document.chatbot_id,
+                "error",
+                f"Upload failed for '{document.document_title}': processing timed out",
+                document_id=document.id,
+                document_title=document.document_title,
+            )
         except Exception as e:
             logger.error(f"Error while uploading document: {e}")
             await DocumentServicesMongo.update_document_status(document_id=document.id, status=DocumentStatus.FAILED)
