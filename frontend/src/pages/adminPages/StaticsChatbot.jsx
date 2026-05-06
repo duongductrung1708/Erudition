@@ -16,6 +16,7 @@ import {
 import adminApi from "../../services/admin_api";
 import { useAuth } from "../../hooks/AuthProvider";
 import dayjs from "dayjs";
+import { getApiIsoRange } from "../../utils/dateRange";
 
 const TOKEN_PRICE_PER_1000 = 10;
 
@@ -38,9 +39,14 @@ const StaticsChatbot = () => {
           setIsLoading(false);
           return;
         }
+        const { fromIso: fromDateIso, toIso: toDateIso } = getApiIsoRange({
+          fromDate,
+          endDate: toDate,
+          endIsNowIfToday: false,
+        });
         const params = {
-          from_date: fromDate.add(7, "hour").toISOString(),
-          to_date: toDate.add(7, "hour").toISOString(),
+          from_date: fromDateIso,
+          to_date: toDateIso,
         };
         const response = await adminApi.getChatbotsUsageTokens(
           user.accessToken,

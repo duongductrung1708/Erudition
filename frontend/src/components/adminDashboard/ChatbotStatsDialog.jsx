@@ -18,22 +18,9 @@ import {
   useMediaQuery,
   Tooltip,
 } from "@mui/material";
-import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import {
-  Bar,
-  BarChart,
-  CartesianGrid,
-  ComposedChart,
-  Legend,
-  Line,
-  ResponsiveContainer,
-  Tooltip as RechartsTooltip,
-  XAxis,
-  YAxis,
-} from "recharts";
 import dayjs from "dayjs";
 import adminApi from "../../services/admin_api";
 import { toast } from "react-toastify";
@@ -42,8 +29,10 @@ import {
   getUsageTokenByChatbot,
 } from "../../services/statistics_api";
 import { styled } from "@mui/material/styles";
-
-const TOKEN_PRICE_PER_1000 = 10;
+import ChatbotStatsChart from "./chatbot-stats/ChatbotStatsChart";
+import { prepareChatbotStatsChartData } from "./chatbot-stats/prepareChartData";
+import ChatbotStatsControls from "./chatbot-stats/ChatbotStatsControls";
+import { getApiIsoRange, getInclusiveDayBounds } from "../../utils/dateRange";
 
 const StyledDialog = styled(Dialog)(({ theme }) => ({
   "& .MuiDialog-paper": {
@@ -147,13 +136,10 @@ const ChatbotStatsDialog = ({
   const fetchChatHistory = async (chatbotId) => {
     setLoading(true);
     try {
-      const now = dayjs();
-      const isEndDateToday = endDate.isSame(now, "day");
-
-      const fromDateStr = fromDate.startOf("day").add(7, "hour").toISOString();
-      const toDateStr = isEndDateToday
-        ? now.toISOString()
-        : endDate.endOf("day").add(7, "hour").toISOString();
+      const { fromIso: fromDateStr, toIso: toDateStr } = getApiIsoRange({
+        fromDate,
+        endDate,
+      });
 
       let history = [];
       if (chatbotId === "all") {
@@ -198,8 +184,10 @@ const ChatbotStatsDialog = ({
       // Filter history by date range (inclusive)
       const filteredHistory = (history || []).filter((chat) => {
         const chatDate = dayjs(chat.date_time);
-        const fromDateStart = fromDate.startOf("day").add(7, "hour");
-        const endDateEnd = endDate.endOf("day").add(7, "hour");
+        const { from: fromDateStart, to: endDateEnd } = getInclusiveDayBounds({
+          fromDate,
+          endDate,
+        });
         return (
           (chatDate.isAfter(fromDateStart, "minute") || chatDate.isSame(fromDateStart, "minute")) &&
           (chatDate.isBefore(endDateEnd, "minute") || chatDate.isSame(endDateEnd, "minute"))
@@ -233,13 +221,10 @@ const ChatbotStatsDialog = ({
   const fetchUsageTokens = async (chatbotId) => {
     setLoading(true);
     try {
-      const now = dayjs();
-      const isEndDateToday = endDate.isSame(now, "day");
-
-      const fromDateStr = fromDate.startOf("day").add(7, "hour").toISOString();
-      const toDateStr = isEndDateToday
-        ? now.toISOString()
-        : endDate.endOf("day").add(7, "hour").toISOString();
+      const { fromIso: fromDateStr, toIso: toDateStr } = getApiIsoRange({
+        fromDate,
+        endDate,
+      });
 
       let records = [];
       if (chatbotId === "all") {
@@ -276,8 +261,10 @@ const ChatbotStatsDialog = ({
       const filteredRecords = records.filter((record) => {
         const matchesEmail = record.user_email === userEmail;
         const recordDate = dayjs(record.date_time);
-        const fromDateStart = fromDate.startOf("day");
-        const endDateEnd = endDate.endOf("day");
+        const { from: fromDateStart, to: endDateEnd } = getInclusiveDayBounds({
+          fromDate,
+          endDate,
+        });
         const matchesDate = 
           (recordDate.isAfter(fromDateStart) || recordDate.isSame(fromDateStart, "day")) &&
           (recordDate.isBefore(endDateEnd) || recordDate.isSame(endDateEnd, "day"));
@@ -348,214 +335,30 @@ const ChatbotStatsDialog = ({
     }
   }, [selectedChatbot, fromDate, endDate, chartType, fetchData]);
 
-  const prepareChartData = () => {
-    if (chartType === "tokens") {
-      const dailyStats = usageRecords.reduce((acc, record) => {
-        const date = dayjs(record.date_time)
-          .subtract(7, "hour")
-          .format("YYYY-MM-DD");
-        if (!acc[date]) {
-          acc[date] = { date, totalTokens: 0 };
-        }
-        acc[date].totalTokens += record.usage_tokens || 0;
-        return acc;
-      }, {});
+  // chartData is memoized below via prepareChatbotStatsChartData()
 
-      const chartData = Object.values(dailyStats).map((stat) => ({
-        date: stat.date,
-        tokens: stat.totalTokens,
-        cost: (stat.totalTokens / 1000) * TOKEN_PRICE_PER_1000,
-        requests: 0,
-      }));
-      return chartData;
-    } else {
-      const dailyStats = chatHistory.reduce((acc, chat) => {
-        const date = dayjs(chat.date_time)
-          .subtract(7, "hour")
-          .format("YYYY-MM-DD");
-        if (!acc[date]) {
-          acc[date] = {
-            date,
-            totalTokens: 0,
-            totalChats: 0,
-          };
-        }
-        acc[date].totalTokens += chat.usage_tokens || 0;
-        acc[date].totalChats += 1;
-        return acc;
-      }, {});
+  const chartData = useMemo(() => {
+    return prepareChatbotStatsChartData({
+      chartType,
+      usageRecords,
+      chatHistory,
+    });
+  }, [chartHistory, chartType, usageRecords]);
 
-      const chartData = Object.values(dailyStats).map((stat) => ({
-        date: stat.date,
-        tokens: stat.totalTokens,
-        cost: (stat.totalTokens / 1000) * TOKEN_PRICE_PER_1000,
-        requests: stat.totalChats,
-      }));
-      return chartData;
-    }
-  };
-
-  const chartData = prepareChartData();
-
-  const getYAxisLabel = () => {
-    switch (chartType) {
-      case "tokens":
-        return "Total tokens / Cost (VND)";
-      case "requests":
-        return "Total requests";
-      default:
-        return "";
-    }
-  };
-
-  const renderChart = () => {
-    if (chartType === "tokens") {
-      return (
-        <ComposedChart
-          data={chartData}
-          margin={{
-            top: 20,
-            right: isMobile ? 10 : 30,
-            left: isMobile ? 0 : 20,
-            bottom: isMobile ? 80 : 60,
-          }}
-        >
-          <CartesianGrid stroke="#E5E7EB" strokeDasharray="3 3" />
-          <XAxis
-            dataKey="date"
-            angle={-45}
-            textAnchor="end"
-            height={70}
-            tick={{ fill: "#1F2937", fontSize: isMobile ? 12 : 14 }}
-          />
-          <YAxis
-            yAxisId="left"
-            orientation="left"
-            stroke="#7844D3"
-            tick={{ fill: "#1F2937" }}
-            label={{
-              value: "Tokens",
-              angle: -90,
-              position: "insideLeft",
-              fill: "#1F2937",
-              fontWeight: "bold",
-              dx: -20,
-            }}
-          />
-          <YAxis
-            yAxisId="right"
-            orientation="right"
-            stroke="#FF7300"
-            tick={{ fill: "#1F2937" }}
-            label={{
-              value: "Cost (VND)",
-              angle: -90,
-              position: "insideRight",
-              fill: "#1F2937",
-              fontWeight: "bold",
-            }}
-          />
-          <RechartsTooltip
-            contentStyle={{
-              backgroundColor: "#FFFFFF",
-              border: "1px solid #7844D3",
-              borderRadius: theme.shape.borderRadius,
-              color: "#1F2937",
-            }}
-            formatter={(value, name) =>
-              name === "Cost"
-                ? [`${value.toFixed(2)} ₫`, "Cost"]
-                : [value, "Tokens"]
-            }
-          />
-          <Legend
-            align="left"
-            wrapperStyle={{ color: "#1F2937", fontWeight: "bold" }}
-          />
-          <Bar
-            yAxisId="left"
-            dataKey="tokens"
-            name="Tokens"
-            fill="#7844D3"
-            barSize={isMobile ? 40 : 63}
-            opacity={0.9}
-          />
-          <Line
-            yAxisId="right"
-            type="monotone"
-            dataKey="cost"
-            name="Cost"
-            stroke="#FF7300"
-            strokeWidth={2}
-            dot={{ r: 4, fill: "#FF7300" }}
-          />
-        </ComposedChart>
+  const handleRequestsChartClick = useCallback(
+    (data) => {
+      if (!data?.activePayload?.length) return;
+      const date = data.activePayload[0].payload.date;
+      const chatsOnDate = chatHistory.filter(
+        (chat) => dayjs(chat.date_time).format("YYYY-MM-DD") === date
       );
-    } else {
-      return (
-        <BarChart
-          data={chartData}
-          margin={{
-            top: 20,
-            right: isMobile ? 10 : 30,
-            left: isMobile ? 0 : 20,
-            bottom: isMobile ? 80 : 60,
-          }}
-          onClick={(data) => {
-            if (data && data.activePayload) {
-              const date = data.activePayload[0].payload.date;
-              const chatsOnDate = chatHistory.filter(
-                (chat) => dayjs(chat.date_time).format("YYYY-MM-DD") === date
-              );
-              if (chatsOnDate.length >= 1) {
-                setSelectedUserChat(chatsOnDate[0]);
-                setChatDetailDialogOpen(true);
-              }
-            }
-          }}
-        >
-          <CartesianGrid stroke="#E5E7EB" strokeDasharray="3 3" />
-          <XAxis
-            dataKey="date"
-            angle={-45}
-            textAnchor="end"
-            height={70}
-            tick={{ fill: "#1F2937", fontSize: isMobile ? 12 : 14 }}
-          />
-          <YAxis
-            tick={{ fill: "#1F2937" }}
-            label={{
-              value: getYAxisLabel(),
-              angle: -90,
-              position: "insideLeft",
-              offset: -10,
-              fill: "#1F2937",
-              fontWeight: "bold",
-            }}
-          />
-          <RechartsTooltip
-            contentStyle={{
-              backgroundColor: "#FFFFFF",
-              border: "1px solid #7844D3",
-              borderRadius: theme.shape.borderRadius,
-              color: "#1F2937",
-            }}
-          />
-          <Legend
-            align="left"
-            wrapperStyle={{ color: "#1F2937", fontWeight: "bold" }}
-          />
-          <Bar
-            dataKey="requests"
-            fill="#7844D3"
-            barSize={isMobile ? 40 : 63}
-            name="Total requests"
-            opacity={0.9}
-          />
-        </BarChart>
-      );
-    }
-  };
+      if (chatsOnDate.length >= 1) {
+        setSelectedUserChat(chatsOnDate[0]);
+        setChatDetailDialogOpen(true);
+      }
+    },
+    [chatHistory]
+  );
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -602,103 +405,17 @@ const ChatbotStatsDialog = ({
             </Box>
           ) : (
             <>
-              <Box
-                sx={{
-                  mb: 2,
-                  display: "flex",
-                  flexDirection: isMobile ? "column" : "row",
-                  justifyContent: "space-between",
-                  alignItems: isMobile ? "flex-start" : "center",
-                  gap: isMobile ? 2 : 0,
-                }}
-              >
-                <Box
-                  sx={{
-                    mb: isMobile ? 2 : 0,
-                    display: "flex",
-                    flexWrap: "wrap",
-                    gap: 1,
-                  }}
-                >
-                  {chatbots.map((bot) => (
-                    <Tooltip title={bot.name} key={bot.id}>
-                      <StyledButton
-                        color="secondary"
-                        variant={
-                          selectedChatbot === bot.id ? "contained" : "outlined"
-                        }
-                        onClick={() => fetchData(bot.id)}
-                        sx={{
-                          bgcolor:
-                            selectedChatbot === bot.id
-                              ? "#7844D3"
-                              : "transparent",
-                          color:
-                            selectedChatbot === bot.id ? "white" : "#7844D3",
-                          borderColor: "#7844D3",
-                          "&:hover": {
-                            bgcolor:
-                              selectedChatbot === bot.id
-                                ? "#8B5CF6"
-                                : "#F5F3FF",
-                            borderColor: "#8B5CF6",
-                          },
-                          fontSize: isMobile ? "0.75rem" : "0.875rem",
-                          py: 0.5,
-                          px: 2,
-                        }}
-                      >
-                        {bot.name.length > 20
-                          ? `${bot.name.substring(0, 17)}...`
-                          : bot.name}
-                      </StyledButton>
-                    </Tooltip>
-                  ))}
-                </Box>
-                {selectedChatbot && (
-                  <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-                    <FormControl size="small" sx={{ minWidth: 120, mt: "0.6rem" }}>
-                      <InputLabel
-                        sx={{
-                          "&.Mui-focused": { color: "#5E33A8" },
-                          color: "#6B7280",
-                        }}
-                      >
-                        Metric
-                      </InputLabel>
-                      <Select
-                        value={chartType}
-                        label="Metric"
-                        onChange={(e) => setChartType(e.target.value)}
-                        sx={{
-                          borderRadius: theme.shape.borderRadius,
-                          "&:hover .MuiOutlinedInput-notchedOutline": {
-                            borderColor: "#7844D3",
-                          },
-                          "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-                            borderColor: "#5E33A8",
-                          },
-                          "& .MuiSelect-select": { color: "#1F2937" },
-                        }}
-                      >
-                        <MenuItem value="tokens">Tokens</MenuItem>
-                        <MenuItem value="requests">Requests</MenuItem>
-                      </Select>
-                    </FormControl>
-                    <Tooltip title="Select date range">
-                      <IconButton
-                        onClick={() => setDatePickerDialogOpen(true)}
-                        sx={{
-                          color: "#7844D3",
-                          "&:hover": { color: "#8B5CF6" },
-                        }}
-                      >
-                        <CalendarTodayIcon />
-                      </IconButton>
-                    </Tooltip>
-                  </Box>
-                )}
-              </Box>
+              <ChatbotStatsControls
+                chatbots={chatbots}
+                selectedChatbot={selectedChatbot}
+                chartType={chartType}
+                fetchData={fetchData}
+                setChartType={setChartType}
+                onOpenDatePicker={() => setDatePickerDialogOpen(true)}
+                isMobile={isMobile}
+                theme={theme}
+                StyledButton={StyledButton}
+              />
 
               {selectedChatbot && (
                 <>
@@ -727,9 +444,17 @@ const ChatbotStatsDialog = ({
                     }}
                   >
                     {chartData.length > 0 ? (
-                      <ResponsiveContainer width="100%" height="100%">
-                        {renderChart()}
-                      </ResponsiveContainer>
+                      <ChatbotStatsChart
+                        chartType={chartType}
+                        chartData={chartData}
+                        isMobile={isMobile}
+                        theme={theme}
+                        onRequestsClick={
+                          chartType === "requests"
+                            ? handleRequestsChartClick
+                            : undefined
+                        }
+                      />
                     ) : (
                       <Box
                         sx={{

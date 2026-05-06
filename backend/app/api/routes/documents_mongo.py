@@ -333,7 +333,6 @@ async def delete_document(
     chatbot_id: str,
     document_id: str,
     current_user: CurrentUser,
-    background_tasks: BackgroundTasks
 ):
     """Delete a document"""
     chatbot = await ChatbotServicesMongo.get_chatbot_by_id(chatbot_id=chatbot_id)
@@ -342,7 +341,14 @@ async def delete_document(
     if chatbot.owner_id != current_user.id:
         raise HTTPException(status_code=403, detail="You are not the owner of this chatbot")
     
-    # Add background task to delete document (may involve LightRAG cleanup)
-    background_tasks.add_task(DocumentServicesMongo.delete_document_by_id, document_id)
-    return {"status": "deleting", "document_id": document_id}
+    # Mark as deleting (best-effort) so UI can reflect state
+    await DocumentServicesMongo.update_document_status(
+        document_id=document_id, status=DocumentStatus.DELETING
+    )
+
+    deleted = await DocumentServicesMongo.delete_document_by_id(document_id=document_id)
+    if not deleted:
+        raise HTTPException(status_code=404, detail="Document not found or could not be deleted")
+
+    return {"status": "deleted", "document_id": document_id}
 

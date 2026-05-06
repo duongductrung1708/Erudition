@@ -1,5 +1,4 @@
 import axios from "axios";
-import { use } from "react";
 
 const API_URL = import.meta.env.VITE_API_URL
 // const API_URL = "http://localhost:8000/api/v1";
@@ -76,21 +75,18 @@ export const save_document_content = async (document_id, data,  token) => {
 }
 
 export const delete_document = async (chatbot_id, token, document_id) => {
-  try {
-    const headers = {
-      Authorization: `Bearer ${token}`,
-    };
-    const res = await chatbot_api.delete(`/${chatbot_id}/documents/delete/?document_id=${document_id}`, {
+  const headers = {
+    Authorization: `Bearer ${token}`,
+  };
+  const res = await chatbot_api.delete(
+    `/${chatbot_id}/documents/delete/?document_id=${document_id}`,
+    {
       headers: {
         ...headers,
       },
-    });
-    return res.data
-  } catch (error) {
-    console.error("Delete failed:", error.response?.data || error.message);
-    console.log("Full error response:", error.response);
-    return error.response?.data || error.message;
-  }
+    }
+  );
+  return res.data;
 };
 
 export const get_aqs_data = async (document_id) => {

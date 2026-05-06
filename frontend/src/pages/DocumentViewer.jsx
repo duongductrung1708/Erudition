@@ -16,7 +16,7 @@ import {
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import TableViewIcon from "@mui/icons-material/TableView";
-import Joyride, { STATUS } from "react-joyride";
+import DriverTour from "../components/tour/DriverTour";
 
 const DocumentViewer = ({
   documentData,
@@ -65,13 +65,9 @@ const DocumentViewer = ({
     }
   }, [currentDocument.id]);
 
-  // Handle tour completion or skip
-  const handleJoyrideCallback = (data) => {
-    const { status } = data;
-    if ([STATUS.FINISHED, STATUS.SKIPPED].includes(status)) {
-      setRunTour(false);
-      localStorage.setItem(`documentViewerTour_${currentDocument.id}`, "true");
-    }
+  const handleTourFinished = () => {
+    setRunTour(false);
+    localStorage.setItem(`documentViewerTour_${currentDocument.id}`, "true");
   };
 
   // Generate table of contents
@@ -179,44 +175,7 @@ const DocumentViewer = ({
 
   return (
     <Box sx={{ position: "relative" }}>
-      {/* Joyride Tour */}
-      <Joyride
-        steps={steps}
-        run={runTour}
-        continuous
-        showProgress
-        showSkipButton
-        callback={handleJoyrideCallback}
-        disableScrolling={true}
-        styles={{
-          options: {
-            primaryColor: "#8B5CF6",
-            textColor: "#333",
-            zIndex: 1500, // Above MUI Dialog (zIndex: 1300)
-          },
-          tooltip: {
-            borderRadius: "8px",
-            padding: "16px",
-          },
-          buttonNext: {
-            backgroundColor: "#8B5CF6",
-            borderRadius: "4px",
-            color: "#fff",
-          },
-          buttonBack: {
-            color: "#8B5CF6",
-          },
-          buttonSkip: {
-            color: "#8B5CF6",
-          },
-        }}
-        locale={{
-          next: "Next",
-          back: "Back",
-          skip: "Skip",
-          last: "Got it",
-        }}
-      />
+      <DriverTour run={runTour} steps={steps} onFinished={handleTourFinished} />
 
       {/* Toggle TOC Drawer */}
       <Tooltip title="Table of Contents" placement="top">

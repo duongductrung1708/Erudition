@@ -56,9 +56,12 @@ const DocumentsList = ({
   }
 
   const handleDeleteClick = (doc) => {
-    if (["Uploading", "Processing", "Deleting"].includes(doc.status)) {
-      toast.warn("Document is still processing, please wait.");
+    if (doc.status === "Deleting") {
+      toast.info("Document deletion is already in progress.");
       return;
+    }
+    if (["Uploading", "Processing"].includes(doc.status)) {
+      toast.warn("This document looks stuck. You can still delete it.");
     }
     setDocToDelete(doc);
     setDeleteDialogOpen(true);
@@ -97,12 +100,14 @@ const DocumentsList = ({
     }
     
     try {
-      await delete_document(chatbotId, token, docToDelete.id);
-      toast.success("Document deleted successfully!");
-      // Refresh to sync with server (with delay to ensure backend deletion completes)
-      setTimeout(() => {
-        fetchChatbotData();
-      }, 500);
+      const res = await delete_document(chatbotId, token, docToDelete.id);
+      toast.success(
+        res?.status === "deleted"
+          ? "Document deleted successfully!"
+          : "Delete request sent."
+      );
+      // Refresh to sync with server
+      setTimeout(fetchChatbotData, 400);
       handleCloseDeleteDialog();
     } catch (error) {
       // Rollback optimistic update on error

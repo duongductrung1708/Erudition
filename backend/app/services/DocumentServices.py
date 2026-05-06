@@ -73,6 +73,14 @@ class DocumentServices:
         except Exception as e:
             logger.error(f"Error while uploading document: {e}")
             await DocumentServicesMongo.update_document_status(document_id=document.id, status=DocumentStatus.FAILED)
+            # Surface the real reason to the UI via websocket
+            await ws_mng.send_status(
+                document.chatbot_id,
+                "error",
+                f"Upload failed for '{document.document_title}': {str(e)}",
+                document_id=document.id,
+                document_title=document.document_title,
+            )
 
     @staticmethod
     async def get_document_origin_content(document_id: str):

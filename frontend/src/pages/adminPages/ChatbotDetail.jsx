@@ -30,6 +30,7 @@ import TokenStatistic from "../../components/agentDetails/TokenStatistic";
 import RequestStatistic from "../../components/agentDetails/RequestStatistic";
 import { toast } from "react-toastify";
 import dayjs from "dayjs";
+import { getApiIsoRange, getInclusiveDayBounds } from "../../utils/dateRange";
 import {
   filterChatHistoryByChatbot,
   getRateOfResponseReport,
@@ -156,8 +157,11 @@ const ChatBotDetails = () => {
         try {
             setReportLoading(true);
             const token = user.accessToken;
-            const fromDate = dayjs(dateRange.startDate).startOf("day").add(7, "hour").toISOString();
-            const toDate = dayjs(dateRange.endDate).endOf("day").add(7, "hour").toISOString();
+            const { fromIso: fromDate, toIso: toDate } = getApiIsoRange({
+              fromDate: dayjs(dateRange.startDate),
+              endDate: dayjs(dateRange.endDate),
+              endIsNowIfToday: false,
+            });
 
             const params = {
                 chatbot_id: chatbotId,
@@ -174,9 +178,13 @@ const ChatBotDetails = () => {
             // Lọc lại dữ liệu để đảm bảo chỉ lấy trong khoảng dateRange
             const filteredHistory = (history || []).filter((chat) => {
                 const chatDate = dayjs(chat.date_time);
+                const { from, to } = getInclusiveDayBounds({
+                  fromDate: dayjs(dateRange.startDate),
+                  endDate: dayjs(dateRange.endDate),
+                });
                 return (
-                    chatDate.isAfter(dayjs(dateRange.startDate).startOf("day"), "minute") &&
-                    chatDate.isBefore(dayjs(dateRange.endDate).endOf("day"), "minute")
+                    (chatDate.isAfter(from, "minute") || chatDate.isSame(from, "minute")) &&
+                    (chatDate.isBefore(to, "minute") || chatDate.isSame(to, "minute"))
                 );
             });
 
@@ -192,8 +200,11 @@ const ChatBotDetails = () => {
         try {
             setReportLoading(true);
             const token = user.accessToken;
-            const fromDate = dayjs(dateRange.startDate).startOf("day").add(7, "hour").toISOString();
-            const toDate = dayjs(dateRange.endDate).endOf("day").add(7, "hour").toISOString();
+            const { fromIso: fromDate, toIso: toDate } = getApiIsoRange({
+              fromDate: dayjs(dateRange.startDate),
+              endDate: dayjs(dateRange.endDate),
+              endIsNowIfToday: false,
+            });
 
             const report = await getUsageTokenByChatbot(
                 chatbotId,
@@ -215,8 +226,11 @@ const ChatBotDetails = () => {
     try {
       setReportLoading(true);
       const token = user.accessToken;
-        const fromDate = dayjs(dateRange.startDate).startOf("day").add(7, "hour").toISOString();
-        const toDate = dayjs(dateRange.endDate).endOf("day").add(7, "hour").toISOString();
+      const { fromIso: fromDate, toIso: toDate } = getApiIsoRange({
+        fromDate: dayjs(dateRange.startDate),
+        endDate: dayjs(dateRange.endDate),
+        endIsNowIfToday: false,
+      });
 
       console.log("Rate report params:", { fromDate, toDate }); // Debug: In tham số
 

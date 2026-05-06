@@ -8,7 +8,7 @@ import {
   Box,
 } from "@mui/material";
 import FileUploadOutlinedIcon from "@mui/icons-material/FileUploadOutlined";
-import Joyride, { STATUS } from "react-joyride";
+import DriverTour from "../tour/DriverTour";
 
 const UploadFile = ({ setNewDocument, openKnowledgeDialog, chatbotId }) => {
   const [title, setTitle] = useState("");
@@ -45,13 +45,9 @@ const UploadFile = ({ setNewDocument, openKnowledgeDialog, chatbotId }) => {
     }
   }, [openKnowledgeDialog, chatbotId]);
 
-  // Handle tour completion
-  const handleJoyrideCallback = (data) => {
-    const { status } = data;
-    if ([STATUS.FINISHED, STATUS.SKIPPED].includes(status)) {
-      setRunTour(false);
-      localStorage.setItem(`uploadDocTour_${chatbotId}`, "true");
-    }
+  const handleTourFinished = () => {
+    setRunTour(false);
+    localStorage.setItem(`uploadDocTour_${chatbotId}`, "true");
   };
 
   const handleFileChange = (event) => {
@@ -83,43 +79,7 @@ const UploadFile = ({ setNewDocument, openKnowledgeDialog, chatbotId }) => {
 
   return (
     <>
-      <Joyride
-        steps={steps}
-        run={runTour}
-        continuous
-        showProgress
-        showSkipButton
-        callback={handleJoyrideCallback}
-        disableScrolling={true}
-        styles={{
-          options: {
-            primaryColor: "#8B5CF6",
-            textColor: "#333",
-            zIndex: 1500,
-          },
-          tooltip: {
-            borderRadius: "8px",
-            padding: "16px",
-          },
-          buttonNext: {
-            backgroundColor: "#8B5CF6",
-            borderRadius: "4px",
-            color: "#fff",
-          },
-          buttonBack: {
-            color: "#8B5CF6",
-          },
-          buttonSkip: {
-            color: "#8B5CF6",
-          },
-        }}
-        locale={{
-          next: "Next",
-          back: "Back",
-          skip: "Skip",
-          last: "Got it",
-        }}
-      />
+      <DriverTour run={runTour} steps={steps} onFinished={handleTourFinished} />
       <Box>
         <Typography variant="body2" color="textSecondary" paragraph>
           Upload a document file containing text to learn from. Some examples are

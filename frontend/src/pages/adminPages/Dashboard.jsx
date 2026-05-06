@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import {
   Box,
   Grid,
@@ -58,8 +58,12 @@ const Dashboard = () => {
   const [error, setError] = useState(null);
 
   const PRICE_PER_TOKEN = 0.01;
+  const totalCostVnd = useMemo(
+    () => totalTokens * PRICE_PER_TOKEN,
+    [PRICE_PER_TOKEN, totalTokens]
+  );
 
-  const fetchStats = async () => {
+  const fetchStats = useCallback(async () => {
     if (!user || !user.isAdmin) {
       setError("Admin privileges required");
       setLoading(false);
@@ -123,8 +127,7 @@ const Dashboard = () => {
         }
         setTotalTokens(totalTokenUsage);
 
-        const revenue = totalTokenUsage * PRICE_PER_TOKEN;
-        setTotalRevenue(revenue);
+        setTotalRevenue(totalTokenUsage * PRICE_PER_TOKEN);
       } catch (err) {
         console.error(
           "GetChatbot Error:",
@@ -143,7 +146,7 @@ const Dashboard = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [PRICE_PER_TOKEN, logout, user, user?.accessToken]);
 
   useEffect(() => {
     fetchStats();
@@ -299,7 +302,7 @@ const Dashboard = () => {
                 Total cost
               </Typography>
               <Typography variant="h5" fontWeight="bold" color="primary">
-                {totalRevenue.toLocaleString("vi-VN")} ₫
+                {totalCostVnd.toLocaleString("vi-VN")} ₫
               </Typography>
             </Item>
           </Grid>

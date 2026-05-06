@@ -20747,3 +20747,6 @@ Given a text document that is po...
 2026-01-16 16:59:51,621 - lightrag - INFO - Global query uses 58 entites, 53 relations, 13 chunks
 2026-01-16 16:59:51,636 - lightrag - INFO - Local query uses 60 entites, 52 relations, 15 chunks
 2026-01-16 16:59:55,044 - lightrag - INFO - Process 22280 KV writting 35 records to llm_response_cache
+2026-05-06 22:09:32,440 - lightrag - ERROR - Error while downloading document: An error occurred (NoSuchKey) when calling the GetObject operation: The specified key does not exist.
+2026-05-06 22:09:46,042 - lightrag - ERROR - Error while downloading document: An error occurred (NoSuchKey) when calling the GetObject operation: The specified key does not exist.
+2026-05-06 22:10:22,532 - lightrag - ERROR - Error while downloading document: An error occurred (NoSuchKey) when calling the GetObject operation: The specified key does not exist.

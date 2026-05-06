@@ -20,8 +20,10 @@ class DocumentServicesMongo:
         cursor = mongo_context.documents.find({"chatbot_id": chatbot_id})
         documents = []
         async for doc in cursor:
+            # Preserve the app-level id (UUID) if present; only fall back to _id when missing.
             if "_id" in doc:
-                doc["id"] = str(doc["_id"])
+                if not doc.get("id"):
+                    doc["id"] = str(doc["_id"])
                 del doc["_id"]
             documents.append(Document(**doc))
         return documents
@@ -91,19 +93,43 @@ class DocumentServicesMongo:
     @staticmethod
     async def delete_document_by_id(document_id: str) -> bool:
         """Delete document"""
+        from bson import ObjectId
+
         doc = await DocumentServicesMongo.get_document_by_id(document_id=document_id)
         if not doc:
             return False
         
-        # Remove from chatbot's document_ids
+        # Remove from chatbot's document_ids (try both the provided id and the doc.id)
         await mongo_context.chatbots.update_one(
             {"id": doc.chatbot_id},
-            {"$pull": {"document_ids": document_id}}
+            {"$pull": {"document_ids": {"$in": [document_id, doc.id]}}}
         )
         
-        # Delete document
-        result = await mongo_context.documents.delete_one({"id": document_id})
-        return result.deleted_count > 0
+        # Delete document:
+        # - Some records use app-level UUID `id`
+        # - Some legacy records may only have Mongo `_id`
+        # Try multiple selectors to guarantee deletion.
+        selectors: list[dict] = [{"id": document_id}, {"id": doc.id}]
+
+        for selector in selectors:
+            result = await mongo_context.documents.delete_one(selector)
+            if result.deleted_count > 0:
+                return True
+
+        # Fall back to Mongo ObjectId deletion (both `document_id` and `doc.id` may be ObjectId strings)
+        obj_ids: list[ObjectId] = []
+        for candidate in (document_id, doc.id):
+            try:
+                obj_ids.append(ObjectId(candidate))
+            except Exception:
+                continue
+
+        for obj_id in obj_ids:
+            result = await mongo_context.documents.delete_one({"_id": obj_id})
+            if result.deleted_count > 0:
+                return True
+
+        return False
 
     @staticmethod
     async def update_document_status(document_id: str, status: str) -> bool:

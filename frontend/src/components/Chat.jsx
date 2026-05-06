@@ -6,10 +6,7 @@ import {
   FormHelperText,
   IconButton,
   Modal,
-  Paper,
-  Stack,
   TextareaAutosize,
-  TextField,
   Tooltip,
   Typography,
   useMediaQuery,
@@ -19,15 +16,13 @@ import {
 } from "@mui/material";
 import {
   Report as ReportIcon,
-  Send as SendIcon,
   ArrowBackIos as ArrowBackIosIcon,
   MenuBook,
   Bookmark,
   BookmarkBorder,
 } from "@mui/icons-material";
-import React, { useState, useRef, useEffect } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Markdown from "markdown-to-jsx";
 import {
   reportMessage,
   getSourceOfChatbotResponse,
@@ -39,6 +34,8 @@ import {
 import { toast } from "react-toastify";
 import { useAuth } from "../hooks/AuthProvider";
 import SourceDialog from "./SourceDialog";
+import ChatInput from "./chat/ChatInput";
+import ChatMessages from "./chat/ChatMessages";
 
 const Chat = ({
   chatHistory,
@@ -49,7 +46,6 @@ const Chat = ({
   isChatbotCreator,
 }) => {
   const { user } = useAuth();
-  const [newMessage, setNewMessage] = useState("");
   const navigate = useNavigate();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
@@ -80,14 +76,12 @@ const Chat = ({
     }
   }, [chatHistory]);
 
-  const handleSendMessage = () => {
-    if (newMessage.trim()) {
-      onSendMessage(newMessage.trim());
-      setNewMessage("");
-    }
-  };
+  const inputDisabled = (isChatbotDisabled && !isChatbotCreator) || isLoading;
+  const inputPlaceholder = isChatbotDisabled && !isChatbotCreator
+    ? "Chatbot is disabled"
+    : "Type a message...";
 
-  const handleToggleFavorite = async (message) => {
+  const handleToggleFavorite = useCallback(async (message) => {
     if (message.sender !== "chatbot" || !message.id) {
       toast.error("Only chatbot responses can be favorited");
       return;
@@ -115,9 +109,9 @@ const Chat = ({
         error.response?.data?.detail || "Failed to update favorite status"
       );
     }
-  };
+  }, [chatbotId, isLoading, onSendMessage, user.accessToken]);
 
-  const handleOpenReportModal = (message) => {
+  const handleOpenReportModal = useCallback((message) => {
     if (message.sender === "chatbot" && message.id) {
       if (isLoading) {
         toast.error("Please wait a moment to report this message");
@@ -128,19 +122,19 @@ const Chat = ({
     } else {
       toast.error("Only chatbot responses can be reported");
     }
-  };
+  }, [isLoading]);
 
-  const handleCloseReportModal = () => {
+  const handleCloseReportModal = useCallback(() => {
     setReportModalOpen(false);
     setSelectedReason("");
     setCustomReason("");
-  };
+  }, []);
 
-  const handleReasonChange = (event) => {
+  const handleReasonChange = useCallback((event) => {
     setSelectedReason(event.target.value);
-  };
+  }, []);
 
-  const handleSubmitReport = async () => {
+  const handleSubmitReport = useCallback(async () => {
     try {
       const reportedMessage = chatHistory.find(
         (msg) => msg.id === selectedMessageId && msg.sender === "chatbot"
@@ -167,12 +161,19 @@ const Chat = ({
       console.error("Failed to report message:", error);
       toast.error(error.response?.data?.detail || "Failed to report message");
     }
-  };
+  }, [
+    chatHistory,
+    handleCloseReportModal,
+    selectedMessageId,
+    selectedReason,
+    customReason,
+    user.accessToken,
+  ]);
 
-  const fetchSourceData = async (chatbotId, conversationId, responseId) => {
+  const fetchSourceData = useCallback(async (cbId, conversationId, responseId) => {
     try {
       const data = await getSourceOfChatbotResponse(
-        chatbotId,
+        cbId,
         conversationId,
         responseId,
         user.accessToken
@@ -185,23 +186,23 @@ const Chat = ({
       console.error("Error fetching source data:", error);
       toast.error("Failed to fetch source information");
     }
-  };
+  }, [user.accessToken]);
 
-  const handleOpenSourceDialog = (message) => {
+  const handleOpenSourceDialog = useCallback((message) => {
     const { id, conversation_id } = message;
     setSelectedResponseId(id);
     if (!sourceData[id]) {
       fetchSourceData(chatbotId, conversation_id, id);
     }
     setSourceDialogOpen(true);
-  };
+  }, [chatbotId, fetchSourceData, sourceData]);
 
-  const handleCloseSourceDialog = () => {
+  const handleCloseSourceDialog = useCallback(() => {
     setSourceDialogOpen(false);
     setSelectedResponseId(null);
-  };
+  }, []);
 
-  const formatDateTime = (dateTime) => {
+  const formatDateTime = useCallback((dateTime) => {
     if (!dateTime) return "N/A";
     const date = new Date(dateTime);
     return date.toLocaleString("en-US", {
@@ -212,7 +213,103 @@ const Chat = ({
       minute: "2-digit",
       second: "2-digit",
     });
-  };
+  }, []);
+
+  const renderActions = useCallback(
+    (msg, idx, chatHistoryLength) => {
+      if (msg.sender !== "chatbot" || msg.isStreaming) return null;
+
+      const isLastAndLoading = isLoading && idx === chatHistoryLength - 1;
+
+      return (
+        <Box sx={{ display: "flex", gap: 1, mt: 1 }}>
+          <Tooltip title="Reference" placement="bottom" arrow>
+            <IconButton
+              size="small"
+              sx={{
+                backgroundColor: "rgba(255, 255, 255, 0.8)",
+                "&:hover": {
+                  backgroundColor: isLastAndLoading
+                    ? "rgba(255, 255, 255, 0.8)"
+                    : "rgba(0, 0, 255, 0.1)",
+                },
+                opacity: isLastAndLoading ? 0.5 : 1,
+              }}
+              onClick={() => handleOpenSourceDialog(msg)}
+              disabled={isLastAndLoading}
+            >
+              <MenuBook
+                fontSize="small"
+                sx={{ color: isLastAndLoading ? "grey" : "#5E33A8" }}
+              />
+            </IconButton>
+          </Tooltip>
+          <Tooltip
+            title={msg.is_favorite ? "Remove from favorites" : "Add to favorites"}
+            placement="bottom"
+            arrow
+          >
+            <IconButton
+              size="small"
+              sx={{
+                backgroundColor: "rgba(255, 255, 255, 0.8)",
+                "&:hover": {
+                  backgroundColor: isLastAndLoading
+                    ? "rgba(255, 255, 255, 0.8)"
+                    : "rgba(255, 215, 0, 0.2)",
+                },
+                opacity: isLastAndLoading ? 0.5 : 1,
+              }}
+              onClick={() => handleToggleFavorite(msg)}
+              disabled={isLastAndLoading}
+            >
+              {msg.is_favorite ? (
+                <Bookmark
+                  fontSize="small"
+                  sx={{ color: isLastAndLoading ? "grey" : "#FFD700" }}
+                />
+              ) : (
+                <BookmarkBorder
+                  fontSize="small"
+                  sx={{ color: isLastAndLoading ? "grey" : "#5E33A8" }}
+                />
+              )}
+            </IconButton>
+          </Tooltip>
+          <Tooltip
+            title={
+              isLastAndLoading
+                ? "Please wait until the response is complete"
+                : "Report this message"
+            }
+            placement="bottom"
+            arrow
+          >
+            <IconButton
+              size="small"
+              sx={{
+                backgroundColor: "rgba(255, 255, 255, 0.8)",
+                "&:hover": {
+                  backgroundColor: isLastAndLoading
+                    ? "rgba(255, 255, 255, 0.8)"
+                    : "rgba(255, 0, 0, 0.1)",
+                },
+                opacity: isLastAndLoading ? 0.5 : 1,
+              }}
+              onClick={() => handleOpenReportModal(msg)}
+              disabled={isLastAndLoading}
+            >
+              <ReportIcon
+                fontSize="small"
+                color={isLastAndLoading ? "disabled" : "error"}
+              />
+            </IconButton>
+          </Tooltip>
+        </Box>
+      );
+    },
+    [handleOpenReportModal, handleOpenSourceDialog, handleToggleFavorite, isLoading]
+  );
 
   return (
     <Box
@@ -261,337 +358,40 @@ const Chat = ({
           flexDirection: "column",
         }}
       >
-        {chatHistory.length === 0 ? (
-          <Box
-            sx={{
-              flex: 1,
-              width: "100%",
-              overflowY: "auto",
-              px: { xs: 3, sm: 5, md: "20%", lg: "30%" },
-              display: "flex",
-              flexDirection: "column",
-              justifyContent:
-                chatHistory.length === 0 ? "center" : "flex-start",
-              alignItems: chatHistory.length === 0 ? "center" : "flex-start",
-            }}
-          >
-            <Typography variant="h6" color="text.secondary">
-              What can I help with?
-            </Typography>
-          </Box>
-        ) : (
-          chatHistory.map((msg, idx) => (
-            <Stack
-              key={msg.id || idx}
-              direction={msg.sender === "user" ? "row-reverse" : "row"}
-              spacing={2}
-              mb={2}
+        <ChatMessages
+          chatHistory={chatHistory}
+          formatDateTime={formatDateTime}
+          renderActions={renderActions}
+          messagesEndRef={messagesEndRef}
+          emptyState={
+            <Box
+              sx={{
+                flex: 1,
+                width: "100%",
+                overflowY: "auto",
+                px: { xs: 3, sm: 5, md: "20%", lg: "30%" },
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
             >
-              <Box
-                sx={{
-                  position: "relative",
-                  maxWidth: "70%",
-                }}
-              >
-                <Tooltip
-                  title={formatDateTime(msg.date_time)}
-                  placement="top"
-                  arrow
-                >
-                  <Paper
-                    sx={{
-                      px: 2,
-                      py: 1.5,
-                      bgcolor:
-                        msg.sender === "user"
-                          ? "rgba(120, 68, 211, 0.1)"
-                          : "rgba(0, 0, 0, 0.05)",
-                      boxShadow: "none",
-                      borderRadius: "12px",
-                      wordBreak: "break-word",
-                      whiteSpace: "pre-wrap",
-                    }}
-                  >
-                    {msg.text === "" && msg.isStreaming ? (
-                      <Box
-                        sx={{
-                          display: "flex",
-                          alignItems: "center",
-                          "& span": {
-                            width: 6,
-                            height: 6,
-                            backgroundColor: "#888",
-                            borderRadius: "50%",
-                            display: "inline-block",
-                            marginRight: "5px",
-                            animation: "blink 1.4s infinite both",
-                          },
-                          "& span:nth-of-type(2)": {
-                            animationDelay: "0.2s",
-                          },
-                          "& span:nth-of-type(3)": {
-                            animationDelay: "0.4s",
-                          },
-                          "& span:nth-of-type(4)": {
-                            animationDelay: "0.6s",
-                          },
-                          "& span:nth-of-type(5)": {
-                            animationDelay: "0.8s",
-                          },
-                          "@keyframes blink": {
-                            "0%, 80%, 100%": { opacity: 0 },
-                            "40%": { opacity: 1 },
-                          },
-                        }}
-                      >
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                      </Box>
-                    ) : msg.isStreaming ? (
-                      <Box>
-                        <Markdown>{msg.text}</Markdown>
-                        <Box
-                          component="span"
-                          sx={{
-                            display: "inline-block",
-                            width: "2px",
-                            height: "1em",
-                            backgroundColor: "#000",
-                            marginLeft: "2px",
-                            animation: "cursor-blink 1s infinite",
-                            verticalAlign: "middle",
-                            "@keyframes cursor-blink": {
-                              "0%, 100%": { opacity: 1 },
-                              "50%": { opacity: 0 },
-                            },
-                          }}
-                        />
-                      </Box>
-                    ) : (
-                      <Markdown>{msg.text}</Markdown>
-                    )}
-                  </Paper>
-                </Tooltip>
-
-                {/* Buttons for chatbot messages */}
-                {msg.sender === "chatbot" && !msg.isStreaming && (
-                  <Box sx={{ display: "flex", gap: 1, mt: 1 }}>
-                    <Tooltip title="Reference" placement="bottom" arrow>
-                      <IconButton
-                        size="small"
-                        sx={{
-                          backgroundColor: "rgba(255, 255, 255, 0.8)",
-                          "&:hover": {
-                            backgroundColor:
-                              isLoading && idx === chatHistory.length - 1
-                                ? "rgba(255, 255, 255, 0.8)"
-                                : "rgba(0, 0, 255, 0.1)",
-                          },
-                          opacity:
-                            isLoading && idx === chatHistory.length - 1
-                              ? 0.5
-                              : 1,
-                        }}
-                        onClick={() => handleOpenSourceDialog(msg)}
-                        disabled={isLoading && idx === chatHistory.length - 1}
-                      >
-                        <MenuBook
-                          fontSize="small"
-                          sx={{
-                            color:
-                              isLoading && idx === chatHistory.length - 1
-                                ? "grey"
-                                : "#5E33A8",
-                          }}
-                        />
-                      </IconButton>
-                    </Tooltip>
-                    <Tooltip
-                      title={
-                        msg.is_favorite
-                          ? "Remove from favorites"
-                          : "Add to favorites"
-                      }
-                      placement="bottom"
-                      arrow
-                    >
-                      <IconButton
-                        size="small"
-                        sx={{
-                          backgroundColor: "rgba(255, 255, 255, 0.8)",
-                          "&:hover": {
-                            backgroundColor:
-                              isLoading && idx === chatHistory.length - 1
-                                ? "rgba(255, 255, 255, 0.8)"
-                                : "rgba(255, 215, 0, 0.2)",
-                          },
-                          opacity:
-                            isLoading && idx === chatHistory.length - 1
-                              ? 0.5
-                              : 1,
-                        }}
-                        onClick={() => handleToggleFavorite(msg)}
-                        disabled={isLoading && idx === chatHistory.length - 1}
-                      >
-                        {msg.is_favorite ? (
-                          <Bookmark
-                            fontSize="small"
-                            sx={{
-                              color:
-                                isLoading && idx === chatHistory.length - 1
-                                  ? "grey"
-                                  : "#FFD700",
-                            }}
-                          />
-                        ) : (
-                          <BookmarkBorder
-                            fontSize="small"
-                            sx={{
-                              color:
-                                isLoading && idx === chatHistory.length - 1
-                                  ? "grey"
-                                  : "#5E33A8",
-                            }}
-                          />
-                        )}
-                      </IconButton>
-                    </Tooltip>
-                    <Tooltip
-                      title={
-                        isLoading && idx === chatHistory.length - 1
-                          ? "Please wait until the response is complete"
-                          : "Report this message"
-                      }
-                      placement="bottom"
-                      arrow
-                    >
-                      <IconButton
-                        size="small"
-                        sx={{
-                          backgroundColor: "rgba(255, 255, 255, 0.8)",
-                          "&:hover": {
-                            backgroundColor:
-                              isLoading && idx === chatHistory.length - 1
-                                ? "rgba(255, 255, 255, 0.8)"
-                                : "rgba(255, 0, 0, 0.1)",
-                          },
-                          opacity:
-                            isLoading && idx === chatHistory.length - 1
-                              ? 0.5
-                              : 1,
-                        }}
-                        onClick={() => handleOpenReportModal(msg)}
-                        disabled={isLoading && idx === chatHistory.length - 1}
-                      >
-                        <ReportIcon
-                          fontSize="small"
-                          color={
-                            isLoading && idx === chatHistory.length - 1
-                              ? "disabled"
-                              : "error"
-                          }
-                        />
-                      </IconButton>
-                    </Tooltip>
-                  </Box>
-                )}
-              </Box>
-            </Stack>
-          ))
-        )}
-        <div ref={messagesEndRef} />
+              <Typography variant="h6" color="text.secondary">
+                What can I help with?
+              </Typography>
+            </Box>
+          }
+        />
       </Box>
 
-      {/* Message input */}
-      <Box
-        sx={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          p: "1rem",
-          bgcolor: "#fff",
-          width: "100%",
-        }}
-      >
-        <Box
-          sx={{
-            boxShadow: "0px 5px 15px rgba(0, 0, 0, 0.35)",
-            display: "flex",
-            alignItems: "center",
-            bgcolor: "white",
-            borderRadius: "12px",
-            border: "1px solid white",
-            width: { xs: "90%", sm: "80%", md: "44rem" },
-          }}
-        >
-          <Tooltip
-            title={
-              isChatbotDisabled && !isChatbotCreator
-                ? "Chatbot is disabled. Viewing only."
-                : ""
-            }
-            arrow
-          >
-            <TextField
-              disabled={(isChatbotDisabled && !isChatbotCreator) || isLoading}
-              fullWidth
-              placeholder={
-                isChatbotDisabled && !isChatbotCreator
-                  ? "Chatbot is disabled"
-                  : "Type a message..."
-              }
-              value={newMessage}
-              onChange={(e) => setNewMessage(e.target.value)}
-              multiline
-              maxRows={4}
-              onKeyDown={(e) => {
-                if (
-                  e.key === "Enter" &&
-                  !e.shiftKey &&
-                  !(isChatbotDisabled && !isChatbotCreator) &&
-                  !isLoading
-                ) {
-                  e.preventDefault();
-                  handleSendMessage();
-                }
-              }}
-              sx={{
-                "& .MuiOutlinedInput-root": {
-                  borderRadius: "8px",
-                  "& fieldset": { border: "none" },
-                  "&:hover fieldset": { borderColor: "white" },
-                  "&.Mui-focused fieldset": { borderColor: "white" },
-                  "&.Mui-disabled": { bgcolor: "white" },
-                },
-              }}
-            />
-          </Tooltip>
-          <Tooltip
-            title={
-              isChatbotDisabled && !isChatbotCreator
-                ? "Chatbot is disabled. Viewing only."
-                : "Send"
-            }
-            placement="top"
-          >
-            <IconButton
-              disabled={(isChatbotDisabled && !isChatbotCreator) || isLoading}
-              sx={{
-                ml: 2,
-                color: "#7844D3",
-                "&:hover": { bgcolor: "#E0D4F5" },
-                "&:disabled": { bgcolor: "#F5F5F5", color: "#CCCCCC" },
-              }}
-              onClick={handleSendMessage}
-            >
-              <SendIcon />
-            </IconButton>
-          </Tooltip>
-        </Box>
-      </Box>
+      <ChatInput
+        disabled={inputDisabled}
+        placeholder={inputPlaceholder}
+        onSend={onSendMessage}
+        isChatbotDisabled={isChatbotDisabled}
+        isChatbotCreator={isChatbotCreator}
+        isLoading={isLoading}
+      />
 
       {/* Report Modal */}
       <Modal
