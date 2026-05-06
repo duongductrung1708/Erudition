@@ -20750,3 +20750,17 @@ Given a text document that is po...
 2026-05-06 22:09:32,440 - lightrag - ERROR - Error while downloading document: An error occurred (NoSuchKey) when calling the GetObject operation: The specified key does not exist.
 2026-05-06 22:09:46,042 - lightrag - ERROR - Error while downloading document: An error occurred (NoSuchKey) when calling the GetObject operation: The specified key does not exist.
 2026-05-06 22:10:22,532 - lightrag - ERROR - Error while downloading document: An error occurred (NoSuchKey) when calling the GetObject operation: The specified key does not exist.
+2026-05-07 00:05:47,096 - lightrag - INFO - Loaded graph from E:\WED\Erudition\backend\app\rag_database\03edc83f-9789-4fd6-840b-c17500c80289\graph_chunk_entity_relation.graphml with 72 nodes, 55 edges
+2026-05-07 00:05:47,477 - lightrag - INFO - Process 1652 KV load full_docs with 1 records
+2026-05-07 00:05:47,485 - lightrag - INFO - Process 1652 KV load text_chunks with 16 records
+2026-05-07 00:05:47,502 - lightrag - INFO - Process 1652 KV load llm_response_cache with 35 records
+2026-05-07 00:05:47,512 - lightrag - INFO - Process 1652 doc status load doc_status with 1 records
+2026-05-07 00:05:52,257 - lightrag - INFO - Storage Initialization completed!
+2026-05-07 00:05:57,044 - lightrag - ERROR - OpenAI API Rate Limit Error: Error code: 429 - {'error': {'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, read the docs: https://platform.openai.com/docs/guides/error-codes/api-errors.', 'type': 'insufficient_quota', 'param': None, 'code': 'insufficient_quota'}}
+2026-05-07 00:06:03,878 - lightrag - ERROR - OpenAI API Rate Limit Error: Error code: 429 - {'error': {'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, read the docs: https://platform.openai.com/docs/guides/error-codes/api-errors.', 'type': 'insufficient_quota', 'param': None, 'code': 'insufficient_quota'}}
+2026-05-07 00:06:10,174 - lightrag - ERROR - OpenAI API Rate Limit Error: Error code: 429 - {'error': {'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, read the docs: https://platform.openai.com/docs/guides/error-codes/api-errors.', 'type': 'insufficient_quota', 'param': None, 'code': 'insufficient_quota'}}
+2026-05-07 00:09:55,693 - lightrag - INFO - Process 1652 building query context...
+2026-05-07 00:09:55,693 - lightrag - INFO - Query nodes: Hồ sơ, Kinh nghiệm, Bằng cấp, Kỹ năng, Phỏng vấn, top_k: 60, cosine: 0.2
+2026-05-07 00:09:55,705 - lightrag - INFO - Query edges: Thông tin, Ứng viên, top_k: 60, cosine: 0.2
+2026-05-07 00:10:11,978 - lightrag - ERROR - Error during ChromaDB query: RetryError[<Future at 0x191f0b88be0 state=finished raised RateLimitError>]
+2026-05-07 00:10:12,723 - lightrag - ERROR - Error during ChromaDB query: RetryError[<Future at 0x191f0b37730 state=finished raised RateLimitError>]

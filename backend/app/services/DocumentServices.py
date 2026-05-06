@@ -22,6 +22,7 @@ from app.services.StorageService import StorageService
 from app.utils import compute_mdhash_id
 from app.utils_package.DataUtils import DataUtils, extract_markdown_table, get_header_level, get_split_data, \
     add_usage_tokens_to_chatbot, add_usage_tokens_for_document, process_if_not_enough_token, parse_faq_from_ai_response
+from pathlib import Path
 
 
 class DocumentServices:
@@ -104,6 +105,27 @@ class DocumentServices:
                 document_id=document.id,
                 document_title=document.document_title,
             )
+
+    @staticmethod
+    async def load_and_convert_to_markdown_from_path(
+        document: DocumentModel, temp_path: str, filename: str
+    ):
+        """
+        Read bytes from a temp file path then run the standard conversion pipeline.
+        This lets the API return quickly on deploys (reduces proxy timeouts).
+        """
+        path = Path(temp_path)
+        try:
+            file_content = await asyncio.to_thread(path.read_bytes)
+            await DocumentServices.load_and_convert_to_markdown_text(
+                document, file_content, filename
+            )
+        finally:
+            try:
+                if path.exists():
+                    await asyncio.to_thread(path.unlink)
+            except Exception:
+                pass
 
     @staticmethod
     async def get_document_origin_content(document_id: str):

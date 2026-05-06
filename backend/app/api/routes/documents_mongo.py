@@ -5,6 +5,8 @@ Replaces documents.py (PostgreSQL version)
 import sys
 import uuid
 from datetime import datetime
+import tempfile
+from pathlib import Path
 
 print("[DOCUMENTS_MONGO] Starting imports...")
 sys.stdout.flush()
@@ -190,15 +192,35 @@ async def upload_document(
     
     db_document = await DocumentServicesMongo.create_document(document=document)
     
-    file_content = await file.read()
+    # Persist upload to a temp file so we can respond quickly (avoids gateway timeouts)
+    suffix = ""
+    if file.filename and "." in file.filename:
+        suffix = "." + file.filename.rsplit(".", 1)[-1]
+    tmp_dir = Path(tempfile.gettempdir())
+    tmp_path = tmp_dir / f"erudition-upload-{db_document.id}{suffix}"
+
+    try:
+        # Stream to disk in chunks to avoid loading whole file into memory
+        with tmp_path.open("wb") as f:
+            while True:
+                chunk = await file.read(1024 * 1024)  # 1MB
+                if not chunk:
+                    break
+                f.write(chunk)
+    except Exception as e:
+        # Mark failed and surface error
+        await DocumentServicesMongo.update_document_status(
+            document_id=db_document.id, status=DocumentStatus.FAILED
+        )
+        raise HTTPException(status_code=500, detail=f"Failed to receive upload: {e}")
+
     # Add background task to process file
-    # Lazy import to avoid blocking on module import
     from app.services.DocumentServices import DocumentServices
     background_tasks.add_task(
-        DocumentServices.load_and_convert_to_markdown_text,
+        DocumentServices.load_and_convert_to_markdown_from_path,
         db_document,
-        file_content,
-        file.filename
+        str(tmp_path),
+        file.filename,
     )
     
     return {
