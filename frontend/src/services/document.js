@@ -29,26 +29,29 @@ export const update_document_title = async (document_id, newTitle, token) => {
   }
 };
 
-export const upload_document = async (chatbot_id, token, data) => {
-  try {
-    const headers = {
-      Authorization: `Bearer ${token}`,
-    };
-    const formData = new FormData();
-    formData.append('file', data.file);     
-    formData.append('title', data.title);  
-    const res = await chatbot_api.post(`/${chatbot_id}/document-load-to-markdown`, formData, {
+export const upload_document = async (chatbot_id, token, data, { signal } = {}) => {
+  const headers = {
+    Authorization: `Bearer ${token}`,
+  };
+  const formData = new FormData();
+  formData.append("file", data.file);
+  formData.append("title", data.title);
+
+  const res = await chatbot_api.post(
+    `/${chatbot_id}/document-load-to-markdown`,
+    formData,
+    {
       headers: {
         "Content-Type": "multipart/form-data",
         ...headers,
       },
-    });
-    return res.data
-  } catch (error) {
-    console.error("Upload failed:", error.response?.data || error.message);
-    console.log("Full error response:", error.response);
-    return error.response?.data || error.message;
-  }
+      // Prevent infinite pending when gateway/network stalls.
+      // Increase if you expect very large uploads.
+      timeout: 120_000,
+      signal,
+    }
+  );
+  return res.data;
 };
 
 export const get_doc_content = async (document_id, token) => {

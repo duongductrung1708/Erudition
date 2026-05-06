@@ -157,16 +157,30 @@ const AgentInfo = ({ agentDetails, onRefresh, setAgentDetails }) => {
     }
     setLoading(true);
     const token = user.accessToken;
-    upload_document(chatbotId, token, newDocument)
+    const controller = new AbortController();
+    const abortTimer = setTimeout(() => {
+      controller.abort();
+    }, 120_000);
+
+    upload_document(chatbotId, token, newDocument, { signal: controller.signal })
       .then((data) => {
         console.log(data);
         onRefresh();
         handleCloseKnowledgeDialog();
       })
       .catch((error) => {
-        toast.error("Failed to upload document");
+        if (error?.name === "CanceledError" || error?.code === "ERR_CANCELED") {
+          toast.error("Upload timed out. Please try again (or upload a smaller file).");
+          return;
+        }
+        const detail =
+          error?.response?.data?.detail || error?.message || "Failed to upload document";
+        toast.error(detail);
       })
-      .finally(() => setLoading(false));
+      .finally(() => {
+        clearTimeout(abortTimer);
+        setLoading(false);
+      });
   };
 
   const handleSaveMarkdownWithHeaders = () => {
