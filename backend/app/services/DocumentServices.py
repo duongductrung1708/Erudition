@@ -70,15 +70,49 @@ class DocumentServices:
             file = UploadFile(filename=filename, file=stream)
             import asyncio
 
-            # Docling is powerful but memory-hungry for PDFs (can OOM on 512MB instances).
-            # Prefer the lightweight PyMuPDF-based loader for PDFs by default.
-            loader_method = "langchain" if str(filename).lower().endswith(".pdf") else "docling"
-            documents = await asyncio.wait_for(
-                DocumentHelper.load(
-                    file=file, document_model=document, loader_method=loader_method
-                ),
-                timeout=180,
-            )
+            # Default to docling (higher quality). Allow override via env.
+            # If docling runs out of memory (common on 512MB instances), retry with a lightweight loader.
+            loader_method = os.getenv("DOCUMENT_LOADER_METHOD", "docling").lower().strip()
+            if loader_method not in {"docling", "langchain"}:
+                loader_method = "docling"
+
+            async def _load(method: str):
+                return await asyncio.wait_for(
+                    DocumentHelper.load(file=file, document_model=document, loader_method=method),
+                    timeout=180,
+                )
+
+            try:
+                documents = await _load(loader_method)
+            except (MemoryError, RuntimeError) as e:
+                # Best-effort fallback for OOM-like failures.
+                msg = str(e).lower()
+                if loader_method == "docling" and ("memory" in msg or "oom" in msg):
+                    await ws_mng.send_status(
+                        document.chatbot_id,
+                        "warning",
+                        f"Docling ran out of memory; retrying with lightweight PDF loader for '{document.document_title}'.",
+                        document_id=document.id,
+                        document_title=document.document_title,
+                    )
+                    documents = await _load("langchain")
+                else:
+                    raise
+            except Exception as e:
+                # Some docling failures show up as generic exceptions but include OOM signals.
+                msg = str(e).lower()
+                if loader_method == "docling" and ("memory" in msg or "oom" in msg):
+                    await ws_mng.send_status(
+                        document.chatbot_id,
+                        "warning",
+                        f"Docling ran out of memory; retrying with lightweight PDF loader for '{document.document_title}'.",
+                        document_id=document.id,
+                        document_title=document.document_title,
+                    )
+                    documents = await _load("langchain")
+                else:
+                    raise
+
             result = documents[0].page_content
             await asyncio.wait_for(
                 DocumentServices.save_file_to_server(document.id, result, document.chatbot_id),

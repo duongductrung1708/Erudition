@@ -3,8 +3,6 @@ import {
   Container,
   Box,
   Typography,
-  TextField,
-  Button,
   List,
   ListItem,
   ListItemText,
@@ -14,7 +12,7 @@ import {
 import { styled } from "@mui/material/styles";
 import { useAuth } from "../hooks/AuthProvider";
 
-const StyledContainer = styled(Container)(({ theme }) => ({
+const StyledContainer = styled(Container)(() => ({
   display: "flex",
   flexDirection: "column",
   alignItems: "center",
@@ -23,13 +21,7 @@ const StyledContainer = styled(Container)(({ theme }) => ({
   textAlign: "center",
 }));
 
-const ActionContainer = styled(Box)(({ theme }) => ({
-  margin: theme.spacing(2, 0),
-  display: "flex",
-  gap: theme.spacing(1),
-}));
-
-const StyledList = styled(List)(({ theme }) => ({
+const StyledList = styled(List)(() => ({
   display: "flex",
   flexDirection: "row",
   padding: 0,
@@ -50,7 +42,7 @@ const MiddleListItem = styled(StyledListItem)(({ theme }) => ({
   padding: theme.spacing(0, 3),
 }));
 
-const StyledListItemText = styled(ListItemText)(({ theme }) => ({
+const StyledListItemText = styled(ListItemText)(() => ({
   "& .MuiListItemText-primary": {
     fontSize: "0.875rem",
     color: "#135CAD",
@@ -65,14 +57,8 @@ const DotSeparator = styled("span")(({ theme }) => ({
 
 const NotFound = () => {
   const { logout } = useAuth();
-  const [searchValue, setSearchValue] = useState("");
   const [isLoggingOut, setIsLoggingOut] = useState(false);
   const [error, setError] = useState(null);
-
-  const handleSearchSubmit = (event) => {
-    event.preventDefault();
-    console.log("Search submitted:", searchValue);
-  };
 
   const handleLogout = async (event) => {
     event.preventDefault();

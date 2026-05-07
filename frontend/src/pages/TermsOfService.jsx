@@ -1,4 +1,3 @@
-import React from "react";
 import {
   Container,
   Typography,
@@ -55,7 +54,7 @@ const TermsOfService = () => {
             <SectionHeader variant="h5">Welcome to Erudition!</SectionHeader>
             <Typography variant="body1" color="text.secondary" paragraph>
               By using our services, you agree to these Terms of Service
-              ("Terms") and our related policies, including the Privacy Policy
+              (&quot;Terms&quot;) and our related policies, including the Privacy Policy
               and Acceptable Use Policy. These Terms are designed to ensure a
               safe, respectful, and legally compliant environment for all users
               and developers.

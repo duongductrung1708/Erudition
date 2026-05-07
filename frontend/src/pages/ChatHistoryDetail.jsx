@@ -18,7 +18,6 @@ import {
   useMediaQuery,
   IconButton,
   Tooltip,
-  Collapse,
   Autocomplete,
   TextField,
   FormControl,

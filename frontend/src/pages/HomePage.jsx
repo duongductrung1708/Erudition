@@ -73,7 +73,7 @@ export default function HomePage() {
                 }}
               >
                 Build a ChatGPT for your business. Trained with your website
-                content and answer your visitors' questions instantly.
+                content and answer your visitors&apos; questions instantly.
               </Typography>
 
               <Grid

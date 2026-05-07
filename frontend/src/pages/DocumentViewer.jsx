@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import Markdown from "markdown-to-jsx";
 import {
   Box,
@@ -15,7 +15,6 @@ import {
   Tooltip,
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
-import TableViewIcon from "@mui/icons-material/TableView";
 import DriverTour from "../components/tour/DriverTour";
 
 const DocumentViewer = ({
@@ -23,7 +22,6 @@ const DocumentViewer = ({
   setDocumentData,
   currentDocument,
   isViewOnly,
-  onReconstructTables,
 }) => {
   const [contextMenu, setContextMenu] = useState(null);
   const [selectedText, setSelectedText] = useState(null);

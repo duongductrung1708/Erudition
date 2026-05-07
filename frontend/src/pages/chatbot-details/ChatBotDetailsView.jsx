@@ -1,4 +1,4 @@
-import React, { memo } from "react";
+import { memo } from "react";
 import { Box, Drawer, Grid, IconButton } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 
@@ -6,9 +6,7 @@ import SidebarNav from "./components/SidebarNav";
 import ReportTabs from "./components/ReportTabs";
 
 const ChatBotDetailsView = ({
-  chatbotId,
   theme,
-  isMobile,
   isSidebarOpen,
   onOpenSidebar,
   onCloseSidebar,

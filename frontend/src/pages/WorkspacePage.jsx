@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useOutletContext } from "react-router-dom";
 import {
   Box,
@@ -191,7 +191,7 @@ export default function Dashboard() {
             </Button>
           </Box>
           <Alert severity="info" sx={{ mt: 2 }}>
-            You don't have any chatbots yet. Create your first one!
+            You don&apos;t have any chatbots yet. Create your first one!
           </Alert>
         </Box>
       </>

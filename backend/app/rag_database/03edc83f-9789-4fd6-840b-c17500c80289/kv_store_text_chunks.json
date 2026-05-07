@@ -3,43 +3,43 @@
     "tokens": 3,
     "content": "<!-- image -->",
     "chunk_order_index": 0,
-    "full_doc_id": "doc-5e5fef66436d1101b9d284ed0c57610c",
-    "file_path": "6a2ca7b4-b00f-4da4-b7f5-d8d904a3db1b"
+    "full_doc_id": "doc-48d1589251d2a19c269c34c46869208d",
+    "file_path": "eac2a6bd-9ff7-4503-8090-3233105bfb2c"
   },
   "chunk-5a416d2e9ad4340532548b2e68a0ebda": {
     "tokens": 13,
     "content": "## CONTACT\n\n<!-- image -->\n+033-423-0359",
     "chunk_order_index": 1,
-    "full_doc_id": "doc-5e5fef66436d1101b9d284ed0c57610c",
-    "file_path": "6a2ca7b4-b00f-4da4-b7f5-d8d904a3db1b"
+    "full_doc_id": "doc-48d1589251d2a19c269c34c46869208d",
+    "file_path": "eac2a6bd-9ff7-4503-8090-3233105bfb2c"
   },
   "chunk-566f60a230a0eedd8d7f8a548e0da62d": {
     "tokens": 10,
     "content": "## Phone:\n\ntrungyna1708@gmail.com",
     "chunk_order_index": 2,
-    "full_doc_id": "doc-5e5fef66436d1101b9d284ed0c57610c",
-    "file_path": "6a2ca7b4-b00f-4da4-b7f5-d8d904a3db1b"
+    "full_doc_id": "doc-48d1589251d2a19c269c34c46869208d",
+    "file_path": "eac2a6bd-9ff7-4503-8090-3233105bfb2c"
   },
   "chunk-958b222855c03630a1fd27e95c26fbd7": {
     "tokens": 15,
     "content": "## Email Address:\n\n18 Au Co, Kinh Bac, Bac Ninh",
     "chunk_order_index": 3,
-    "full_doc_id": "doc-5e5fef66436d1101b9d284ed0c57610c",
-    "file_path": "6a2ca7b4-b00f-4da4-b7f5-d8d904a3db1b"
+    "full_doc_id": "doc-48d1589251d2a19c269c34c46869208d",
+    "file_path": "eac2a6bd-9ff7-4503-8090-3233105bfb2c"
   },
   "chunk-0cc32922444243a72e212e863be2014a": {
     "tokens": 13,
     "content": "## Address:\n\ngithub.com/duongductrung1708",
     "chunk_order_index": 4,
-    "full_doc_id": "doc-5e5fef66436d1101b9d284ed0c57610c",
-    "file_path": "6a2ca7b4-b00f-4da4-b7f5-d8d904a3db1b"
+    "full_doc_id": "doc-48d1589251d2a19c269c34c46869208d",
+    "file_path": "eac2a6bd-9ff7-4503-8090-3233105bfb2c"
   },
   "chunk-a8ddcad50ea184422a12263307b11a39": {
     "tokens": 3,
     "content": "## Website",
     "chunk_order_index": 5,
-    "full_doc_id": "doc-5e5fef66436d1101b9d284ed0c57610c",
-    "file_path": "6a2ca7b4-b00f-4da4-b7f5-d8d904a3db1b"
+    "full_doc_id": "doc-48d1589251d2a19c269c34c46869208d",
+    "file_path": "eac2a6bd-9ff7-4503-8090-3233105bfb2c"
   },
   "chunk-e701a690c65d8ae698d3c67f993910b7": {
     "tokens": 44,
@@ -59,8 +59,8 @@
     "tokens": 8,
     "content": "## DUONG DUC TRUNG",
     "chunk_order_index": 8,
-    "full_doc_id": "doc-5e5fef66436d1101b9d284ed0c57610c",
-    "file_path": "6a2ca7b4-b00f-4da4-b7f5-d8d904a3db1b"
+    "full_doc_id": "doc-48d1589251d2a19c269c34c46869208d",
+    "file_path": "eac2a6bd-9ff7-4503-8090-3233105bfb2c"
   },
   "chunk-605b6859de26771b3e0b6218329c8700": {
     "tokens": 7,
@@ -73,42 +73,63 @@
     "tokens": 57,
     "content": "## PROFILE\n\nFront-End  Developer  with  a  strong  focus  on  building  interactive, user-centric  web  applications  using  React,  Next.js,  and  TypeScript. Experienced in transforming complex designs into pixel-perfect code and optimizing application performance.",
     "chunk_order_index": 10,
-    "full_doc_id": "doc-5e5fef66436d1101b9d284ed0c57610c",
-    "file_path": "6a2ca7b4-b00f-4da4-b7f5-d8d904a3db1b"
+    "full_doc_id": "doc-48d1589251d2a19c269c34c46869208d",
+    "file_path": "eac2a6bd-9ff7-4503-8090-3233105bfb2c"
   },
   "chunk-be378201f5af795cd203fd69078be43a": {
     "tokens": 16,
     "content": "## EDUCATION\n\nBachelor of Information Technology\nFPT University |  Ha Noi",
     "chunk_order_index": 11,
-    "full_doc_id": "doc-5e5fef66436d1101b9d284ed0c57610c",
-    "file_path": "6a2ca7b4-b00f-4da4-b7f5-d8d904a3db1b"
+    "full_doc_id": "doc-48d1589251d2a19c269c34c46869208d",
+    "file_path": "eac2a6bd-9ff7-4503-8090-3233105bfb2c"
   },
   "chunk-d49f402f217045048ff36382ce5891ce": {
     "tokens": 58,
     "content": "## CERTIFICATIONS\n\nUser Experience Research &amp; Design Specialization - Univ. of Michigan (2024)\nSoftware  Development  Lifecycle  Specialization  -  Univ.  of  Minnesota (2023)\nWeb Design for Everybody Specialization - Univ. of Michigan (2023)",
     "chunk_order_index": 12,
-    "full_doc_id": "doc-5e5fef66436d1101b9d284ed0c57610c",
-    "file_path": "6a2ca7b4-b00f-4da4-b7f5-d8d904a3db1b"
+    "full_doc_id": "doc-48d1589251d2a19c269c34c46869208d",
+    "file_path": "eac2a6bd-9ff7-4503-8090-3233105bfb2c"
   },
   "chunk-4525cf2ecbb5dac18e3f1af961db9b92": {
     "tokens": 4,
     "content": "## PROJECTS",
     "chunk_order_index": 13,
-    "full_doc_id": "doc-5e5fef66436d1101b9d284ed0c57610c",
-    "file_path": "6a2ca7b4-b00f-4da4-b7f5-d8d904a3db1b"
+    "full_doc_id": "doc-48d1589251d2a19c269c34c46869208d",
+    "file_path": "eac2a6bd-9ff7-4503-8090-3233105bfb2c"
   },
   "chunk-61981cd7ad7157fd25dd732f6652bbc8": {
     "tokens": 266,
     "content": "## Erudition (5 Members)\n\nA  fully functional  AI  chatbot  platform  designed  for  businesses, featuring intelligent conversation management powered by RAG.\nTech Stack: React, Vite, Material-UI, Tailwind CSS, FastAPI, MongoDB, LightRAG, LangChain, ChromaDB, Neo4j\nMy Role:\nUI/UX Design,  Front-end Developer\nLink github:\ngithub.com/duongductrung1708/Erudition\nLink demo:\nerudition-wheat.vercel.app\nVivu Go (1 Member)\nVivu-Go is an intelligent trip planning platform designed to help users create flexible itineraries, optimize travel routes, and manage budgets efficiently for any group size.\nTech Stack: Next.js,  TypeScript,  Zustand,  Tailwind  CSS,  Supabase, Google Gemini API, Mapbox API\nLink github: github.com/duongductrung1708/Vivu-Go\nLink demo:\nvivu-go.vercel.app\nZen Writing (1 Member)\nA creative writing web application that find and display images from Unsplash based on user input.\nTech Stack: React,  JavaScript,  React  Router,  Zustand,  Tailwind  CSS, Node.js, Express, Unsplash Search API",
     "chunk_order_index": 14,
-    "full_doc_id": "doc-5e5fef66436d1101b9d284ed0c57610c",
-    "file_path": "6a2ca7b4-b00f-4da4-b7f5-d8d904a3db1b"
+    "full_doc_id": "doc-48d1589251d2a19c269c34c46869208d",
+    "file_path": "eac2a6bd-9ff7-4503-8090-3233105bfb2c"
   },
   "chunk-b57f022b6811820954bb2ceed5073e51": {
     "tokens": 43,
     "content": "## Erudition (5 Members)\n\nLink github: github.com/duongductrung1708/Zen-Writing\nLink demo:\nhan-zen-writing.vercel.app\n2021 - 2025",
     "chunk_order_index": 15,
-    "full_doc_id": "doc-5e5fef66436d1101b9d284ed0c57610c",
-    "file_path": "6a2ca7b4-b00f-4da4-b7f5-d8d904a3db1b"
+    "full_doc_id": "doc-48d1589251d2a19c269c34c46869208d",
+    "file_path": "eac2a6bd-9ff7-4503-8090-3233105bfb2c"
+  },
+  "chunk-a78354cc68a8477873f3aa543364b34b": {
+    "tokens": 41,
+    "content": "## TECH SKILLS\n\nJavaScript / TypeScript / HTML5 / CSS3\nReact / Next.js\nMaterial - UI /Tailwind CSS\nGit / GitHub / RESTful API / Postman",
+    "chunk_order_index": 6,
+    "full_doc_id": "doc-48d1589251d2a19c269c34c46869208d",
+    "file_path": "eac2a6bd-9ff7-4503-8090-3233105bfb2c"
+  },
+  "chunk-9ed0d98f1bcc5d07c8f76637e7dbcebc": {
+    "tokens": 37,
+    "content": "## SOFT SKILLS\n\n- Teamwork\n- Time Management\n- Problem Solving\n- Self-Learning\n- Critical Thinking\n<!-- image -->\n<!-- image -->\n<!-- image -->",
+    "chunk_order_index": 7,
+    "full_doc_id": "doc-48d1589251d2a19c269c34c46869208d",
+    "file_path": "eac2a6bd-9ff7-4503-8090-3233105bfb2c"
+  },
+  "chunk-4b385c9cac331684b8f3b8fc076d25f6": {
+    "tokens": 7,
+    "content": "## FULLSTACK DEVELOPER",
+    "chunk_order_index": 9,
+    "full_doc_id": "doc-48d1589251d2a19c269c34c46869208d",
+    "file_path": "eac2a6bd-9ff7-4503-8090-3233105bfb2c"
   }
 }

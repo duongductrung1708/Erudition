@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import {
   Box,
   Typography,
@@ -78,10 +78,6 @@ export default function ChatHistory() {
     } else {
       navigate(`/user/agent-chat-history-detail/${chatbotId}`);
     }
-  };
-
-  const handleDeleteAgent = (chatbotId) => {
-    setAgents(agents.filter((agent) => agent.id !== chatbotId));
   };
 
   const handleChangePage = (event, newPage) => setPage(newPage);
@@ -177,7 +173,7 @@ export default function ChatHistory() {
         {/* Search with Autocomplete */}
         <Box sx={{ mb: "1rem" }}>
           <Autocomplete
-            options={agents} // Use agents instead of chatbots
+            options={agents}
             getOptionLabel={(option) => option.name}
             inputValue={searchTerm}
             onInputChange={(event, newInputValue) => {
